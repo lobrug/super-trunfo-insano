@@ -142,3 +142,41 @@ void pesquisarEstandePersistencia(Estande estandes[]){
         printf("Não foi encontrado nenhuma carta com o filtro expecificado\n");
     }
 }
+
+void pesquisaCartaLetra(Estande estandes[]){
+    int verificacao = 0;
+    char pesquisa;
+    printf("Que letra deseja pesquisar?: ");
+    scanf("%c", &pesquisa);
+
+    for(int i = 0; i < sizeof(estandes); i++){
+        if(estandes[i].letra == pesquisa){
+            listarCarta;
+            verificacao = 1;
+        }
+    }
+
+    if(verificacao == 0){
+        printf("Não foi encontrado nenhuma carta com o filtro expecificado\n");
+    }
+
+}
+
+void pesquisaCartaNumero(Estande estandes[]){
+    int verificacao = 0;
+    int pesquisa;
+    printf("Que numero deseja pesquisar?: ");
+    scanf("%d", &pesquisa);
+
+    for(int i = 0; i < sizeof(estandes); i++){
+        if(estandes[i].numero == pesquisa){
+            listarCarta;
+            verificacao = 1;
+        }
+    }
+
+    if(verificacao == 0){
+        printf("Não foi encontrado nenhuma carta com o filtro expecificado\n");
+    }
+
+}
