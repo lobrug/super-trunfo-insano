@@ -19,7 +19,6 @@ void listarCarta(Estande* estande){
     printf("Velocidade: %d\n", estande->velocidade);
     printf("Alcance: %d\n", estande->alcance);
     printf("Persistencia: %d\n", estande->persistenciaDePoder);
-
 }
 
 /**
