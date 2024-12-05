@@ -1,0 +1,33 @@
+Categoria,Número,Nome do Stand,Super,Poder Destrutivo,Velocidade,Alcance,Persistência,Habilidade Especial,Verificação
+A,1,Star Platinum,FALSE,100,95,30,100,Parar o tempo (Time Stop),0
+A,2,The World,FALSE,100,95,30,100,Parar o tempo (Time Stop),0
+A,3,Golden Experience,FALSE,70,85,30,95,Dar vida a objetos inanimados,0
+A,4,King Crimson,FALSE,100,90,30,80,Apagar tempo (Time Erase),0
+A,5,Made in Heaven,FALSE,100,100,20,85,Acelerar o tempo,0
+A,6,Tusk Act 4,FALSE,100,95,100,100,Controle absoluto sobre o espaço-tempo,0
+A,7,Killer Queen,FALSE,85,80,20,85,Explodir qualquer coisa que tocar,0
+A,8,Dirty Deeds Done Dirt Cheap (D4C),FALSE,100,100,60,95,Viajar entre dimensões,0
+B,1,Crazy Diamond,FALSE,95,85,20,90,Restaurar objetos e seres vivos,0
+B,2,Golden Experience Requiem,TRUE,100,100,100,100,Retornar ações ao ponto inicial,0
+B,3,Weather Report,FALSE,85,75,100,90,Manipular o clima,0
+B,4,Magician's Red,FALSE,85,75,50,80,Controle do fogo,0
+B,5,Sticky Fingers,FALSE,80,80,40,70,Criar zíperes em qualquer objeto,0
+B,6,Echoes Act 3,FALSE,85,75,40,80,Gravitacional (3 Freeze),0
+B,7,Green Day,FALSE,85,70,100,90,Espalhar mofo que dissolve alvos,0
+B,8,Stone Free,FALSE,80,85,40,80,Transformar o corpo em cordas,0
+C,1,Silver Chariot,FALSE,80,95,30,80,Velocidade e precisão extrema,0
+C,2,Red Hot Chili Pepper,FALSE,85,90,100,80,Controle de eletricidade,0
+C,3,Sex Pistols,FALSE,30,90,100,60,Controlar trajetórias de balas,0
+C,4,Hierophant Green,FALSE,70,80,100,75,Lançar esmeraldas (Emerald Splash),0
+C,5,C-Moon,FALSE,100,85,40,95,Inverter a gravidade,0
+C,6,Moody Blues,FALSE,20,70,100,80,Reproduzir eventos passados,0
+C,7,Purple Haze,FALSE,100,70,20,50,Vírus letal,0
+C,8,Diver Down,FALSE,85,80,40,90,Absorver e armazenar impactos,0
+D,1,Hermit Purple,FALSE,20,20,100,60,Comunicação espiritual,0
+D,2,Heaven's Door,FALSE,20,60,50,100,Ler e reescrever memórias,0
+D,3,Beach Boy,FALSE,70,75,100,70,Pescar inimigos à distância,0
+D,4,Aerosmith,FALSE,60,90,60,70,Ataques aéreos com tiros de metralhadora,0
+D,5,The Hand,FALSE,100,80,50,80,Apagar partes do espaço,0
+D,6,Notorious B.I.G.,FALSE,100,85,20,100,Ficar mais forte após a morte,0
+D,7,Soft & Wet,FALSE,75,80,50,95,Roubar propriedades de objetos,0
+D,8,Justice,FALSE,60,40,100,70,Criar ilusões com nevoeiro,0
