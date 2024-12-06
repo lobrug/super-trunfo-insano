@@ -19,4 +19,11 @@ int main(){
     deck2 = (Estande*) calloc(SIZEDECK, sizeof(Estande));
 
 
+    /*
+    LEMBRAR DE MOVER A MAIN
+    PARA
+    SOURCES
+    */
+
+
 }

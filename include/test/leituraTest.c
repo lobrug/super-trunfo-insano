@@ -13,10 +13,7 @@ Estande estandes[32];
 
 leituraArquivoCsv(estandes);
 
-
 listarTodasCartas(estandes);
-
-
 
 return 0;
 }
