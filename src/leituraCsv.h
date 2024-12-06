@@ -3,12 +3,12 @@
 #include <stdbool.h>
 #include "structEstandes.h"
 
-void leituraArquivoCsv(Estande estandes[32]){
+void leituraArquivoCsv(Estande estandes[]){
     FILE *infocartas = fopen("cartas_stands.csv", "r");
 
     if(infocartas == NULL){
         printf("Falha ao abrir arquivo\n");
-        exit(1);
+        return;
     }
 
     char linha[100];
@@ -21,10 +21,22 @@ void leituraArquivoCsv(Estande estandes[32]){
     Eu tive uma ideia de um enum de habilidades, e repassar os valores do enum para o
     csv em vez de usar os nomes das habilidades
     */
-    while(fscanf(infocartas, "%c,%d,%s,%d,%d,%d,%d,%d", estandes[i].letra, estandes[i].numero, estandes[i].nome, estandes[i].super, estandes[i].poderDestrutivo, estandes[i].velocidade, estandes[i].alcance, estandes[i].persistenciaDePoder)){
+   fscanf(infocartas, "%*[^\n]\n");
+    while (fscanf(infocartas, "%c,%d,%49[^,],%d,%d,%d,%d,%d,%d\n",
+                  &estandes[i].letra, 
+                  &estandes[i].numero, 
+                  estandes[i].nome, 
+                  &estandes[i].super, 
+                  &estandes[i].poderDestrutivo, 
+                  &estandes[i].velocidade, 
+                  &estandes[i].alcance, 
+                  &estandes[i].persistenciaDePoder,
+                  &estandes[i].verificacao
+                  )){
         i++;
-        if(i>=32) break;
+        if (i >= 32) break;
     }
 
     fclose(infocartas);
+    return;
 }

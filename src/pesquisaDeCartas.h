@@ -9,16 +9,16 @@
  * @param estande pesquisado
  */
 void listarCarta(Estande* estande){
-    printf("Nome: %s\n", estande->nome);
-    printf("id: %c%d\n", estande->letra, estande->numero);
+    printf("Nome: %s\n", &estande->nome);
+    printf("id: %c%d\n", &estande->letra, &estande->numero);
     if(estande->super == true){
         printf("Esta carta é o super trunfo\n");
     }
     printf("-----ATRIBUTOS-----\n");
-    printf("Poder destrutivo: %d\n", estande->poderDestrutivo);
-    printf("Velocidade: %d\n", estande->velocidade);
-    printf("Alcance: %d\n", estande->alcance);
-    printf("Persistencia: %d\n", estande->persistenciaDePoder);
+    printf("Poder destrutivo: %d\n", &estande->poderDestrutivo);
+    printf("Velocidade: %d\n", &estande->velocidade);
+    printf("Alcance: %d\n", &estande->alcance);
+    printf("Persistencia: %d\n", &estande->persistenciaDePoder);
 }
 
 /**
