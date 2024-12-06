@@ -1,7 +1,7 @@
 Teste do nome - ok
 Teste do numero - ok
 Teste da letra - ok
-Teste poder - nao feito
+Teste poder - ok
 Teste velocidade - nao feito
 Teste alcance - nao feito
 Teste persistencia - nao feito

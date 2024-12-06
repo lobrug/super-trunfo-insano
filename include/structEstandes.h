@@ -10,7 +10,7 @@ typedef struct
     char nome[30];
     char letra;
     int numero;
-    int super;
+    bool super;
 
     //atributos a seguir sao medidos de 0 a 100
     int poderDestrutivo;

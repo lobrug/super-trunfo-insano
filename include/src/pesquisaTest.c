@@ -15,6 +15,10 @@ int main(){
     //pesquisarEstandeNome(estandes);
     //pesquisaCartaNumero(estandes);
     //pesquisaCartaLetra(estandes);
+    //pesquisarEstandePoderDestrutivo(estandes);
+    //pesquisarEstandeVelocidade(estandes);
+    //pesquisarEstandeAlcance(estandes);
+    //pesquisarEstandePersistencia(estandes);
 
     return 0;
 

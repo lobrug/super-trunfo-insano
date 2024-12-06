@@ -65,15 +65,24 @@ void pesquisarEstandePoderDestrutivo(Estande estandes[]){
     do{
         printf("Qual o poder maximo que você deseja pesquisar?: ");
         scanf("%d", &maximo);
+
+        if(maximo < 0 || maximo > 100){
+            printf("Valor invalido\n");
+        }
     }while(maximo < 0 || maximo > 100);
 
     do{
         printf("E o minimo?: ");
         scanf("%d", &minimo);
+
+        if(minimo < 0 || minimo > maximo){
+            printf("Valor invalido\n");
+        }
+
     }while(minimo < 0 || minimo > maximo);
 
     for(int i = 0; i < 32; i++){
-        if(estandes[i].poderDestrutivo < maximo && estandes[i].poderDestrutivo > minimo){
+        if(estandes[i].poderDestrutivo <= maximo && estandes[i].poderDestrutivo >= minimo){
             listarCarta(estandes[i]);
             auxiliar = 1;
         }
@@ -95,17 +104,28 @@ void pesquisarEstandeVelocidade(Estande estandes[]){
     int minimo;
 
     do{
-    printf("Qual a velocidade maxima que você deseja pesquisar?: ");
-    scanf("%d", &maximo);
+        printf("Qual a velocidade maxima que você deseja pesquisar?: ");
+        scanf("%d", &maximo);
+
+        if(maximo < 0 || maximo > 100){
+            printf("Valor invalido\n");
+
+        }
+
     }while(maximo < 0 || maximo > 100);
 
     do{
-    printf("E a minima?: ");
-    scanf("%d", &minimo);
+        printf("E a minima?: ");
+        scanf("%d", &minimo);
+
+        if(minimo < 0 || minimo > maximo){
+            printf("Valor invalido\n");
+        }
+
     }while(minimo < 0 || minimo > maximo);
 
     for(int i = 0; i < 32; i++){
-        if(estandes[i].velocidade < maximo && estandes[i].velocidade > minimo){
+        if(estandes[i].velocidade <= maximo && estandes[i].velocidade >= minimo){
             listarCarta(estandes[i]);
             auxiliar = 1;
         }
@@ -128,17 +148,27 @@ void pesquisarEstandeAlcance(Estande estandes[]){
     int minimo;
 
     do{
-    printf("Qual o alcance maximo que você deseja pesquisar?: ");
-    scanf("%d", &maximo);
+        printf("Qual o alcance maximo que você deseja pesquisar?: ");
+        scanf("%d", &maximo);
+
+        if(maximo < 0 || maximo > 100){
+            printf("Valor invalido\n");
+        }
+    
     }while(maximo < 0 || maximo > 100);
 
     do{
-    printf("E o minimo?: ");
-    scanf("%d", &minimo);
+        printf("E o minimo?: ");
+        scanf("%d", &minimo);
+
+        if(minimo < 0 || minimo > maximo){
+            printf("Valor invalido\n");
+        }
+    
     }while(minimo < 0 || minimo > maximo);
 
     for(int i = 0; i < 32; i++){
-        if(estandes[i].alcance < maximo && estandes[i].alcance > minimo){
+        if(estandes[i].alcance <= maximo && estandes[i].alcance >= minimo){
             listarCarta(estandes[i]);
             auxiliar = 1;
         }
@@ -160,17 +190,27 @@ void pesquisarEstandePersistencia(Estande estandes[]){
     int minimo;
 
     do{
-    printf("Qual a persistencia de poder maxima que você deseja pesquisar?: ");
-    scanf("%d", &maximo);
+        printf("Qual a persistencia de poder maxima que você deseja pesquisar?: ");
+        scanf("%d", &maximo);
+
+        if(maximo < 0 || maximo > 100){
+            printf("Valor invalido\n");
+        }
+    
     }while(maximo < 0 || maximo > 100);
 
     do{
-    printf("E a minima?: ");
-    scanf("%d", &minimo);
+        printf("E a minima?: ");
+        scanf("%d", &minimo);
+
+        if(minimo < 0 || minimo > maximo){
+            printf("Valor invalido\n");
+        }
+    
     }while(minimo < 0 || minimo > maximo);
 
     for(int i = 0; i < 32; i++){
-        if(estandes[i].persistenciaDePoder < maximo && estandes[i].persistenciaDePoder > minimo){
+        if(estandes[i].persistenciaDePoder <= maximo && estandes[i].persistenciaDePoder >= minimo){
             listarCarta(estandes[i]);
             auxiliar = 1;
         }
