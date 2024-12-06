@@ -71,8 +71,8 @@ void excluirCarta(Estande* deck[16], Estande* estande){
  * 
  * @param todosEstandes 
  */
-void listarTodasCartas(Estande* todosEstandes[32]){
-    printf("-----TODAS AS CARTAS-----");
+void listarTodasCartas(Estande todosEstandes[]){
+    printf("-----TODAS AS CARTAS-----\n");
     for(int i = 0; i < 32; i++){
         listarCarta(todosEstandes[i]);
     }
