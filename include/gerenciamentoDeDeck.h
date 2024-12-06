@@ -1,3 +1,6 @@
+#ifndef gerenciamentoDeDeck_H
+#define gerenciamentoDeDeck_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -84,18 +87,13 @@ void listarTodasCartas(Estande todosEstandes[]){
  * 
  * @param estandes 
  */
-void listarCartasDisponiveis(Estande* estandes[]){
+void listarCartasDisponiveis(Estande estandes[]){
     printf("-----CARTAS DISPONIVEIS-----");
     for(int i = 0; i < 32; i++){
-        if(estandes[i]->verificacao == 0){
+        if(estandes[i].verificacao == 0){
             listarCarta(estandes[i]);
         }
     }
 }
 
-
-
-
-
-
-
+#endif

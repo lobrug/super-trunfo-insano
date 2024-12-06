@@ -1,24 +1,34 @@
+#ifndef pesquisaDeCartas_H
+#define pesquisaDeCartas_H
+
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
 #include "structEstandes.h"
+
+void lerString(char* texto, int tamanho){
+    setbuf(stdin, NULL);
+    fgets(texto, tamanho, stdin);
+    texto[strcspn(texto, "\n")] = '\0';
+}
 
 /**
  * @brief Função usada para listar a carta em todas as funções pesquisa
  * 
  * @param estande pesquisado
  */
-void listarCarta(Estande* estande){
-    printf("Nome: %s\n", &estande->nome);
-    printf("id: %c%d\n", &estande->letra, &estande->numero);
-    if(estande->super == true){
+void listarCarta(Estande estande){
+    printf("-----CARTA-----\n");
+    printf("Nome: %s\n", estande.nome);
+    printf("id: %c%d\n", estande.letra, estande.numero);
+    if(estande.super == true){
         printf("Esta carta é o super trunfo\n");
     }
     printf("-----ATRIBUTOS-----\n");
-    printf("Poder destrutivo: %d\n", &estande->poderDestrutivo);
-    printf("Velocidade: %d\n", &estande->velocidade);
-    printf("Alcance: %d\n", &estande->alcance);
-    printf("Persistencia: %d\n", &estande->persistenciaDePoder);
+    printf("Poder destrutivo: %d\n", estande.poderDestrutivo);
+    printf("Velocidade: %d\n", estande.velocidade);
+    printf("Alcance: %d\n", estande.alcance);
+    printf("Persistencia: %d\n", estande.persistenciaDePoder);
 }
 
 /**
@@ -27,10 +37,15 @@ void listarCarta(Estande* estande){
  * @param estandes = deck ou todas as cartas
  * @param nome pesquisado
  */
-void pesquisarEstandeNome(Estande estandes[], char* nome){
-    for(int i = 0; i < sizeof(estandes); i++){
-        if(strcmp(nome, estandes[i].nome)==0){
-            listarCarta(&estandes[i]);
+void pesquisarEstandeNome(Estande estandes[]){
+    char pesquisa[30];
+
+    printf("Qual o nome do estande que deseja pesquisar?: ");
+    lerString(pesquisa, 30);
+    for(int i = 0; i < 32; i++){
+//      printf("Comparando com: %s\n", estandes[i].nome); // debug
+        if(strcmp(pesquisa, estandes[i].nome) == 0){
+            listarCarta(estandes[i]);
             return;
         }
     }
@@ -43,22 +58,28 @@ void pesquisarEstandeNome(Estande estandes[], char* nome){
  * @param estandes 
  */
 void pesquisarEstandePoderDestrutivo(Estande estandes[]){
-    int verificacao = 0; //verifica se achou alguma carta dentro do filtro
+    int auxiliar = 0; //verifica se achou alguma carta dentro do filtro
     int maximo;
     int minimo;
-    printf("Qual o poder maximo que você deseja pesquisar?: ");
-    scanf("%d", &maximo);
-    printf("E o minimo?: ");
-    scanf("%d", &minimo);
 
-    for(int i = 0; i < sizeof(estandes); i++){
+    do{
+        printf("Qual o poder maximo que você deseja pesquisar?: ");
+        scanf("%d", &maximo);
+    }while(maximo < 0 || maximo > 100);
+
+    do{
+        printf("E o minimo?: ");
+        scanf("%d", &minimo);
+    }while(minimo < 0 || minimo > maximo);
+
+    for(int i = 0; i < 32; i++){
         if(estandes[i].poderDestrutivo < maximo && estandes[i].poderDestrutivo > minimo){
-            listarCarta(&estandes[i]);
-            verificacao = 1;
+            listarCarta(estandes[i]);
+            auxiliar = 1;
         }
     }
 
-    if(verificacao == 0){
+    if(auxiliar == 0){
         printf("Não foi encontrado nenhuma carta com o filtro expecificado\n");
     }
 }
@@ -69,22 +90,28 @@ void pesquisarEstandePoderDestrutivo(Estande estandes[]){
  * @param estandes 
  */
 void pesquisarEstandeVelocidade(Estande estandes[]){
-    int verificacao = 0; //verifica se achou alguma carta dentro do filtro
+    int auxiliar = 0; //verifica se achou alguma carta dentro do filtro
     int maximo;
     int minimo;
+
+    do{
     printf("Qual a velocidade maxima que você deseja pesquisar?: ");
     scanf("%d", &maximo);
+    }while(maximo < 0 || maximo > 100);
+
+    do{
     printf("E a minima?: ");
     scanf("%d", &minimo);
+    }while(minimo < 0 || minimo > maximo);
 
-    for(int i = 0; i < sizeof(estandes); i++){
+    for(int i = 0; i < 32; i++){
         if(estandes[i].velocidade < maximo && estandes[i].velocidade > minimo){
-            listarCarta(&estandes[i]);
-            verificacao = 1;
+            listarCarta(estandes[i]);
+            auxiliar = 1;
         }
     }
 
-    if(verificacao == 0){
+    if(auxiliar == 0){
         printf("Não foi encontrado nenhuma carta com o filtro expecificado\n");
     }
 }
@@ -96,22 +123,28 @@ void pesquisarEstandeVelocidade(Estande estandes[]){
  * @param estandes 
  */
 void pesquisarEstandeAlcance(Estande estandes[]){
-    int verificacao = 0; //verifica se achou alguma carta dentro do filtro
+    int auxiliar = 0; //verifica se achou alguma carta dentro do filtro
     int maximo;
     int minimo;
+
+    do{
     printf("Qual o alcance maximo que você deseja pesquisar?: ");
     scanf("%d", &maximo);
+    }while(maximo < 0 || maximo > 100);
+
+    do{
     printf("E o minimo?: ");
     scanf("%d", &minimo);
+    }while(minimo < 0 || minimo > maximo);
 
-    for(int i = 0; i < sizeof(estandes); i++){
+    for(int i = 0; i < 32; i++){
         if(estandes[i].alcance < maximo && estandes[i].alcance > minimo){
-            listarCarta(&estandes[i]);
-            verificacao = 1;
+            listarCarta(estandes[i]);
+            auxiliar = 1;
         }
     }
 
-    if(verificacao == 0){
+    if(auxiliar == 0){
         printf("Não foi encontrado nenhuma carta com o filtro expecificado\n");
     }
 }
@@ -122,60 +155,70 @@ void pesquisarEstandeAlcance(Estande estandes[]){
  * @param estandes 
  */
 void pesquisarEstandePersistencia(Estande estandes[]){
-    int verificacao = 0; //verifica se achou alguma carta dentro do filtro
+    int auxiliar = 0; //verifica se achou alguma carta dentro do filtro
     int maximo;
     int minimo;
+
+    do{
     printf("Qual a persistencia de poder maxima que você deseja pesquisar?: ");
     scanf("%d", &maximo);
+    }while(maximo < 0 || maximo > 100);
+
+    do{
     printf("E a minima?: ");
     scanf("%d", &minimo);
+    }while(minimo < 0 || minimo > maximo);
 
-    for(int i = 0; i < sizeof(estandes); i++){
+    for(int i = 0; i < 32; i++){
         if(estandes[i].persistenciaDePoder < maximo && estandes[i].persistenciaDePoder > minimo){
-            listarCarta(&estandes[i]);
-            verificacao = 1;
+            listarCarta(estandes[i]);
+            auxiliar = 1;
         }
     }
 
-    if(verificacao == 0){
+    if(auxiliar == 0){
         printf("Não foi encontrado nenhuma carta com o filtro expecificado\n");
     }
 }
 
 void pesquisaCartaLetra(Estande estandes[]){
-    int verificacao = 0;
+    int auxiliar = 0;
     char pesquisa;
-    printf("Que letra deseja pesquisar?: ");
-    scanf("%c", &pesquisa);
 
-    for(int i = 0; i < sizeof(estandes); i++){
+    printf("Que letra deseja pesquisar?: ");
+    scanf(" %c", &pesquisa);
+
+    for(int i = 0; i < 32; i++){
         if(estandes[i].letra == pesquisa){
-            listarCarta;
-            verificacao = 1;
+            listarCarta(estandes[i]);
+            auxiliar = 1;
         }
     }
 
-    if(verificacao == 0){
+    if(auxiliar == 0){
         printf("Não foi encontrado nenhuma carta com o filtro expecificado\n");
     }
 
 }
 
 void pesquisaCartaNumero(Estande estandes[]){
-    int verificacao = 0;
+    int auxiliar = 0;
     int pesquisa;
+
     printf("Que numero deseja pesquisar?: ");
     scanf("%d", &pesquisa);
 
-    for(int i = 0; i < sizeof(estandes); i++){
+    for(int i = 0; i < 32; i++){
         if(estandes[i].numero == pesquisa){
-            listarCarta;
-            verificacao = 1;
+            listarCarta(estandes[i]);
+            auxiliar = 1;
         }
     }
 
-    if(verificacao == 0){
+    if(auxiliar == 0){
         printf("Não foi encontrado nenhuma carta com o filtro expecificado\n");
     }
 
 }
+
+#endif

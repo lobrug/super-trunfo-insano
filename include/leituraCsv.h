@@ -1,3 +1,6 @@
+#ifndef leituraCsv_H
+#define leituraCsv_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -40,3 +43,5 @@ void leituraArquivoCsv(Estande estandes[]){
     fclose(infocartas);
     return;
 }
+
+#endif
