@@ -1,0 +1,13 @@
+OBSERVAÇÕES 
+
+Ideia de criar uma biblioteca para essas funções
+
+É necessário ter um arquivo makefile(Descobrir q porra é essa)
+
+ Não usar variáveis globais
+
+Deixar tudo bem comentado e edentado(Nao sei q porra é essa), usar e abusar da extensão doxygen
+
+Ao criar variáveis, tentar fazer da maneira mais limpa possível e menos confusa. Nomes que façam sentido
+
+Mensagens de erro serão importantes, temos q considerar q o usuário é retardado

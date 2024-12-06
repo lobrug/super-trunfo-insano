@@ -1,0 +1,16 @@
+MAIN
+
+ O arquivo CSV com os dados base precisa ser carregado ao inicio do programa com alocação dinâmica
+
+ Ao iniciar o programa será necessário apresentar um MENU com opções disponíveis 
+
+ Ideias de opções:
+- As funções anteriores
+- Jogar* (Discutir sobre isso)
+- Exportar dados das cartas para um arquivo .CSV (Requisito no PDF)
+- Fechar programa
+
+Ao fim do jogo salvar os dados em arquivos binários no HD, ao iniciar recarregar esses dados binários. 
+Caso não existam, criar esses arquivo binário e apresentar uma mensagem de boa vinda
+
+O CSV SÓ É ABERTO NA PRIMEIRA VEZ, DEPOIS DA PRIMEIRA VEZ TODOS OS ARQUIVOS SÃO SALVOS EM BINARIO E DEPOIS SÓ ABRE O BINARIO ESQUEÇA TUDO
