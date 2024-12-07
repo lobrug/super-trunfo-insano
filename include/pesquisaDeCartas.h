@@ -44,12 +44,13 @@ void pesquisarEstandeNome(Estande estandes[]){
     lerString(pesquisa, 30);
     for(int i = 0; i < 32; i++){
 //      printf("Comparando com: %s\n", estandes[i].nome); // debug
-        if(strcmp(pesquisa, estandes[i].nome) == 0){
+        if(strcasecmp(pesquisa, estandes[i].nome) == 0){
             listarCarta(estandes[i]);
             return;
         }
     }
     printf("Estande não encontrado\n");
+    return;
 }
 
 /**
@@ -91,6 +92,7 @@ void pesquisarEstandePoderDestrutivo(Estande estandes[]){
     if(auxiliar == 0){
         printf("Não foi encontrado nenhuma carta com o filtro expecificado\n");
     }
+    return;
 }
 
 /**
@@ -134,6 +136,7 @@ void pesquisarEstandeVelocidade(Estande estandes[]){
     if(auxiliar == 0){
         printf("Não foi encontrado nenhuma carta com o filtro expecificado\n");
     }
+    return;
 }
 
 
@@ -177,6 +180,7 @@ void pesquisarEstandeAlcance(Estande estandes[]){
     if(auxiliar == 0){
         printf("Não foi encontrado nenhuma carta com o filtro expecificado\n");
     }
+    return;
 }
 
 /**
@@ -219,6 +223,7 @@ void pesquisarEstandePersistencia(Estande estandes[]){
     if(auxiliar == 0){
         printf("Não foi encontrado nenhuma carta com o filtro expecificado\n");
     }
+    return;
 }
 
 void pesquisaCartaLetra(Estande estandes[]){
@@ -239,6 +244,7 @@ void pesquisaCartaLetra(Estande estandes[]){
         printf("Não foi encontrado nenhuma carta com o filtro expecificado\n");
     }
 
+    return;
 }
 
 void pesquisaCartaNumero(Estande estandes[]){
@@ -259,6 +265,7 @@ void pesquisaCartaNumero(Estande estandes[]){
         printf("Não foi encontrado nenhuma carta com o filtro expecificado\n");
     }
 
+    return;
 }
 
 #endif

@@ -50,7 +50,7 @@ void inserirCarta(Estande* deck[16], Estande* estande){
  * @param deck 
  * @param estande 
  */
-void excluirCarta(Estande* deck[16], Estande* estande){
+void excluirCarta(Estande* deck[], Estande* estande){
     //verifica se a carta pertence a um deck
     if(estande->verificacao == 0){
         printf("Esta carta não pertence a nenhum deck\n");
