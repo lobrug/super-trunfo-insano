@@ -5,36 +5,6 @@
 #include <stdlib.h> 
 #include <string.h>
 
-void menuInicial(Estande deck[], Estande deck2[]){
-
-    int seleciona_menu;
-    do
-    {
-        printf("1 - JOGAR\n");
-        printf("2 - GERENCIAMENTO DE DECKS\n");
-        printf("3 - FECHAR JOGO\n");
-        printf("Selecione uma opção: \n");
-    } while (seleciona_menu < 1 || seleciona_menu > 3);
-    
-
-    switch (seleciona_menu)
-    {
-    case 1: printf("Modo ainda não disponível!\n");
-        break;
-    
-    case 2: menuGerenciamento(deck, deck2);
-        break;
-    
-    case 3: exit(0);
-        break;
-    
-    default: 
-        break;
-    }
-
-    return;
-}//menuInicial
-
 void menuPesquisa(Estande deck[]){
 
     int seleciona_pesquisa;
@@ -175,3 +145,33 @@ void menuGerenciamento(Estande deck[], Estande deck2[]){
 
     return;
 }//menuGerenciamento
+
+void menuInicial(Estande deck[], Estande deck2[]){
+
+    int seleciona_menu;
+    do
+    {
+        printf("1 - JOGAR\n");
+        printf("2 - GERENCIAMENTO DE DECKS\n");
+        printf("3 - FECHAR JOGO\n");
+        printf("Selecione uma opção: \n");
+    } while (seleciona_menu < 1 || seleciona_menu > 3);
+    
+
+    switch (seleciona_menu)
+    {
+    case 1: printf("Modo ainda não disponível!\n");
+        break;
+    
+    case 2: menuGerenciamento(deck, deck2);
+        break;
+    
+    case 3: exit(0);
+        break;
+    
+    default: 
+        break;
+    }
+
+    return;
+}//menuInicial

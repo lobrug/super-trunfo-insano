@@ -8,6 +8,7 @@ MAIN
 - As funções anteriores
 - Jogar* (Discutir sobre isso)
 - Exportar dados das cartas para um arquivo .CSV (Requisito no PDF)
+- Embaralhar deck
 - Fechar programa
 
 Ao fim do jogo salvar os dados em arquivos binários no HD, ao iniciar recarregar esses dados binários. 
