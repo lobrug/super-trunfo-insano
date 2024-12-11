@@ -32,6 +32,20 @@ void embaralharDecks(Estande deck[], Estande deck2[], Estande* estandes) {
         deck2[i - 16] = estandes[indices[i]];
     }
 
+    for (int i = 0; i < 32; i++)
+    {
+        if (i < 16)
+        {
+            estandes[i] = deck[i];
+        }else
+        {
+            estandes[i] = deck2[i];
+        }
+        
+    }
+    
+
+
     return;
     
 }
