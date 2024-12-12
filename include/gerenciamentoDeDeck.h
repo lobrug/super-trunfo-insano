@@ -172,7 +172,8 @@ void armazenaDeckFinal(Estande estandes[]){
     FILE *arq = fopen("deck_ultima_partida.dat", "wb");
 
     fwrite(estandes, sizeof(Estande), 32, arq);
-    
+
+    fclose(arq);
 
     return;
 }

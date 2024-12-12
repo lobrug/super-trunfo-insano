@@ -99,18 +99,51 @@ void menuGerenciamento(Estande deck[], Estande deck2[]){
     {
         printf("1 - DECK 1\n");
         printf("2 - DECK 2\n");
+        printf("3 - EXPORTAR DECK COMPLETO PARA UM ARQUIVO CSV\n");
         printf("Selecione o deck à ser gerenciado: \n");
 
         scanf("%d", &seleciona_deck);
-        if (seleciona_deck < 1 || seleciona_deck > 2)
+        if (seleciona_deck < 1 || seleciona_deck > 3)
         {
             printf("Esse deck não existe, insira novamente!\n");
         }
         
-    } while (seleciona_deck < 1 || seleciona_deck > 2);
+    } while (seleciona_deck < 1 || seleciona_deck > 3);
 
     printf("\n");
+    if (seleciona_deck == 3)
+    {
+        Estande estandes[32];
+        char nome_csv[100];
+        printf("Insira o nome do arquivo que será salvo, ou que será criado(.txt ao final): ");
+        lerString(nome_csv, 100);
 
+        FILE *exportaCSV = fopen(nome_csv, "w");
+        for (int i = 0; i < 32; i++)
+        {
+            if (i < 16)
+            {
+                estandes[i] = deck[i];
+            }else{
+                estandes[i] = deck2[i];
+            }
+            
+            fprintf(exportaCSV, "%c,%d,%49[^,],%d,%d,%d,%d,%d,%d\n",
+                    &estandes[i].letra, 
+                    &estandes[i].numero, 
+                    estandes[i].nome, 
+                    &estandes[i].super, 
+                    &estandes[i].poderDestrutivo, 
+                    &estandes[i].velocidade, 
+                    &estandes[i].alcance, 
+                    &estandes[i].persistenciaDePoder,
+                    &estandes[i].verificacao
+                    );
+        }
+        fclose(exportaCSV);
+        return;
+    }
+    
     do
     {
         printf("1 - LISTAR TODAS AS CARTAS\n");

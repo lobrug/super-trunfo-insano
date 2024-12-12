@@ -2,11 +2,11 @@ A fazer:
 
 - Funções:
 
-  >Inserir 
+  >Inserir - 
   >Listar - OK
   >Pesquisa - OK
-  >Altera
-  >Exclui - OK
+  >Altera - OK
+  >Exclui - 
 
 Função pesquisa e lista:
 
