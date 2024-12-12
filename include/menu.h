@@ -90,6 +90,22 @@ void menuAlteraCarta(Estande deck[]){
     return;
 }//menuAlteraCarta
 
+void menuExcluiCarta(Estande deck[]){
+
+
+
+
+    return;
+}//menuExcluiCarta
+
+void menuInsereCarta(Estande deck[]){
+
+
+
+
+    return;
+}//menuInsereCarta
+
 void menuGerenciamento(Estande deck[], Estande deck2[]){
 
     int seleciona_deck;
@@ -202,7 +218,6 @@ void menuGerenciamento(Estande deck[], Estande deck2[]){
             menuAlteraCarta(deck2);
         }
         
-
         break;
     case 4:
         //mesmo caso aq
