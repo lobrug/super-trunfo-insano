@@ -43,9 +43,6 @@ void embaralharDecks(Estande deck[], Estande deck2[], Estande* estandes) {
         }
         
     }
-    
-
 
     return;
-    
 }

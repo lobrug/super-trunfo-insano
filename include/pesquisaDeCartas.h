@@ -268,4 +268,20 @@ void pesquisaCartaNumero(Estande estandes[]){
     return;
 }
 
+int pesquisarEstandeNomeRetornoPosicao(Estande estandes[]){
+    char pesquisa[30];
+
+    printf("Qual o nome do estande que deseja pesquisar?: ");
+    lerString(pesquisa, 30);
+    for(int i = 0; i < 32; i++){
+//      printf("Comparando com: %s\n", estandes[i].nome); // debug
+        if(strcasecmp(pesquisa, estandes[i].nome) == 0){
+            listarCarta(estandes[i]);
+            return i;
+        }
+    }
+    printf("Estande não encontrado\n");
+    return -1;
+}
+
 #endif

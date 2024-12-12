@@ -58,6 +58,38 @@ void menuPesquisa(Estande deck[]){
     return;
 }//menuPesquisa
 
+void menuAlteraCarta(Estande deck[]){
+    
+    int posicao = pesquisarEstandeNomeRetornoPosicao(deck);
+    if (posicao > -1)
+    {
+        while (1)
+        {
+            int opcao;
+            printf("Menu para alterar cartas\n");
+            printf("1 - ALterar Nome.\n");
+            printf("2 - Alterar poder destrutivo.\n");
+            printf("3 - Alterar Velocidade.\n");
+            printf("4 - Alterar Alcance\n");
+            printf("5 - Alterar persistencia de poder\n");
+            printf("6 - Fechar menu\n\n");
+            
+            printf("Insira a opção de desejada: ");
+            scanf("%d", &opcao);
+            if (opcao == 6)
+            {
+                printf("A seguinte carta ficou assim: \n");
+                listarCarta(deck[posicao]);
+                return;
+            }else{
+                alterarCarta(&deck[posicao], opcao);
+            }
+        }    
+    }
+
+    return;
+}//menuAlteraCarta
+
 void menuGerenciamento(Estande deck[], Estande deck2[]){
 
     int seleciona_deck;
@@ -129,7 +161,14 @@ void menuGerenciamento(Estande deck[], Estande deck2[]){
         break;
     
     case 3:
-        // vai ter q mexer na função de pesquisa ou criar outra só pra isso
+
+        if (seleciona_deck == 1)
+        {
+            menuAlteraCarta(deck);
+        }else{
+            menuAlteraCarta(deck2);
+        }
+        
 
         break;
     case 4:

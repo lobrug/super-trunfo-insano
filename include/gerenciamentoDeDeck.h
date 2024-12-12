@@ -96,6 +96,77 @@ void listarCartasDisponiveis(Estande estandes[]){
     }
 }
 
+void alterarCarta(Estande *estandes, int opcao){
+
+    switch (opcao)
+    {
+    case 1:
+        printf("Insira o novo nome da carta: ");
+        lerString(estandes->nome, 30);
+        break;
+    
+    case 2:
+        do
+        {
+            printf("Insira o novo poder destrutivo da carta: ");
+            scanf("%d", &estandes->poderDestrutivo);
+            if (estandes->poderDestrutivo < 1 || estandes->poderDestrutivo > 100)
+            {
+                printf("Valor inválido, insira novamente!\n");
+            }
+
+        } while (estandes->poderDestrutivo < 1 || estandes->poderDestrutivo > 100);
+        
+        break;
+    
+    case 3:
+        do
+        {
+            printf("Insira a nova velocidade dessa carta: ");
+            scanf("%d", &estandes->velocidade);
+            if (estandes->velocidade < 1 || estandes->velocidade > 100)
+            {
+                printf("Valor inválido, insira novamente!\n");
+            }
+    
+        } while (estandes->velocidade < 1 || estandes->velocidade > 100);
+        
+        break;
+    
+    case 4:
+        do
+        {
+            printf("Insira o novo alcance dessa carta: ");
+            scanf("%d", & estandes->alcance);
+            if (estandes->alcance < 1 || estandes->alcance > 100)
+            {
+                printf("Valor inválido, insira novamente!\n");
+            }
+            
+        } while (estandes->alcance < 1 || estandes->alcance > 100);
+        
+        break;
+    
+    case 5:
+        do
+        {
+            printf("Insira a nova persistência de poder dessa carta: ");
+            scanf("%d", &estandes->persistenciaDePoder);
+            if (estandes->persistenciaDePoder < 1 || estandes->persistenciaDePoder > 100)
+            {
+                printf("Valor inválido, insira novamente!\n");
+            }
+            
+        } while (estandes->persistenciaDePoder < 1 || estandes->persistenciaDePoder > 100);
+        
+        break;
+    
+    default:
+        break;
+    }
+
+}
+
 void armazenaDeckFinal(Estande estandes[]){
 
     FILE *arq = fopen("deck_ultima_partida.dat", "wb");
