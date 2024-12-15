@@ -7,18 +7,20 @@
 
 void menuPesquisa(Estande deck[]){
 
-    int seleciona_pesquisa;
+    int seleciona_pesquisa = 1;
 
     do
     {
-        printf("De qual maneira você prefere fazer sua pesquisa?\n");
-        printf("1 - NOME DO STAND\n");
-        printf("2 - PODER DESTRUTIVO DO STAND\n");
-        printf("3 - VELOCIDADE DO STAND\n");
-        printf("4 - ALCANDE DO STAND\n");
-        printf("5 - PERSISTÊNCIA DO STAND\n");
-        printf("6 - LETRA DA CARTA\n");
-        printf("7 - NUMERO DA CARTA\n");
+        printf("    De qual maneira você prefere fazer sua pesquisa?\n");
+        printf("    1 - NOME DO STAND\n");
+        printf("    2 - PODER DESTRUTIVO DO STAND\n");
+        printf("    3 - VELOCIDADE DO STAND\n");
+        printf("    4 - ALCANDE DO STAND\n");
+        printf("    5 - PERSISTÊNCIA DO STAND\n");
+        printf("    6 - LETRA DA CARTA\n");
+        printf("    7 - NUMERO DA CARTA\n");
+        printf("    Selecione sua opção: ");
+        scanf("%d", &seleciona_pesquisa);
 
         if (seleciona_pesquisa < 1 || seleciona_pesquisa > 7)
         {
@@ -90,18 +92,26 @@ void menuAlteraCarta(Estande deck[]){
     return;
 }//menuAlteraCarta
 
-void menuExcluiCarta(Estande deck[]){
-
-
-
-
-    return;
-}//menuExcluiCarta
-
 void menuInsereCarta(Estande deck[]){
 
+    printf("Para inserir uma carta, antes você deverá excluir uma carta de seu deck completo!\n");
+    int posicao = pesquisarEstandeNomeRetornoPosicao(deck);
 
+    int seleciona;
 
+    printf("    Tem certeza que irá excluir essa carta?\n");
+    printf("    1 - SIM\n");
+    printf("    2 - NÃO\n");
+    printf("    Selecione sua opção: ");
+    scanf("%d", &seleciona);
+
+    if (seleciona == 1)
+    {
+        excluirCarta(&deck, &deck[posicao]);
+    }else{
+
+        return;
+    }
 
     return;
 }//menuInsereCarta
@@ -116,7 +126,7 @@ void menuGerenciamento(Estande deck[], Estande deck2[]){
         printf("1 - DECK 1\n");
         printf("2 - DECK 2\n");
         printf("3 - EXPORTAR DECK COMPLETO PARA UM ARQUIVO CSV\n");
-        printf("Selecione o deck à ser gerenciado: \n");
+        printf("Selecione o deck à ser gerenciado: ");
 
         scanf("%d", &seleciona_deck);
         if (seleciona_deck < 1 || seleciona_deck > 3)
@@ -131,29 +141,31 @@ void menuGerenciamento(Estande deck[], Estande deck2[]){
     {
         Estande estandes[32];
         char nome_csv[100];
-        printf("Insira o nome do arquivo que será salvo, ou que será criado(.txt ao final): ");
+        printf("Insira o nome do arquivo que será salvo, ou que será criado(.csv ao final): ");
         lerString(nome_csv, 100);
 
         FILE *exportaCSV = fopen(nome_csv, "w");
-        for (int i = 0; i < 32; i++)
+        fprintf(exportaCSV, "Categoria,Número,Nome do Stand,Super,Poder Destrutivo,Velocidade,Alcance,Persistência,Verificação\n");
+        for (int i = 0, j = 0; i < 32; i++)
         {
             if (i < 16)
             {
                 estandes[i] = deck[i];
             }else{
-                estandes[i] = deck2[i];
+                estandes[i] = deck2[j];
+                j++;
             }
             
-            fprintf(exportaCSV, "%c,%d,%49[^,],%d,%d,%d,%d,%d,%d\n",
-                    &estandes[i].letra, 
-                    &estandes[i].numero, 
+            fprintf(exportaCSV, "%c,%d,%s,%d,%d,%d,%d,%d,%d\n",
+                    estandes[i].letra, 
+                    estandes[i].numero, 
                     estandes[i].nome, 
-                    &estandes[i].super, 
-                    &estandes[i].poderDestrutivo, 
-                    &estandes[i].velocidade, 
-                    &estandes[i].alcance, 
-                    &estandes[i].persistenciaDePoder,
-                    &estandes[i].verificacao
+                    estandes[i].super, 
+                    estandes[i].poderDestrutivo, 
+                    estandes[i].velocidade, 
+                    estandes[i].alcance, 
+                    estandes[i].persistenciaDePoder,
+                    estandes[i].verificacao
                     );
         }
         fclose(exportaCSV);
@@ -164,19 +176,23 @@ void menuGerenciamento(Estande deck[], Estande deck2[]){
     {
         printf("1 - LISTAR TODAS AS CARTAS\n");
         printf("2 - PESQUISAR CARTAS\n");
-        printf("3 - ALTERAR CARTA");
-        printf("4 - EXCLUIR CARTA");
-        printf("5 - INSERIR CARTAS\n");
+        printf("3 - ALTERAR CARTA\n");
+        printf("4 - INSERIR/EXCLUIR CARTAS\n");
+        printf("5 - SAIR PARA O MENU INICIAL\n");
         printf("Selecione uma opção: ");
         scanf("%d", &seleciona_funcao);
 
-        if (seleciona_funcao < 1 || seleciona_funcao > 3)
+        if (seleciona_funcao < 1 || seleciona_funcao > 5)
         {
             printf("Essa opção não existe, insira novamente!\n");
             printf("\n");
         }
+        if (seleciona_funcao == 5)
+        {
+            return;
+        }
         
-    } while (seleciona_funcao < 1 || seleciona_funcao > 3);
+    } while (seleciona_funcao < 1 || seleciona_funcao > 5);
 
     printf("\n");
 
@@ -219,13 +235,17 @@ void menuGerenciamento(Estande deck[], Estande deck2[]){
         }
         
         break;
-    case 4:
-        //mesmo caso aq
+    case 4: 
+
+        if (seleciona_deck == 1)
+        {
+            menuInsereCarta(deck);
+        }else{
+            menuInsereCarta(deck2);
+        }
+
         break;
 
-    case 5:
-        
-        break;
     default:
         break;
     }
@@ -241,24 +261,32 @@ void menuInicial(Estande deck[], Estande deck2[]){
         printf("1 - JOGAR\n");
         printf("2 - GERENCIAMENTO DE DECKS\n");
         printf("3 - FECHAR JOGO\n");
-        printf("Selecione uma opção: \n");
-    } while (seleciona_menu < 1 || seleciona_menu > 3);
-    
+        printf("Selecione uma opção: ");
+        scanf("%d", &seleciona_menu);
 
-    switch (seleciona_menu)
-    {
-    case 1: printf("Modo ainda não disponível!\n");
-        break;
-    
-    case 2: menuGerenciamento(deck, deck2);
-        break;
-    
-    case 3: exit(0);
-        break;
-    
-    default: 
-        break;
-    }
+        switch (seleciona_menu)
+        {
+        case 1: printf("\nModo ainda não disponível!\n\n");
+            break;
+        
+        case 2: menuGerenciamento(deck, deck2);
+            break;
+        
+        case 3:
+            return;
+            break;
+        
+        default: 
+            break;
+        }
 
+        if (seleciona_menu < 1 || seleciona_menu > 3)
+        {
+            printf("\nEssa opção não existe, tente novamente!\n");
+        }
+        
+
+    } while (seleciona_menu != 3);
+    
     return;
 }//menuInicial

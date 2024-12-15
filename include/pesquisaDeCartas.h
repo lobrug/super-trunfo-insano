@@ -46,6 +46,7 @@ void pesquisarEstandeNome(Estande estandes[]){
 //      printf("Comparando com: %s\n", estandes[i].nome); // debug
         if(strcasecmp(pesquisa, estandes[i].nome) == 0){
             listarCarta(estandes[i]);
+            printf("\n");
             return;
         }
     }

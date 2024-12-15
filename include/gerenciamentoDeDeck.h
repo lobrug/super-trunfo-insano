@@ -18,7 +18,7 @@ relação deve aumentar e diminuir dinamicamente*/
  * @param deck 
  * @param estande 
  */
-void inserirCarta(Estande* deck[16], Estande* estande){
+void inserirCarta(Estande* deck[], Estande* estande){
     //faz a verificação se a carta passado no parametro ja pertence ou não a um deck
     if(estande->verificacao == 1){
         printf("Não foi possivel adicionar esta carta pois ela ja pertence a um deck");

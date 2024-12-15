@@ -24,31 +24,32 @@ int main(){
     Estande* deck;
     Estande* deck2;
 
-    FILE *verificaBinario = fopen("deck_ultima_partida.dat", "ab");
-    if (verificaBinario == NULL)
+    
+    /*
+    FILE *leitorBinario = fopen("deck_ultima_partida.dat", "rb");
+    if (leitorBinario == NULL)
     {
         leituraArquivoCsv(estandes);
+        fclose(leitorBinario);
     }else{
-        fclose(verificaBinario);
-        FILE *leitorBinario = fopen("deck_ultima_partida.dat", "rb");
         fread(estandes, sizeof(Estande), 32, leitorBinario);
         fclose(leitorBinario);
     }
+    */
+
+    leituraArquivoCsv(estandes);
+    
 
     deck = (Estande*) malloc(SIZEDECK * sizeof(Estande));
     deck2 = (Estande*) malloc(SIZEDECK * sizeof(Estande));
 
     embaralharDecks(deck, deck2, estandes);
 
-    for (int i = 0; i < 16; i++)
-    {
-        listarCarta(deck[i]);
-    }
-    for (int i = 0; i < 16; i++)
-    {
-        listarCarta(deck2[i]);
-    }
+    menuInicial(deck, deck2);
 
+    armazenaDeckFinal(estandes);
+    free(deck);
+    free(deck2);
 
     /*
     LEMBRAR DE MOVER A MAIN
