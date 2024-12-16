@@ -38,7 +38,6 @@ int main(){
     */
 
     leituraArquivoCsv(estandes);
-    
 
     deck = (Estande*) malloc(SIZEDECK * sizeof(Estande));
     deck2 = (Estande*) malloc(SIZEDECK * sizeof(Estande));
@@ -47,7 +46,7 @@ int main(){
 
     menuInicial(deck, deck2);
 
-    armazenaDeckFinal(estandes);
+    //armazenaDeckFinal(estandes);
     free(deck);
     free(deck2);
 

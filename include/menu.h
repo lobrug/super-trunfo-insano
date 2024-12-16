@@ -11,16 +11,17 @@ void menuPesquisa(Estande deck[]){
 
     do
     {
-        printf("    De qual maneira você prefere fazer sua pesquisa?\n");
-        printf("    1 - NOME DO STAND\n");
-        printf("    2 - PODER DESTRUTIVO DO STAND\n");
-        printf("    3 - VELOCIDADE DO STAND\n");
-        printf("    4 - ALCANDE DO STAND\n");
-        printf("    5 - PERSISTÊNCIA DO STAND\n");
-        printf("    6 - LETRA DA CARTA\n");
-        printf("    7 - NUMERO DA CARTA\n");
-        printf("    Selecione sua opção: ");
+        printf("\n            De qual maneira você prefere fazer sua pesquisa?\n");
+        printf("            1 - NOME DO STAND\n");
+        printf("            2 - PODER DESTRUTIVO DO STAND\n");
+        printf("            3 - VELOCIDADE DO STAND\n");
+        printf("            4 - ALCANDE DO STAND\n");
+        printf("            5 - PERSISTÊNCIA DO STAND\n");
+        printf("            6 - LETRA DA CARTA\n");
+        printf("            7 - NUMERO DA CARTA\n");
+        printf("            Selecione sua opção: ");
         scanf("%d", &seleciona_pesquisa);
+        printf("\n");
 
         if (seleciona_pesquisa < 1 || seleciona_pesquisa > 7)
         {
@@ -68,19 +69,19 @@ void menuAlteraCarta(Estande deck[]){
         while (1)
         {
             int opcao;
-            printf("Menu para alterar cartas\n");
-            printf("1 - ALterar Nome.\n");
-            printf("2 - Alterar poder destrutivo.\n");
-            printf("3 - Alterar Velocidade.\n");
-            printf("4 - Alterar Alcance\n");
-            printf("5 - Alterar persistencia de poder\n");
-            printf("6 - Fechar menu\n\n");
+            printf("            Menu para alterar cartas\n");
+            printf("            1 - ALterar Nome.\n");
+            printf("            2 - Alterar poder destrutivo.\n");
+            printf("            3 - Alterar Velocidade.\n");
+            printf("            4 - Alterar Alcance\n");
+            printf("            5 - Alterar persistencia de poder\n");
+            printf("            6 - Fechar menu\n\n");
             
-            printf("Insira a opção de desejada: ");
+            printf("            Insira a opção de desejada: ");
             scanf("%d", &opcao);
             if (opcao == 6)
             {
-                printf("A seguinte carta ficou assim: \n");
+                printf("            A seguinte carta ficou assim: \n");
                 listarCarta(deck[posicao]);
                 return;
             }else{
@@ -94,15 +95,15 @@ void menuAlteraCarta(Estande deck[]){
 
 void menuInsereCarta(Estande deck[]){
 
-    printf("Para inserir uma carta, antes você deverá excluir uma carta de seu deck completo!\n");
+    printf("\n            Para inserir uma carta, antes você deverá excluir uma carta de seu deck completo!\n");
     int posicao = pesquisarEstandeNomeRetornoPosicao(deck);
 
     int seleciona;
 
-    printf("    Tem certeza que irá excluir essa carta?\n");
-    printf("    1 - SIM\n");
-    printf("    2 - NÃO\n");
-    printf("    Selecione sua opção: ");
+    printf("                Tem certeza que irá excluir essa carta?\n");
+    printf("                1 - SIM\n");
+    printf("                2 - NÃO\n");
+    printf("                Selecione sua opção: ");
     scanf("%d", &seleciona);
 
     if (seleciona == 1)
@@ -123,10 +124,10 @@ void menuGerenciamento(Estande deck[], Estande deck2[]){
 
     do
     {
-        printf("1 - DECK 1\n");
-        printf("2 - DECK 2\n");
-        printf("3 - EXPORTAR DECK COMPLETO PARA UM ARQUIVO CSV\n");
-        printf("Selecione o deck à ser gerenciado: ");
+        printf("\n    1 - DECK 1\n");
+        printf("    2 - DECK 2\n");
+        printf("    3 - EXPORTAR DECK COMPLETO PARA UM ARQUIVO CSV\n");
+        printf("    Selecione o deck à ser gerenciado: ");
 
         scanf("%d", &seleciona_deck);
         if (seleciona_deck < 1 || seleciona_deck > 3)
@@ -174,12 +175,12 @@ void menuGerenciamento(Estande deck[], Estande deck2[]){
     
     do
     {
-        printf("1 - LISTAR TODAS AS CARTAS\n");
-        printf("2 - PESQUISAR CARTAS\n");
-        printf("3 - ALTERAR CARTA\n");
-        printf("4 - INSERIR/EXCLUIR CARTAS\n");
-        printf("5 - SAIR PARA O MENU INICIAL\n");
-        printf("Selecione uma opção: ");
+        printf("        1 - LISTAR TODAS AS CARTAS\n");
+        printf("        2 - PESQUISAR CARTAS\n");
+        printf("        3 - ALTERAR CARTA\n");
+        printf("        4 - INSERIR/EXCLUIR CARTAS\n");
+        printf("        5 - SAIR PARA O MENU INICIAL\n");
+        printf("        Selecione uma opção: ");
         scanf("%d", &seleciona_funcao);
 
         if (seleciona_funcao < 1 || seleciona_funcao > 5)
@@ -192,63 +193,64 @@ void menuGerenciamento(Estande deck[], Estande deck2[]){
             return;
         }
         
-    } while (seleciona_funcao < 1 || seleciona_funcao > 5);
+        switch (seleciona_funcao)
+        {
+        case 1:
+            
+            for (int i = 0; i < 16; i++)
+            {
+                if (seleciona_deck == 1)
+                {
+                    listarCarta(deck[i]);
+                }else
+                {
+                    listarCarta(deck2[i]);
+                }
+                
+            }
+
+            break;
+        
+        case 2:
+            
+            if (seleciona_deck == 1)
+            {
+                menuPesquisa(deck);
+            }else{
+                menuPesquisa(deck2);
+            }
+
+            break;
+        
+        case 3:
+
+            if (seleciona_deck == 1)
+            {
+                menuAlteraCarta(deck);
+            }else{
+                menuAlteraCarta(deck2);
+            }
+            
+            break;
+        case 4: 
+
+            if (seleciona_deck == 1)
+            {
+                menuInsereCarta(deck);
+            }else{
+                menuInsereCarta(deck2);
+            }
+
+            break;
+
+        default:
+            break;
+        }
+
+    } while (seleciona_funcao != 5);
 
     printf("\n");
 
-    switch (seleciona_funcao)
-    {
-    case 1:
-        
-        for (int i = 0; i < 16; i++)
-        {
-            if (seleciona_deck == 1)
-            {
-                listarCarta(deck[i]);
-            }else
-            {
-                listarCarta(deck2[i]);
-            }
-            
-        }
-
-        break;
-    
-    case 2:
-        
-        if (seleciona_deck == 1)
-        {
-            menuPesquisa(deck);
-        }else{
-            menuPesquisa(deck2);
-        }
-
-        break;
-    
-    case 3:
-
-        if (seleciona_deck == 1)
-        {
-            menuAlteraCarta(deck);
-        }else{
-            menuAlteraCarta(deck2);
-        }
-        
-        break;
-    case 4: 
-
-        if (seleciona_deck == 1)
-        {
-            menuInsereCarta(deck);
-        }else{
-            menuInsereCarta(deck2);
-        }
-
-        break;
-
-    default:
-        break;
-    }
 
     return;
 }//menuGerenciamento
@@ -258,7 +260,7 @@ void menuInicial(Estande deck[], Estande deck2[]){
     int seleciona_menu;
     do
     {
-        printf("1 - JOGAR\n");
+        printf("\n1 - JOGAR\n");
         printf("2 - GERENCIAMENTO DE DECKS\n");
         printf("3 - FECHAR JOGO\n");
         printf("Selecione uma opção: ");
