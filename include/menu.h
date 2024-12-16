@@ -95,24 +95,38 @@ void menuAlteraCarta(Estande deck[]){
 
 void menuInsereCarta(Estande deck[]){
 
-    printf("\n            Para inserir uma carta, antes você deverá excluir uma carta de seu deck completo!\n");
+    printf("\n            Para inserir uma carta, antes você deverá excluir uma carta do seu deck!\n");
     int posicao = pesquisarEstandeNomeRetornoPosicao(deck);
 
     int seleciona;
 
-    printf("                Tem certeza que irá excluir essa carta?\n");
-    printf("                1 - SIM\n");
-    printf("                2 - NÃO\n");
-    printf("                Selecione sua opção: ");
-    scanf("%d", &seleciona);
-
-    if (seleciona == 1)
+    if (posicao == -1)
     {
-        excluirCarta(&deck, &deck[posicao]);
+        return;
     }else{
 
-        return;
+        printf("                Tem certeza que irá excluir essa carta?\n");
+        printf("                1 - SIM\n");
+        printf("                2 - NÃO\n");
+        printf("                Selecione sua opção: ");
+        scanf("%d", &seleciona);
+
+        if (seleciona == 1)
+        {
+            excluirCarta(&deck, &deck[posicao]);
+
+            Estande temp_insere;
+
+            printf("                Insira o nome desse novo stand: ");
+            lerString(temp_insere.nome, 30);
+
+        }else{
+
+            return;
+        }
     }
+    
+
 
     return;
 }//menuInsereCarta
