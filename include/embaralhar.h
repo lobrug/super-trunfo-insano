@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "structEstandes.h"
 #include <time.h>
+#include "pesquisaDeCartas.h"
 
 void embaralharDecks(Estande deck[], Estande deck2[], Estande* estandes) {
 
@@ -32,14 +33,15 @@ void embaralharDecks(Estande deck[], Estande deck2[], Estande* estandes) {
         deck2[i - 16] = estandes[indices[i]];
     }
 
-    for (int i = 0; i < 32; i++)
+    for (int i = 0, j = 0; i < 32; i++)
     {
         if (i < 16)
         {
             estandes[i] = deck[i];
         }else
         {
-            estandes[i] = deck2[i];
+            estandes[i] = deck2[j];
+            j++;
         }
         
     }

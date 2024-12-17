@@ -24,8 +24,6 @@ int main(){
     Estande* deck;
     Estande* deck2;
 
-    
-    /*
     FILE *leitorBinario = fopen("deck_ultima_partida.dat", "rb");
     if (leitorBinario == NULL)
     {
@@ -34,10 +32,7 @@ int main(){
     }else{
         fread(estandes, sizeof(Estande), 32, leitorBinario);
         fclose(leitorBinario);
-    }
-    */
-
-    leituraArquivoCsv(estandes);
+    }//Verificação da existencia de um arquivo binário com os dados da ultima partida salvos
 
     deck = (Estande*) malloc(SIZEDECK * sizeof(Estande));
     deck2 = (Estande*) malloc(SIZEDECK * sizeof(Estande));
@@ -46,7 +41,20 @@ int main(){
 
     menuInicial(deck, deck2);
 
-    //armazenaDeckFinal(estandes);
+    for (int i = 0, j = 0; i < 32; i++)
+    {
+        if (i < 16)
+        {
+            estandes[i] = deck[i];
+        }else
+        {
+            estandes[i] = deck2[j];
+            j++;
+        }
+        
+    }//Armazena em estandes o deck completo e modificado
+
+    armazenaDeckFinal(estandes);
     free(deck);
     free(deck2);
 
