@@ -1,12 +1,9 @@
-#ifndef gerenciamentoDeDeck_H
-#define gerenciamentoDeDeck_H
-
 #include "gerenciamentoDeDeck.h"
+#include "structEstandes.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "structEstandes.h"
 #include "pesquisaDeCartas.h"
 
 /*permitir cadastrar (inserir/listar/pesquisar/alterar/excluir) as cartas disponíveis. Essa
@@ -170,7 +167,7 @@ void alterarCarta(Estande *estandes, int opcao){
 
 void armazenaDeckFinal(Estande estandes[]){
 
-    FILE *arq = fopen("deck_ultima_partida.dat", "wb");
+    FILE *arq = fopen("../bin/deck_ultima_partida.dat", "wb");
 
     fwrite(estandes, sizeof(Estande), 32, arq);
 
@@ -178,5 +175,3 @@ void armazenaDeckFinal(Estande estandes[]){
 
     return;
 }
-
-#endif

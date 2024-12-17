@@ -1,9 +1,9 @@
-#include "../structEstandes.h"
-#include "../embaralhar.h"
-#include "../pesquisaDeCartas.h"
-#include "../leituraCsv.h"
-#include "../gerenciamentoDeDeck.h"
-#include "../menu.h"
+#include "lib/structEstandes.h"
+#include "lib/embaralhar.h"
+#include "lib/pesquisaDeCartas.h"
+#include "lib/leituraCsv.h"
+#include "lib/gerenciamentoDeDeck.h"
+#include "lib/menu.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,20 +11,13 @@
 #define TAMANHO 32
 #define SIZEDECK 16
 
-/*
-void lerString(char* texto, int tamanho){
-    setbuf(stdin, NULL);
-    fgets(texto, tamanho, stdin);
-    texto[strcspn(texto, "\n")] = '\0';
-}
-*/
 
 int main(){
     Estande estandes[32];
     Estande* deck;
     Estande* deck2;
 
-    FILE *leitorBinario = fopen("deck_ultima_partida.dat", "rb");
+    FILE *leitorBinario = fopen("../bin/deck_ultima_partida.dat", "rb");
     if (leitorBinario == NULL)
     {
         leituraArquivoCsv(estandes);

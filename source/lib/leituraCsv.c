@@ -1,6 +1,3 @@
-#ifndef leituraCsv_H
-#define leituraCsv_H
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -8,7 +5,7 @@
 #include "structEstandes.h"
 
 void leituraArquivoCsv(Estande estandes[]){
-    FILE *infocartas = fopen("cartas_stands.csv", "r");
+    FILE *infocartas = fopen("../cartas_stands.csv", "r");
 
     if(infocartas == NULL){
         printf("Falha ao abrir arquivo\n");
@@ -44,5 +41,3 @@ void leituraArquivoCsv(Estande estandes[]){
     fclose(infocartas);
     return;
 }
-
-#endif

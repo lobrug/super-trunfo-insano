@@ -1,6 +1,3 @@
-#ifndef menu_H
-#define menu_H
-
 #include "menu.h"
 #include "structEstandes.h"
 #include "pesquisaDeCartas.h"
@@ -310,6 +307,3 @@ void menuInicial(Estande deck[], Estande deck2[]){
     
     return;
 }//menuInicial
-
-
-#endif

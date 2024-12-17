@@ -1,9 +1,6 @@
 #ifndef structEstandes_H
 #define structEstandes_H
 
-#include <stdio.h>
-#include <stdbool.h>
-
 typedef struct
 {
     char nome[30];

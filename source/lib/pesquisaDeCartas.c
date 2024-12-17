@@ -1,6 +1,3 @@
-#ifndef pesquisaDeCartas_H
-#define pesquisaDeCartas_H
-
 #include "pesquisaDeCartas.h"
 #include <stdio.h>
 #include <string.h>
@@ -288,5 +285,3 @@ int pesquisarEstandeNomeRetornoPosicao(Estande estandes[]){
     printf("            Estande não encontrado\n\n");
     return -1;
 }
-
-#endif
