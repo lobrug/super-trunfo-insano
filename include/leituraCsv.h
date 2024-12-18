@@ -25,20 +25,18 @@ void leituraArquivoCsv(Estande estandes[]){
     Eu tive uma ideia de um enum de habilidades, e repassar os valores do enum para o
     csv em vez de usar os nomes das habilidades
     */
-   fscanf(infocartas, "%*[^\n]\n");
-    while (fscanf(infocartas, "%c,%d,%49[^,],%d,%d,%d,%d,%d,%d\n",
-                  &estandes[i].letra, 
-                  &estandes[i].numero, 
-                  estandes[i].nome, 
-                  &estandes[i].super, 
-                  &estandes[i].poderDestrutivo, 
-                  &estandes[i].velocidade, 
-                  &estandes[i].alcance, 
-                  &estandes[i].persistenciaDePoder,
-                  &estandes[i].verificacao
-                  )){
+    while (fscanf(infocartas, 
+            "%c,%d,%49[^,],%d,%d,%d,%d,%d\n",
+            &estandes[i].letra, 
+            &estandes[i].numero, 
+            estandes[i].nome, 
+            &estandes[i].super, 
+            &estandes[i].poderDestrutivo, 
+            &estandes[i].velocidade, 
+            &estandes[i].alcance, 
+            &estandes[i].persistenciaDePoder)){
         i++;
-        if (i >= 32) break;
+        if (i > 32) break;
     }
 
     fclose(infocartas);

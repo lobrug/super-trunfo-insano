@@ -13,7 +13,7 @@ void menuPesquisa(Estande deck[]){
 
     int seleciona_pesquisa = 1;
 
-    do
+    do  
     {
         printf("\n            De qual maneira você prefere fazer sua pesquisa?\n");
         printf("            1 - NOME DO STAND\n");
@@ -119,15 +119,13 @@ void menuInsereCarta(Estande deck[]){
         {
             excluirCarta(&deck, &deck[posicao]);
 
-            Estande temp_insere;
-
-            printf("                Insira o nome desse novo stand: ");
-            lerString(temp_insere.nome, 30);
+            recebeCarta(&deck[posicao]);
 
         }else{
 
             return;
         }
+
     }
     
 
@@ -164,7 +162,7 @@ void menuGerenciamento(Estande deck[], Estande deck2[]){
         lerString(nome_csv, 100);
 
         FILE *exportaCSV = fopen(nome_csv, "w");
-        fprintf(exportaCSV, "Categoria,Número,Nome do Stand,Super,Poder Destrutivo,Velocidade,Alcance,Persistência,Verificação\n");
+        fprintf(exportaCSV, "Categoria,Número,Nome do Stand,Super,Poder Destrutivo,Velocidade,Alcance,Persistência\n");
         for (int i = 0, j = 0; i < 32; i++)
         {
             if (i < 16)
@@ -175,7 +173,7 @@ void menuGerenciamento(Estande deck[], Estande deck2[]){
                 j++;
             }
             
-            fprintf(exportaCSV, "%c,%d,%s,%d,%d,%d,%d,%d,%d\n",
+            fprintf(exportaCSV, "%c,%d,%s,%d,%d,%d,%d,%d\n",
                     estandes[i].letra, 
                     estandes[i].numero, 
                     estandes[i].nome, 
@@ -183,8 +181,7 @@ void menuGerenciamento(Estande deck[], Estande deck2[]){
                     estandes[i].poderDestrutivo, 
                     estandes[i].velocidade, 
                     estandes[i].alcance, 
-                    estandes[i].persistenciaDePoder,
-                    estandes[i].verificacao
+                    estandes[i].persistenciaDePoder
                     );
         }
         fclose(exportaCSV);

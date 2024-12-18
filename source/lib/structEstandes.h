@@ -13,8 +13,6 @@ typedef struct
     int velocidade;
     int alcance;
     int persistenciaDePoder;
-
-    int verificacao;
     
 }Estande;
 

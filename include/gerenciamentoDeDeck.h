@@ -6,11 +6,58 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <ctype.h>
 #include "structEstandes.h"
 #include "pesquisaDeCartas.h"
 
 /*permitir cadastrar (inserir/listar/pesquisar/alterar/excluir) as cartas disponíveis. Essa
 relação deve aumentar e diminuir dinamicamente*/
+
+void recebeCarta(Estande *cartaNova){
+
+    printf("                Insira o nome do seu novo Stand: ");
+    lerString(cartaNova->nome, 30);
+
+    do{
+        printf("                Insira o poder destrutivo do novo Stand: ");
+        scanf("%d", &cartaNova->poderDestrutivo);
+        if (cartaNova->poderDestrutivo > 100 || cartaNova->poderDestrutivo < 1)
+        {
+            printf("                Valor inválido, insira novamente!\n");
+        }
+        
+    }while(cartaNova->poderDestrutivo > 100 || cartaNova->poderDestrutivo < 1);
+    
+    do{
+        printf("                Insira a velocidade do novo Stand: ");
+        scanf("%d", &cartaNova->velocidade);
+        if (cartaNova->velocidade > 100 || cartaNova->velocidade < 1)
+        {
+            printf("                Valor inválido, insira novamente!\n");
+        }
+        
+    }while(cartaNova->velocidade > 100 || cartaNova->velocidade < 1);
+
+    do{
+        printf("                Insira o alcance do novo Stand: ");
+        scanf("%d", &cartaNova->alcance);
+        if (cartaNova->alcance > 100 || cartaNova->alcance < 1)
+        {
+            printf("                Valor inválido, insira novamente!\n");
+        }
+        
+    }while(cartaNova->alcance > 100 || cartaNova->alcance < 1);
+
+    do{
+        printf("                Insira a persistencia de poder do novo Stand: ");
+        scanf("%d", &cartaNova->persistenciaDePoder);
+        if (cartaNova->persistenciaDePoder > 100 || cartaNova->persistenciaDePoder < 1)
+        {
+            printf("                Valor inválido, insira novamente!\n");
+        }
+        
+    }while(cartaNova->persistenciaDePoder > 100 || cartaNova->persistenciaDePoder < 1);
+}
 
 
 /**
@@ -20,11 +67,6 @@ relação deve aumentar e diminuir dinamicamente*/
  * @param estande 
  */
 void inserirCarta(Estande* deck[], Estande* estande){
-    //faz a verificação se a carta passado no parametro ja pertence ou não a um deck
-    if(estande->verificacao == 1){
-        printf("Não foi possivel adicionar esta carta pois ela ja pertence a um deck");
-        return;
-    }
 
     //usa um for para verificar a primeira posição nula e atribui a carta passada no parametro
     for (int i = 0; i < 16; i++) {
@@ -35,13 +77,11 @@ void inserirCarta(Estande* deck[], Estande* estande){
                 return;
             }
 
-            estande->verificacao = 1;
             *deck[i] = *estande;
             
             return;
         }
     }
-    printf("Deck cheio. Não foi possível inserir o estande.\n");
 }
 
 
@@ -52,21 +92,20 @@ void inserirCarta(Estande* deck[], Estande* estande){
  * @param estande 
  */
 void excluirCarta(Estande* deck[], Estande* estande){
-    //verifica se a carta pertence a um deck
-    if(estande->verificacao == 0){
-        printf("Esta carta não pertence a nenhum deck\n");
-        return;
-    }
 
     for(int i = 0; i < 16; i++){
         if(deck[i] == estande){
-            free(deck[i]);
+            char temp_letra = estande->letra;
+            int temp_numero = estande->numero;
+            int temp_trunfo = estande->super;
             deck[i] = NULL;
-            estande->verificacao = 0;
+            deck[i]->letra = temp_letra;
+            deck[i]->numero = temp_numero;
+            deck[i]->super = temp_trunfo;
             return;
         }
     }
-    printf("Estande não encontrado\n");
+
 }
 
 
@@ -79,21 +118,6 @@ void listarTodasCartas(Estande todosEstandes[]){
     printf("-----TODAS AS CARTAS-----\n");
     for(int i = 0; i < 32; i++){
         listarCarta(todosEstandes[i]);
-    }
-}
-
-
-/**
- * @brief Lista as cartas disponiveis para atribuição
- * 
- * @param estandes 
- */
-void listarCartasDisponiveis(Estande estandes[]){
-    printf("-----CARTAS DISPONIVEIS-----");
-    for(int i = 0; i < 32; i++){
-        if(estandes[i].verificacao == 0){
-            listarCarta(estandes[i]);
-        }
     }
 }
 
