@@ -1,0 +1,42 @@
+# Variáveis
+CC = gcc
+CFLAGS = -Wall -Ilib
+SRC = main.c lib/embaralhar.c lib/gerenciamentoDeDeck.c lib/leituraCsv.c lib/menu.c lib/pesquisaDeCartas.c
+OBJ = $(SRC:%.c=build/%.o)
+BIN = bin/projeto.exe
+BUILD_DIR = build
+BIN_DIR = bin
+
+# Regra padrão
+all: $(BIN)
+
+# Regra para criar o executável
+$(BIN): $(OBJ) | $(BIN_DIR)
+	$(CC) $(OBJ) -o $(BIN)
+	@echo "Executável criado em $(BIN)"
+
+# Regra para compilar arquivos .c em .o
+build/%.o: %.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Criação dos diretórios
+$(BUILD_DIR):
+	@mkdir -p $(BUILD_DIR)
+
+$(BUILD_DIR)/lib:
+	@mkdir -p $(BUILD_DIR)/lib
+
+$(BIN_DIR):
+	@mkdir -p $(BIN_DIR)
+
+# Limpeza dos arquivos objeto e do executável
+clean:
+	@rm -rf $(BUILD_DIR) $(BIN_DIR)
+	@echo "Limpeza concluída!"
+
+# Regra para rodar o programa
+run: $(BIN)
+	@echo "Executando o programa:"
+	./$(BIN)
+
+.PHONY: all clean run
