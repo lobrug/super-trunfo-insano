@@ -17,7 +17,7 @@ int main(){
     Estande* deck;
     Estande* deck2;
 
-    FILE *leitorBinario = fopen("../bin/deck_ultima_partida.dat", "rb");
+    FILE *leitorBinario = fopen("bin/deck_ultima_partida.dat", "rb");
     if (leitorBinario == NULL)
     {
         leituraArquivoCsv(estandes);

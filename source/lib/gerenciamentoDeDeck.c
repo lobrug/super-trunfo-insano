@@ -191,7 +191,7 @@ void alterarCarta(Estande *estandes, int opcao){
 
 void armazenaDeckFinal(Estande estandes[]){
 
-    FILE *arq = fopen("../bin/deck_ultima_partida.dat", "wb");
+    FILE *arq = fopen("bin/deck_ultima_partida.dat", "wb");
 
     fwrite(estandes, sizeof(Estande), 32, arq);
 

@@ -1,5 +1,6 @@
 #ifndef menu_H
 #define menu_H
+#include "structEstandes.h"
 
 void menuPesquisa(Estande deck[]);
 

@@ -1,32 +1,39 @@
-# Comentário do makefile de exemplo
+# Variáveis
+CC = gcc
+CFLAGS = -Wall -Ilib
+SRC = main.c lib/embaralhar.c lib/gerenciamentoDeDeck.c lib/leituraCsv.c lib/menu.c lib/pesquisaDeCartas.c
+OBJ = $(SRC:%.c=build/%.o)
+BIN = bin/projeto.exe
 
-# Regra para compilar o programa principal
-main: main.o embaralhar.o gerenciamentoDeDeck.o leituraCsv.o menu.o pesquisaDeCartas.o
- 	gcc main.o -o main
+# Regra padrão
+all: setup $(BIN)
 
-# Regra para compilar os arquivos objeto
-main.o: main.c
-	gcc -c main.c
+# Regra para criar o executável
+$(BIN): $(OBJ)
+	$(CC) $(OBJ) -o $(BIN)
+	@echo "Executável criado em $(BIN)"
 
-embaralhar.o: embaralhar.c
-	gcc -c ./lib/embaralhar.c
+# Regra para compilar arquivos .c em .o
+build/%.o: %.c
+	@mkdir build 2>nul || (exit 0)
+	@mkdir build\lib 2>nul || (exit 0)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-gerenciamentoDeDeck.o: gerenciamentoDeDeck.c
-	gcc -c ./lib/gerenciamentoDeDeck.c
+# Preparação de diretórios
+setup:
+	@mkdir build 2>nul || (exit 0)
+	@mkdir build\lib 2>nul || (exit 0)
+	@mkdir bin 2>nul || (exit 0)
 
-leituraCsv.o: leituraCsv.c
-	gcc -c ./lib/leituraCsv.c
-
-menu.o: menu.c
-	gcc -c ./lib/menu.c
-
-pesquisaDeCartas.o: pesquisaDeCartas.c
-	gcc -c ./lib/pesquisaDeCartas.c
-
-# Limpeza dos arquivos objeto e binário gerados
+# Limpeza dos arquivos objeto e do executável
 clean:
-	rm -f main.o main
+	@rmdir /S /Q build 2>nul || (exit 0)
+	@rmdir /S /Q bin 2>nul || (exit 0)
+	@echo "Limpeza concluída!"
 
 # Regra para rodar o programa
-run:
-	./main
+run: $(BIN)
+	@echo "Executando o programa:"
+	$(BIN)
+
+.PHONY: all clean run setup

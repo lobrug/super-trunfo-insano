@@ -1,5 +1,6 @@
 #ifndef gerenciamentoDeDeck_H
 #define gerenciamentoDeDeck_H
+#include "structEstandes.h"
 
 void recebeCarta(Estande *cartaNova);
 

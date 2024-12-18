@@ -1,5 +1,6 @@
 #ifndef pesquisaDeCartas_H
 #define pesquisaDeCartas_H
+#include "structEstandes.h"
 
 void lerString(char* texto, int tamanho);
 
