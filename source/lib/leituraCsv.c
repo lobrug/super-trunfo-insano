@@ -5,7 +5,7 @@
 #include "structEstandes.h"
 
 void leituraArquivoCsv(Estande estandes[]){
-    FILE *infocartas = fopen("cartas_stands.csv", "r");
+    FILE *infocartas = fopen("lib/cartas_stands.csv", "r");
 
     if(infocartas == NULL){
         printf("Falha ao abrir arquivo\n");
