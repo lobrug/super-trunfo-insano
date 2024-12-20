@@ -1,3 +1,5 @@
+#Esse make funciona só no windows
+
 # Variáveis
 CC = gcc
 CFLAGS = -Wall -Ilib
