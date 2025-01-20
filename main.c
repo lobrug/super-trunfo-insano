@@ -4,7 +4,6 @@
 #include "raygui.h"
 #include "structEstandes.h"
 #include "leituraCsv.h"
-#include "menu.h"
 #include "pesquisaDeCartas.h"
 #include "manipulacaoCartas.h"
 
@@ -14,6 +13,10 @@ int main(void){
     Estande estandes[32];
     gameScreens actualScreen = GAME_MENU;
     char pesquisa[100] = "";
+    Estande estandesPesquisa;
+    Estande filtracaoEstandes;
+    int estandeSelecionado = 0;
+    bool encontrado = false;
     
 
     const int screenWidth = 800;
@@ -72,7 +75,6 @@ int main(void){
 
     while(!WindowShouldClose()){
         DrawFPS(720,580);
-        int estandeSelecionado;
         if(actualScreen == GAME_MENU){
         BeginDrawing();
         ClearBackground(DARKPURPLE);
@@ -88,6 +90,7 @@ int main(void){
         if(GuiButton((Rectangle){295,456,211,47}, "Quit")){
             break;
         }
+
         EndDrawing();
         }
 
@@ -95,32 +98,36 @@ int main(void){
             BeginDrawing();
             ClearBackground(BLACK);
 
-            DrawRectangle(16, 78, 265, 471, WHITE); //filter box rectangle
-
-            GuiTextBox((Rectangle){24, 86, 249, 31}, pesquisa, 40, true);
-
-            //card design
-            
-            listarCartaNoGerenciamento(estandes[estandeSelecionado]);
-
-            
-            
-            if(GuiButton((Rectangle){16,16,83,48}, "MENU")){
+            //filter box rectangle
+            DrawRectangle(16, 78, 265, 471, LIGHTGRAY); 
+            if(GuiButton((Rectangle){16,16,83,48}, "#121#")){
                 actualScreen = GAME_MENU;
             }
 
+            if(strcmp(pesquisa, "")==0){   
+                encontrado = false;    
+                listarCartaNoGerenciamento(estandes[estandeSelecionado]);
+
+                if(GuiButton((Rectangle){343, 270, 61, 61}, "#114#")){
+                    estandeSelecionado--;
+                    if(estandeSelecionado == -1) estandeSelecionado = 31;
+                }
+
+                if(GuiButton((Rectangle){698, 270, 61, 61}, "#115#")){
+                    estandeSelecionado++;
+                    if(estandeSelecionado == 32) estandeSelecionado = 0;
+                }
+            }
+
+            for(int i = 0; i < 32; i++){
+                if(strcasecmp(pesquisa, estandes[i].nome)==0){
+                    listarCartaNoGerenciamento(estandes[i]);
+                }
+            }
+  
+            (GuiTextBox((Rectangle){24, 86, 249, 31}, pesquisa, 40, true));
+
             
-            if(GuiButton((Rectangle){343, 270, 61, 61}, "BACK")){
-                estandeSelecionado--;
-                if(estandeSelecionado == -1) estandeSelecionado = 31;
-            }
-
-            if(GuiButton((Rectangle){698, 270, 61, 61}, "NEXT")){
-                estandeSelecionado++;
-                if(estandeSelecionado == 32) estandeSelecionado = 0;
-            }
-
-
             EndDrawing();
         }
 

@@ -37,7 +37,7 @@ void menuPesquisa(Estande deck[]){
 
     switch (seleciona_pesquisa)
     {
-    case 1: pesquisarEstandeNome(deck);
+    case 1: //pesquisarEstandeNome(deck);
         break;
 
     case 2: pesquisarEstandePoderDestrutivo(deck);

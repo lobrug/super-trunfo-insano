@@ -82,21 +82,16 @@ void listarCartaNoGerenciamento(Estande estande){
  * @param estandes = deck ou todas as cartas
  * @param nome pesquisado
  */
-void pesquisarEstandeNome(Estande estandes[]){
-    char pesquisa[30];
+void pesquisarEstandeNome(Estande estandes[], char *pesquisa, int atual){
 
-    printf("            Qual o nome do estande que deseja pesquisar?: ");
-    lerString(pesquisa, 30);
     for(int i = 0; i < 32; i++){
-//      printf("Comparando com: %s\n", estandes[i].nome); // debug
+      printf("Comparando com: %s\n", estandes[i].nome); // debug
         if(strcasecmp(pesquisa, estandes[i].nome) == 0){
-            listarCarta(estandes[i]);
-            printf("\n");
+            atual = i;
             return;
         }
     }
     printf("            Estande não encontrado\n");
-    return;
 }
 
 /**
