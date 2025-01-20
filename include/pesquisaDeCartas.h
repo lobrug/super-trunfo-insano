@@ -327,4 +327,47 @@ int pesquisarEstandeNomeRetornoPosicao(Estande estandes[]){
     return -1;
 }
 
+int levenshtein(const char *str1, const char *str2) {
+    int len1 = strlen(str1);
+    int len2 = strlen(str2);
+
+    // Alocar matriz dinamicamente
+    int **matrix = (int **)malloc((len1 + 1) * sizeof(int *));
+    for (int i = 0; i <= len1; i++) {
+        matrix[i] = (int *)malloc((len2 + 1) * sizeof(int));
+    }
+
+    // Inicializar bordas da matriz
+    for (int i = 0; i <= len1; i++) {
+        matrix[i][0] = i;
+    }
+    for (int j = 0; j <= len2; j++) {
+        matrix[0][j] = j;
+    }
+
+    // Preencher matriz com distâncias
+    for (int i = 1; i <= len1; i++) {
+        for (int j = 1; j <= len2; j++) {
+            int cost = (str1[i - 1] == str2[j - 1]) ? 0 : 1;
+
+            matrix[i][j] = fmin(
+                fmin(matrix[i - 1][j] + 1,    // Remoção
+                     matrix[i][j - 1] + 1),   // Inserção
+                matrix[i - 1][j - 1] + cost   // Substituição
+            );
+        }
+    }
+
+    // Resultado final
+    int result = matrix[len1][len2];
+
+    // Liberar memória alocada
+    for (int i = 0; i <= len1; i++) {
+        free(matrix[i]);
+    }
+    free(matrix);
+
+    return result;
+}
+
 #endif

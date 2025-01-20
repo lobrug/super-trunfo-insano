@@ -6,6 +6,13 @@
 #include "leituraCsv.h"
 #include "pesquisaDeCartas.h"
 #include "manipulacaoCartas.h"
+#include <ctype.h>
+
+void toLowerCase(char *str) {
+    for (int i = 0; str[i]; i++) {
+        str[i] = tolower(str[i]);
+    }
+}
 
 typedef enum {GAME_MENU, GAME_DECK, GAME_PLAY} gameScreens;
 
@@ -17,6 +24,8 @@ int main(void){
     Estande filtracaoEstandes;
     int estandeSelecionado = 0;
     bool encontrado = false;
+
+    int j;
     
 
     const int screenWidth = 800;
@@ -24,7 +33,7 @@ int main(void){
 
     leituraArquivoCsv(estandes);
 
-    InitWindow(screenWidth, screenHeight, "Meu pau");
+    InitWindow(screenWidth, screenHeight, "Super-Trunfo Insanamente Bizarro");
     
     SetTargetFPS(144);
 
@@ -75,59 +84,109 @@ int main(void){
 
     while(!WindowShouldClose()){
         DrawFPS(720,580);
+
         if(actualScreen == GAME_MENU){
-        BeginDrawing();
-        ClearBackground(DARKPURPLE);
-        DrawTexture(background, 0, 0, WHITE);
-        DrawTexture(jojoimg, 230, 100, WHITE);
-        GuiButton((Rectangle){295,357,211,47}, "Play");
 
-        if(GuiButton((Rectangle){295,407,211,47}, "Card Management")){
-            actualScreen = GAME_DECK;
-            estandeSelecionado = 0;
-        }
+            BeginDrawing();
+
+            ClearBackground(DARKPURPLE);
+            DrawTexture(background, 0, 0, WHITE);
+            DrawTexture(jojoimg, 230, 100, WHITE);
+            GuiButton((Rectangle){295,357,211,47}, "Play");
+
+            if(GuiButton((Rectangle){295,407,211,47}, "Card Management")){
+                actualScreen = GAME_DECK;
+                estandeSelecionado = 0;
+                j= 0;
+                
+            }
         
-        if(GuiButton((Rectangle){295,456,211,47}, "Quit")){
-            break;
-        }
+            if(GuiButton((Rectangle){295,456,211,47}, "Quit")){
+                break;
+            }
 
-        EndDrawing();
-        }
+            EndDrawing();
+        }//If - GAME_MENU
 
         if(actualScreen == GAME_DECK){
+
             BeginDrawing();
             ClearBackground(BLACK);
 
             //filter box rectangle
             DrawRectangle(16, 78, 265, 471, LIGHTGRAY); 
+
             if(GuiButton((Rectangle){16,16,83,48}, "#121#")){
                 actualScreen = GAME_MENU;
-            }
+            }//If - Voltar pro GAME_MENU
 
-            if(strcmp(pesquisa, "")==0){   
-                encontrado = false;    
+            if (strcmp(pesquisa, "") != 0) {
+                int salva_pesquisa[32];
+                int n = 0;
+
+                // Convertendo a pesquisa para minúsculas para ignorar a diferença de maiúsculas/minúsculas
+                char pesquisaLower[100];
+                strcpy(pesquisaLower, pesquisa);
+                toLowerCase(pesquisaLower);
+
+                // Realizar busca nos estandes
+                for (int i = 0; i < 32; i++) {
+                    // Converter o nome do estande para minúsculas
+                    char nomeEstandeLower[100];
+                    strcpy(nomeEstandeLower, estandes[i].nome);
+                    toLowerCase(nomeEstandeLower);
+
+                    // Verificar se a pesquisa é substring do nome do estande
+                    if (strstr(nomeEstandeLower, pesquisaLower) != NULL) {
+                        salva_pesquisa[n] = i;
+                        n++;
+                    } else {
+                        // Usar Levenshtein apenas se não for substring
+                        int max_tolerancia = strlen(estandes[i].nome) / 3; // Ajustar tolerância por tamanho
+                        if (levenshtein(pesquisaLower, nomeEstandeLower) <= max_tolerancia) {
+                            salva_pesquisa[n] = i;
+                            n++;
+                        }
+                    }
+                }
+
+                // Verificar se há resultados encontrados
+                if (n == 0) {
+                    DrawText("Nenhum resultado encontrado", 300, 300, 20, RED);
+                } else {
+                    listarCartaNoGerenciamento(estandes[salva_pesquisa[j]]);
+
+                    // Botão para resultado anterior
+                    if (GuiButton((Rectangle){343, 270, 61, 61}, "#114#")) {
+                        j--;
+                        if (j < 0) j = n - 1; // Ajustar índice para último resultado
+                    }
+
+                    // Botão para próximo resultado
+                    if (GuiButton((Rectangle){698, 270, 61, 61}, "#115#")) {
+                        j++;
+                        if (j >= n) j = 0; // Ajustar índice para primeiro resultado
+                    }
+                }
+                
+            } else {
+                // Mostrar carta normalmente se não houver pesquisa
+                encontrado = false;
                 listarCartaNoGerenciamento(estandes[estandeSelecionado]);
 
-                if(GuiButton((Rectangle){343, 270, 61, 61}, "#114#")){
+                if (GuiButton((Rectangle){343, 270, 61, 61}, "#114#")) {
                     estandeSelecionado--;
-                    if(estandeSelecionado == -1) estandeSelecionado = 31;
+                    if (estandeSelecionado < 0) estandeSelecionado = 31;
                 }
 
-                if(GuiButton((Rectangle){698, 270, 61, 61}, "#115#")){
+                if (GuiButton((Rectangle){698, 270, 61, 61}, "#115#")) {
                     estandeSelecionado++;
-                    if(estandeSelecionado == 32) estandeSelecionado = 0;
+                    if (estandeSelecionado > 31) estandeSelecionado = 0;
                 }
             }
-
-            for(int i = 0; i < 32; i++){
-                if(strcasecmp(pesquisa, estandes[i].nome)==0){
-                    listarCartaNoGerenciamento(estandes[i]);
-                }
-            }
-  
+    
             (GuiTextBox((Rectangle){24, 86, 249, 31}, pesquisa, 40, true));
-
-            
+                
             EndDrawing();
         }
 
