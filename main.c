@@ -8,10 +8,18 @@
 #include "manipulacaoCartas.h"
 #include <ctype.h>
 
-void toLowerCase(char *str) {
-    for (int i = 0; str[i]; i++) {
-        str[i] = tolower(str[i]);
+char *strcasestr(const char *haystack, const char *needle) {
+    if (!*needle) return (char *)haystack;  // Retorna o haystack se needle for vazio.
+
+    size_t needle_len = strlen(needle);
+
+    for (; *haystack; haystack++) {
+        if (strncasecmp(haystack, needle, needle_len) == 0) {
+            return (char *)haystack;  // Retorna o ponteiro para a primeira ocorrência.
+        }
     }
+
+    return NULL;  // Retorna NULL se não encontrar.
 }
 
 typedef enum {GAME_MENU, GAME_DECK, GAME_PLAY} gameScreens;
@@ -124,29 +132,13 @@ int main(void){
                 int salva_pesquisa[32];
                 int n = 0;
 
-                // Convertendo a pesquisa para minúsculas para ignorar a diferença de maiúsculas/minúsculas
-                char pesquisaLower[100];
-                strcpy(pesquisaLower, pesquisa);
-                toLowerCase(pesquisaLower);
-
                 // Realizar busca nos estandes
                 for (int i = 0; i < 32; i++) {
-                    // Converter o nome do estande para minúsculas
-                    char nomeEstandeLower[100];
-                    strcpy(nomeEstandeLower, estandes[i].nome);
-                    toLowerCase(nomeEstandeLower);
 
                     // Verificar se a pesquisa é substring do nome do estande
-                    if (strstr(nomeEstandeLower, pesquisaLower) != NULL) {
+                    if (strcasestr(estandes[i].nome, pesquisa) != NULL) {
                         salva_pesquisa[n] = i;
                         n++;
-                    } else {
-                        // Usar Levenshtein apenas se não for substring
-                        int max_tolerancia = strlen(estandes[i].nome) / 3; // Ajustar tolerância por tamanho
-                        if (levenshtein(pesquisaLower, nomeEstandeLower) <= max_tolerancia) {
-                            salva_pesquisa[n] = i;
-                            n++;
-                        }
                     }
                 }
 
@@ -168,7 +160,7 @@ int main(void){
                         if (j >= n) j = 0; // Ajustar índice para primeiro resultado
                     }
                 }
-                
+
             } else {
                 // Mostrar carta normalmente se não houver pesquisa
                 encontrado = false;
