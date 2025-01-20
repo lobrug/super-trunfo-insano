@@ -8,6 +8,7 @@
 #include "manipulacaoCartas.h"
 #include "embaralhar.h"
 #include "gerenciamentoDeDeck.h"
+#include "batalha.h"
 #include <ctype.h>
 
 char *strcasestr(const char *haystack, const char *needle) {
@@ -224,6 +225,7 @@ int main(void){
             bool isClickedPlayerDeck = isHoverPlayerDeck && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
             Color tint = isHoverPlayerDeck ? GRAY : WHITE;
             DrawTexturePro(backCard, (Rectangle){0, 0, backCard.width, backCard.height}, (Rectangle){656, 395, 126, 189}, (Vector2){0, 0}, 0.0f, WHITE);
+            DrawTexturePro(backCard, (Rectangle){0, 0, backCard.width, backCard.height}, (Rectangle){18, 16, 126, 189}, (Vector2){0, 0}, 0.0f, WHITE);
 
             if ((turnos % 2) == 1) { // Vez do player jogar
                 if (isClickedPlayerDeck && !cartaJogadorExibida) { // Só executa ao clicar no botão
@@ -236,7 +238,32 @@ int main(void){
 
                 // Sempre desenha a carta do jogador se ela foi sacada
                 if (cartaJogadorExibida) {
+                    DrawRectangle(0,0,800,600,(Color){0,0,0,180});
+
+                    DrawRectangle(126, 470, 548, 111, DARKPURPLE);
                     listarCartaNoJogoGrande(maoJogador);
+                    DrawText("SELECIONE UM ATRIBUTO PARA BATALHA!", 145, 430, 24, PURPLE);
+
+                    if(GuiButton((Rectangle){147, 485, 100, 80}, "STRENGHT")){
+                        batalhaPoder(maoJogador, maoBot, deckPlayer, deckBot);
+                        cartaJogadorExibida = false;
+                    }
+
+                    if(GuiButton((Rectangle){281, 485, 100, 80}, "SPEED")){
+                        batalhaVelocidade(maoJogador, maoBot, deckPlayer, deckBot);
+                        cartaJogadorExibida = false;
+                    }
+
+                    if(GuiButton((Rectangle){413, 485, 100, 80}, "RANGE")){
+                        batalhaAlcance(maoJogador, maoBot, deckPlayer, deckBot);
+                        cartaJogadorExibida = false;
+                    }
+
+                    if(GuiButton((Rectangle){549, 485, 100, 80}, "PRSTC")){
+                        batalhaPersistencia(maoJogador, maoBot, deckPlayer, deckBot);
+                        cartaJogadorExibida = false;
+                    }
+
                 }
 
             }else{ //vez do bot jogar
@@ -250,7 +277,6 @@ int main(void){
 
             
             
-            DrawTexturePro(backCard, (Rectangle){0, 0, backCard.width, backCard.height}, (Rectangle){18, 16, 126, 189}, (Vector2){0, 0}, 0.0f, WHITE);
 
             EndDrawing();
         }
