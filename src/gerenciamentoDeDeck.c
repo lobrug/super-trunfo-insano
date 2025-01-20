@@ -229,3 +229,26 @@ void armazenaDeckFinal(Estande estandes[]) {
 
     return;
 } // Fim da função armazenaDeckFinal
+
+Estande recebeCartaParaMao(Estande deck[]) {
+    for (int i = 0; i < 32; i++) {
+        if (deck[i].nome[0] != '\0') { // Verifica se o slot não está vazio
+            Estande carta = deck[i];
+            deck[i].nome[0] = '\0'; // Limpa o slot no deck
+            return carta;
+        }
+    }
+    printf("Voce nao tem cartas no monte\n");
+    return (Estande){{'\0'}}; // Retorna uma carta vazia se não houver cartas no deck
+}
+
+void receberCartaAdversario(Estande deck[], Estande mao){
+    for(int i = 0; i < 32; i++){
+        if(deck[i].nome[0] == '\0'){
+            deck[i] = mao;
+            memset(&mao, 0, sizeof(Estande));
+            return;
+        }
+    }
+    printf("Erro ao receber carta");
+}

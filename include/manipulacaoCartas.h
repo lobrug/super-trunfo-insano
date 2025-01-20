@@ -5,17 +5,20 @@
 #include "raylib.h"
 #include "structEstandes.h"
 
-    void loadImageToCard(Estande *estande, const char *fileName){
+    void loadImageToCard(Estande *estande, const char *fileName, int width, int height){
         Image imageTemp = LoadImage(fileName);
         if(fileName == NULL){
             printf("Erro ao abrir arquivo");
             return;
         }
-        ImageResize(&imageTemp, 174, 142);
+        ImageResize(&imageTemp, width, height);
         Texture2D texture = LoadTextureFromImage(imageTemp);
         estande->foto = texture;
         UnloadImage(imageTemp);
+        
     }
+
+
 
     
 

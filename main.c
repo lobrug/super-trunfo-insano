@@ -6,6 +6,8 @@
 #include "leituraCsv.h"
 #include "pesquisaDeCartas.h"
 #include "manipulacaoCartas.h"
+#include "embaralhar.h"
+#include "gerenciamentoDeDeck.h"
 #include <ctype.h>
 
 void toLowerCase(char *str) {
@@ -18,12 +20,25 @@ typedef enum {GAME_MENU, GAME_DECK, GAME_PLAY} gameScreens;
 
 int main(void){
     Estande estandes[32];
+    Estande deckPlayer[32];
+    Estande deckBot[32];
+
+    Estande maoJogador;
+    Estande maoBot;
+
+    bool cartaJogadorExibida = false;
+
+    int turnos = 0;
+
     gameScreens actualScreen = GAME_MENU;
+
     char pesquisa[100] = "";
+
     Estande estandesPesquisa;
     Estande filtracaoEstandes;
     int estandeSelecionado = 0;
     bool encontrado = false;
+    int verificaVoltarMenu = 0;
 
     int j;
     
@@ -41,49 +56,51 @@ int main(void){
 //    printf("Tentando carregar a textura de: content\\jojo.png\n");
     Texture2D background = LoadTexture(".\\assets\\img\\background.jpg");
     Texture2D jojoimg = LoadTexture(".\\assets\\img\\jojo.png");
+    Texture2D table = LoadTexture(".\\assets\\img\\table.jpg");
+    Texture2D backCard = LoadTexture(".\\assets\\img\\backCard.png");
+    
+    
 
     {
-    loadImageToCard(&estandes[0], ".\\assets\\stands\\starplatinum.png");
-    loadImageToCard(&estandes[1], ".\\assets\\stands\\theworld.png");
-    loadImageToCard(&estandes[2], ".\\assets\\stands\\goldexperience.png");
-    loadImageToCard(&estandes[3], ".\\assets\\stands\\kingcrimson.png");
-    loadImageToCard(&estandes[4], ".\\assets\\stands\\madeinheaven.png");
-    loadImageToCard(&estandes[5], ".\\assets\\stands\\tuskact4.png");
-    loadImageToCard(&estandes[6], ".\\assets\\stands\\killerqueen.png");
-    loadImageToCard(&estandes[7], ".\\assets\\stands\\d4c.png");
-    loadImageToCard(&estandes[8], ".\\assets\\stands\\crazydiamond.png");
-    loadImageToCard(&estandes[9], ".\\assets\\stands\\goldrequiem.png");
-    loadImageToCard(&estandes[10], ".\\assets\\stands\\weatherreport.png");
-    loadImageToCard(&estandes[11], ".\\assets\\stands\\magiciansred.png");
-    loadImageToCard(&estandes[12], ".\\assets\\stands\\stickyfingers.png");
-    loadImageToCard(&estandes[13], ".\\assets\\stands\\echoesact3.png");
-    loadImageToCard(&estandes[14], ".\\assets\\stands\\greenday.png");
-    loadImageToCard(&estandes[15], ".\\assets\\stands\\stonefree.png");
-    loadImageToCard(&estandes[16], ".\\assets\\stands\\silverchariot.png");
-    loadImageToCard(&estandes[17], ".\\assets\\stands\\rhcp.png");
-    loadImageToCard(&estandes[18], ".\\assets\\stands\\sexpistols.png");
-    loadImageToCard(&estandes[19], ".\\assets\\stands\\hierophantgreen.png");
-    loadImageToCard(&estandes[20], ".\\assets\\stands\\cmoon.png");
-    loadImageToCard(&estandes[21], ".\\assets\\stands\\moodyblues.png");
-    loadImageToCard(&estandes[22], ".\\assets\\stands\\purplehaze.png");
-    loadImageToCard(&estandes[23], ".\\assets\\stands\\diverdown.png");
-    loadImageToCard(&estandes[24], ".\\assets\\stands\\hermitpurple.png");
-    loadImageToCard(&estandes[25], ".\\assets\\stands\\heavensdoor.png");
-    loadImageToCard(&estandes[26], ".\\assets\\stands\\beachboy.png");
-    loadImageToCard(&estandes[27], ".\\assets\\stands\\aerosmith.png");
-    loadImageToCard(&estandes[28], ".\\assets\\stands\\thehand.png");
-    loadImageToCard(&estandes[29], ".\\assets\\stands\\big.png");
-    loadImageToCard(&estandes[30], ".\\assets\\stands\\softwet.png");
-    loadImageToCard(&estandes[31], ".\\assets\\stands\\justice.png");
-    }
-    // Verifique se a textura foi carregada corretamente
-    if (jojoimg.id == 0) {
-        printf("Failed to load texture\n");
-        return -1;
+    loadImageToCard(&estandes[0], ".\\assets\\stands\\starplatinum.png", 174, 142);
+    loadImageToCard(&estandes[1], ".\\assets\\stands\\theworld.png", 174, 142);
+    loadImageToCard(&estandes[2], ".\\assets\\stands\\goldexperience.png", 174, 142);
+    loadImageToCard(&estandes[3], ".\\assets\\stands\\kingcrimson.png", 174, 142);
+    loadImageToCard(&estandes[4], ".\\assets\\stands\\madeinheaven.png", 174, 142);
+    loadImageToCard(&estandes[5], ".\\assets\\stands\\tuskact4.png", 174, 142);
+    loadImageToCard(&estandes[6], ".\\assets\\stands\\killerqueen.png", 174, 142);
+    loadImageToCard(&estandes[7], ".\\assets\\stands\\d4c.png", 174, 142);
+    loadImageToCard(&estandes[8], ".\\assets\\stands\\crazydiamond.png", 174, 142);
+    loadImageToCard(&estandes[9], ".\\assets\\stands\\goldrequiem.png", 174, 142);
+    loadImageToCard(&estandes[10], ".\\assets\\stands\\weatherreport.png", 174, 142);
+    loadImageToCard(&estandes[11], ".\\assets\\stands\\magiciansred.png", 174, 142);
+    loadImageToCard(&estandes[12], ".\\assets\\stands\\stickyfingers.png", 174, 142);
+    loadImageToCard(&estandes[13], ".\\assets\\stands\\echoesact3.png", 174, 142);
+    loadImageToCard(&estandes[14], ".\\assets\\stands\\greenday.png", 174, 142);
+    loadImageToCard(&estandes[15], ".\\assets\\stands\\stonefree.png", 174, 142);
+    loadImageToCard(&estandes[16], ".\\assets\\stands\\silverchariot.png", 174, 142);
+    loadImageToCard(&estandes[17], ".\\assets\\stands\\rhcp.png", 174, 142);
+    loadImageToCard(&estandes[18], ".\\assets\\stands\\sexpistols.png", 174, 142);
+    loadImageToCard(&estandes[19], ".\\assets\\stands\\hierophantgreen.png", 174, 142);
+    loadImageToCard(&estandes[20], ".\\assets\\stands\\cmoon.png", 174, 142);
+    loadImageToCard(&estandes[21], ".\\assets\\stands\\moodyblues.png", 174, 142);
+    loadImageToCard(&estandes[22], ".\\assets\\stands\\purplehaze.png", 174, 142);
+    loadImageToCard(&estandes[23], ".\\assets\\stands\\diverdown.png", 174, 142);
+    loadImageToCard(&estandes[24], ".\\assets\\stands\\hermitpurple.png", 174, 142);
+    loadImageToCard(&estandes[25], ".\\assets\\stands\\heavensdoor.png", 174, 142);
+    loadImageToCard(&estandes[26], ".\\assets\\stands\\beachboy.png", 174, 142);
+    loadImageToCard(&estandes[27], ".\\assets\\stands\\aerosmith.png", 174, 142);
+    loadImageToCard(&estandes[28], ".\\assets\\stands\\thehand.png", 174, 142);
+    loadImageToCard(&estandes[29], ".\\assets\\stands\\big.png", 174, 142);
+    loadImageToCard(&estandes[30], ".\\assets\\stands\\softwet.png", 174, 142);
+    loadImageToCard(&estandes[31], ".\\assets\\stands\\justice.png", 174, 142);
     }
 
     while(!WindowShouldClose()){
         DrawFPS(720,580);
+        GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt(DARKPURPLE));
+        GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(BLACK));
+        Vector2 mousePos = GetMousePosition();
 
         if(actualScreen == GAME_MENU){
 
@@ -92,7 +109,12 @@ int main(void){
             ClearBackground(DARKPURPLE);
             DrawTexture(background, 0, 0, WHITE);
             DrawTexture(jojoimg, 230, 100, WHITE);
-            GuiButton((Rectangle){295,357,211,47}, "Play");
+
+
+            if(GuiButton((Rectangle){295,357,211,47}, "Play")){
+                embaralharDecks(deckPlayer, deckBot, estandes);
+                actualScreen = GAME_PLAY;
+            }
 
             if(GuiButton((Rectangle){295,407,211,47}, "Card Management")){
                 actualScreen = GAME_DECK;
@@ -187,6 +209,57 @@ int main(void){
     
             (GuiTextBox((Rectangle){24, 86, 249, 31}, pesquisa, 40, true));
                 
+            EndDrawing();
+        }
+
+        if(actualScreen == GAME_PLAY){
+
+            BeginDrawing();
+            ClearBackground(BLACK);
+            DrawTexturePro(table, (Rectangle){0, 0, table.width, table.height}, (Rectangle){0, 0, 800, 600}, (Vector2){0, 0}, 0.0f, WHITE);
+
+
+            if(GuiButton((Rectangle){16,540,83,48}, "#121#")){         
+                        actualScreen = GAME_MENU;  
+            }
+
+
+            DrawRectangle(240, 206, 126, 189, PURPLE);
+            DrawText("X",392, 279, 36, BLACK);
+            DrawRectangle(435, 206, 126, 189, PURPLE);
+
+            bool isHoverPlayerDeck = CheckCollisionPointRec(mousePos, (Rectangle){656, 395, 126, 189});
+            bool isClickedPlayerDeck = isHoverPlayerDeck && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+            Color tint = isHoverPlayerDeck ? GRAY : WHITE;
+            DrawTexturePro(backCard, (Rectangle){0, 0, backCard.width, backCard.height}, (Rectangle){656, 395, 126, 189}, (Vector2){0, 0}, 0.0f, WHITE);
+
+            if ((turnos % 2) == 1) { // Vez do player jogar
+                if (isClickedPlayerDeck && !cartaJogadorExibida) { // Só executa ao clicar no botão
+                    printf("Teste click\n");
+                    maoJogador = recebeCartaParaMao(deckPlayer);
+                    maoBot = recebeCartaParaMao(deckBot);
+                    cartaJogadorExibida = true; // Marca que a carta foi exibida
+                    turnos++; // Avança o turno
+                }
+
+                // Sempre desenha a carta do jogador se ela foi sacada
+                if (cartaJogadorExibida) {
+                    listarCartaNoJogoGrande(maoJogador);
+                }
+
+            }else{ //vez do bot jogar
+                maoJogador = recebeCartaParaMao(deckPlayer);
+                maoBot = recebeCartaParaMao(deckBot);
+
+                
+
+                turnos++;
+            }
+
+            
+            
+            DrawTexturePro(backCard, (Rectangle){0, 0, backCard.width, backCard.height}, (Rectangle){18, 16, 126, 189}, (Vector2){0, 0}, 0.0f, WHITE);
+
             EndDrawing();
         }
 
