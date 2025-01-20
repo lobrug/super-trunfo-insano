@@ -13,6 +13,7 @@ typedef enum {GAME_MENU, GAME_DECK, GAME_PLAY} gameScreens;
 int main(void){
     Estande estandes[32];
     gameScreens actualScreen = GAME_MENU;
+    char pesquisa[100] = "";
     
 
     const int screenWidth = 800;
@@ -95,6 +96,8 @@ int main(void){
             ClearBackground(BLACK);
 
             DrawRectangle(16, 78, 265, 471, WHITE); //filter box rectangle
+
+            GuiTextBox((Rectangle){24, 86, 249, 31}, pesquisa, 40, true);
 
             //card design
             
