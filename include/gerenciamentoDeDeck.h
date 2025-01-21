@@ -226,4 +226,40 @@ void receberCartaAdversario(Estande deck[], Estande mao){
     printf("Erro ao receber carta");
 }
 
+int VerificadorFiltro(char Letra, int poder[], int velocidade[], int alcance[], int percistencia[], int numero, Estande estandes){
+
+    if ((Letra != NULL) && Letra != estandes.letra)
+    {
+        return -1;
+    }
+
+    if ((poder != NULL) && ((poder[0] < estandes.poderDestrutivo) || (poder[1] > estandes.poderDestrutivo)))
+    {
+        return -1;
+    }
+
+    if ((velocidade != NULL) && ((velocidade[0] < estandes.velocidade) || (velocidade[1] > estandes.velocidade)))
+    {
+        return -1;
+    }
+    
+    if ((alcance != NULL) && ((alcance[0] < estandes.alcance) || (alcance[1] > estandes.alcance)))
+    {
+        return -1;
+    }
+
+    if ((percistencia != NULL) && ((percistencia[0] < estandes.persistenciaDePoder) || (percistencia[1] > estandes.persistenciaDePoder)))
+    {
+        return -1;
+    }
+    
+    if ((numero != NULL) && (numero != estandes.numero))
+    {
+        return -1;
+    }
+    
+    return 0;
+    
+}
+
 #endif
