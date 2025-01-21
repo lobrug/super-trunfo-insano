@@ -72,7 +72,7 @@ void batalhaPersistencia(Estande player, Estande bot, Estande deckJogador[], Est
 
 bool verificaVitoriaBot(Estande deckPlayer[]){
     bool verifica = false;
-    for(int i = 32; i > 0; i--){
+    for(int i = 0; i < 32; i++){
         if(deckPlayer[i].nome != '\0'){
             return false;
         }
@@ -82,7 +82,7 @@ bool verificaVitoriaBot(Estande deckPlayer[]){
 
 bool verificaVitoriaPlayer(Estande deckBot[]){
     bool verifica = false;
-    for(int i = 32; i > 0; i--){
+    for(int i = 0; i < 32; i++){
         if(deckBot[i].nome != '\0'){
             return false;
         }
