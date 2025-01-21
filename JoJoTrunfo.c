@@ -58,6 +58,9 @@ int main(void){
     leituraArquivoCsv(estandes);
 
     InitWindow(screenWidth, screenHeight, "Super-Trunfo Insanamente Bizarro");
+
+    Image icon = LoadImage(".\\assets\\img\\icon.png"); // Ícone como imagem PNG
+    SetWindowIcon(icon);
     
     SetTargetFPS(144);
 
@@ -285,6 +288,9 @@ int main(void){
 
     UnloadTexture(background);
     UnloadTexture(jojoimg); // Unload texture when done
+    UnloadTexture(table);
+    UnloadTexture(backCard);
+    UnloadImage(icon);
     CloseWindow();
 
     return 0;
