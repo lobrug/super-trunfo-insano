@@ -210,7 +210,7 @@ int main(void){
             (GuiTextBox((Rectangle){24, 86, 249, 31}, pesquisa, 40, true));
                 
             EndDrawing();
-        }
+        }//If - GAME_DECK
 
         if(actualScreen == GAME_PLAY){
 
@@ -222,7 +222,6 @@ int main(void){
             if(GuiButton((Rectangle){16,540,83,48}, "#121#")){         
                         actualScreen = GAME_MENU;  
             }
-
 
             DrawRectangle(240, 206, 126, 189, PURPLE);
             DrawText("X",392, 279, 36, BLACK);
