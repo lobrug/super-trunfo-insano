@@ -32,5 +32,5 @@ O objetivo deste projeto é implementar o jogo "Super Trunfo" utilizando a lingu
 
 3. Após a compilação bem-sucedida, execute o jogo com o comando:
    ```bash
-   JojoTrunfo.exe
+   .\JojoTrunfo.exe
 
