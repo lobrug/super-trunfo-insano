@@ -65,9 +65,29 @@ void batalhaPersistencia(Estande player, Estande bot, Estande deckJogador[], Est
         return;
     }
 
-    if(player.persistenciaDePoder == bot.poderDestrutivo){
+    if(player.persistenciaDePoder == bot.persistenciaDePoder){
         return;
     }
+}
+
+bool verificaVitoriaBot(Estande deckPlayer[]){
+    bool verifica = false;
+    for(int i = 32; i > 0; i--){
+        if(deckPlayer[i].nome != '\0'){
+            return false;
+        }
+    }
+    return true;
+}
+
+bool verificaVitoriaPlayer(Estande deckBot[]){
+    bool verifica = false;
+    for(int i = 32; i > 0; i--){
+        if(deckBot[i].nome != '\0'){
+            return false;
+        }
+    }
+    return true;
 }
 
 #endif BATALHA_H

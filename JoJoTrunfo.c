@@ -9,6 +9,7 @@
 #include "embaralhar.h"
 #include "gerenciamentoDeDeck.h"
 #include "batalha.h"
+#include "botInteligencia.h"
 #include <ctype.h>
 
 char *strcasestr(const char *haystack, const char *needle) {
@@ -36,8 +37,11 @@ int main(void){
     Estande maoBot;
 
     bool cartaJogadorExibida = false;
+    bool vitoriaPlayer = false;
+    bool vitoriaBot = false;
 
     int turnos = 0;
+    
 
     gameScreens actualScreen = GAME_MENU;
 
@@ -267,15 +271,33 @@ int main(void){
                         cartaJogadorExibida = false;
                     }
 
+                    
+
                 }
 
             }else{ //vez do bot jogar
                 maoJogador = recebeCartaParaMao(deckPlayer);
                 maoBot = recebeCartaParaMao(deckBot);
-
+                botAcao(maoBot, maoJogador, deckBot, deckPlayer);
                 
-
                 turnos++;
+            }
+
+            vitoriaBot = verificaVitoriaBot(deckPlayer);
+            vitoriaPlayer = verificaVitoriaPlayer(deckBot);
+
+            if(vitoriaBot == true){
+                DrawRectangle(0,0,800,600,(Color){0,0,0,180});
+                DrawText("VOCE PERDEU", 200, 200, 36, RED);
+
+
+            }
+
+            if(vitoriaPlayer == true){
+                DrawRectangle(0,0,800,600,(Color){0,0,0,180});
+                DrawText("PARABENS! VOCE VENCEU", 200, 200, 36, RED);
+                        
+
             }
 
             
