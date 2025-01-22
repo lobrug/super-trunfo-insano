@@ -33,6 +33,12 @@ int main(void){
     Estande deckPlayer[32];
     Estande deckBot[32];
 
+    for (int i = 0; i < 32; i++) {
+        estandes[i].nome[0] = '\0';
+        deckPlayer[i].nome[0] = '\0';
+        deckBot[i].nome[0] = '\0';
+    }
+
     Estande maoJogador;
     Estande maoBot;
 
@@ -239,7 +245,10 @@ int main(void){
                     maoJogador = recebeCartaParaMao(deckPlayer);
                     maoBot = recebeCartaParaMao(deckBot);
                     cartaJogadorExibida = true; // Marca que a carta foi exibida
-                    turnos++; // Avança o turno
+                    turnos++; 
+                    
+                    vitoriaBot = verificaVitoriaBot(deckPlayer);
+                    vitoriaPlayer = verificaVitoriaPlayer(deckBot);// Avança o turno
                 }
 
                 // Sempre desenha a carta do jogador se ela foi sacada
