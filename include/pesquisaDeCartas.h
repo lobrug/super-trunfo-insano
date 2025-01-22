@@ -367,4 +367,39 @@ int pesquisarEstandeNomeRetornoPosicao(Estande estandes[]){
     return -1;
 }
 
+void verificaCheckFiltro(bool* check, int filtro[], int posX, int posY1, int posY2, int largura, int altura, bool* editMin, bool* editMax, bool edit[]){
+
+    if (*check == true){
+
+
+        if(GuiSpinner((Rectangle){posX,posY1,largura,altura}, "MIN", &filtro[0], 0, 100, *editMin)){
+            
+            for (int i = 0; i < 9; i++)
+            {
+                edit[i] = false;
+            }
+            
+            *editMin = true;
+        }
+
+        if(GuiSpinner((Rectangle){posX,posY2,largura,altura}, "MAX", &filtro[1], 0, 100, *editMax)){
+
+            for (int i = 0; i < 9; i++)
+            {
+                edit[i] = false;
+            }
+
+            *editMax = true;
+        }
+                
+        if(filtro[0] > filtro[1]){
+            filtro[0] = filtro[1];
+        }
+                    
+    }else{
+        memset(filtro, -1, sizeof(filtro));
+    }
+    return;
+}
+
 #endif
