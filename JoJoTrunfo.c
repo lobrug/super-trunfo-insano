@@ -29,7 +29,7 @@ char *strcasestr(const char *haystack, const char *needle) {
     return NULL;  // Retorna NULL se não encontrar.
 }
 
-typedef enum {GAME_MENU, GAME_DECK, GAME_PLAY} gameScreens;
+typedef enum {GAME_MENU, GAME_DECK, GAME_PLAY, DECK_MANAGEMENT} gameScreens;
 
 int main(void){
     Estande estandes[32];
@@ -55,6 +55,8 @@ int main(void){
     bool checkVelocidade = false;
     bool checkAlcance = false;
     bool checkPersistencia = false;
+
+    int selecionaCarta;
 
     bool edit[9];
 
@@ -183,7 +185,7 @@ int main(void){
 
             if(filtroCheck){
 
-                DrawRectangle(25,122,249,353, BEIGE);
+                DrawRectangle(25,122,249,414, BEIGE);
 
                 GuiCheckBox((Rectangle){42,189,26,26}, "Poder", &checkPoder);
                 GuiCheckBox((Rectangle){42,245,26,26}, "Velocidade", &checkVelocidade);
@@ -215,7 +217,8 @@ int main(void){
                 for (int i = 0; i < 32; i++) {
 
                     // Verificar se a pesquisa é substring do nome do estande
-                    if ((strcasestr(estandes[i].nome, pesquisa) != NULL) && (VerificadorFiltro(filtroPoder, filtroVelocidade, filtroAlcance, filtroPersistencia, estandes[i]) == 0)) {
+                    int filtroResult = VerificadorFiltro(filtroPoder, filtroVelocidade, filtroAlcance, filtroPersistencia, estandes[i]);
+                    if ((strcasestr(estandes[i].nome, pesquisa) != NULL) && (filtroResult == 0)) {
                         salva_pesquisa[n] = i;
                         n++;
                     }
@@ -226,6 +229,11 @@ int main(void){
                     DrawText("Nenhum resultado encontrado", 300, 300, 20, RED);
                 } else {
                     listarCartaNoGerenciamento(estandes[salva_pesquisa[j]]);
+                    if ( (GuiButton((Rectangle){463,477,176,46}, "GERENCIAR CARTA")))
+                    {
+                        actualScreen = DECK_MANAGEMENT;
+                        selecionaCarta = salva_pesquisa[j];
+                    }
 
                     // Botão para resultado anterior
                     if (GuiButton((Rectangle){343, 270, 61, 61}, "#114#")) {
@@ -261,6 +269,11 @@ int main(void){
                 }else{
 
                     listarCartaNoGerenciamento(estandes[salva_filtro[estandeSelecionado]]);
+                    if ( (GuiButton((Rectangle){463,477,176,46}, "GERENCIAR CARTA")))
+                    {
+                        actualScreen = DECK_MANAGEMENT;
+                        selecionaCarta = salva_filtro[estandeSelecionado];
+                    }
 
                     if (GuiButton((Rectangle){343, 270, 61, 61}, "#114#")) {
                         estandeSelecionado--;
@@ -395,6 +408,18 @@ int main(void){
             EndDrawing();
         }
 
+        if(actualScreen == DECK_MANAGEMENT){
+
+            BeginDrawing();
+            ClearBackground(BLACK);
+
+            if(GuiButton((Rectangle){16,16,83,48}, "#121#")){
+                actualScreen = GAME_DECK;
+            }//If - Voltar pro GAME_DECK
+
+
+            EndDrawing();
+        }
     }
 
     UnloadTexture(background);
