@@ -226,37 +226,37 @@ void receberCartaAdversario(Estande deck[], Estande mao){
     printf("Erro ao receber carta");
 }
 
-int VerificadorFiltro(char Letra, int poder[], int velocidade[], int alcance[], int percistencia[], int numero, Estande estandes){
+int VerificadorFiltro(/*char Letra,*/ int poder[], int velocidade[], int alcance[], int persistencia[], /*int numero,*/ Estande estandes){
 
-    if ((Letra != NULL) && Letra != estandes.letra)
+    /*if ((Letra != NULL) && Letra != estandes.letra)
+    {
+        return -1;
+    }*/
+
+    if ((poder[0] != -1) && ((estandes.poderDestrutivo < poder[0]) || (estandes.poderDestrutivo > poder[1])))
     {
         return -1;
     }
 
-    if ((poder != NULL) && ((poder[0] < estandes.poderDestrutivo) || (poder[1] > estandes.poderDestrutivo)))
-    {
-        return -1;
-    }
-
-    if ((velocidade != NULL) && ((velocidade[0] < estandes.velocidade) || (velocidade[1] > estandes.velocidade)))
+    if ((velocidade[0] != -1) && ((estandes.velocidade < velocidade[0]) || (estandes.velocidade > velocidade[1])))
     {
         return -1;
     }
     
-    if ((alcance != NULL) && ((alcance[0] < estandes.alcance) || (alcance[1] > estandes.alcance)))
+    if ((alcance[0] != -1) && ((estandes.alcance < alcance[0]) || (estandes.alcance > alcance[1])))
     {
         return -1;
     }
 
-    if ((percistencia != NULL) && ((percistencia[0] < estandes.persistenciaDePoder) || (percistencia[1] > estandes.persistenciaDePoder)))
+    if ((persistencia[0] != -1) && ((estandes.persistenciaDePoder < persistencia[0]) || (estandes.persistenciaDePoder > persistencia[1])))
     {
         return -1;
     }
     
-    if ((numero != NULL) && (numero != estandes.numero))
+    /*if ((numero != NULL) && (numero != estandes.numero))
     {
         return -1;
-    }
+    }*/
     
     return 0;
     

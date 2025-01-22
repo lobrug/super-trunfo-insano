@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "raylib.h"
 #define RAYGUI_IMPLEMENTATION
+#define RAYGUI_SUPPORT_ICONS
 #include "raygui.h"
 #include "structEstandes.h"
 #include "leituraCsv.h"
@@ -11,6 +12,8 @@
 #include "batalha.h"
 #include "botInteligencia.h"
 #include <ctype.h>
+#include <stdbool.h>
+//#include "raygui_icons.h"
 
 char *strcasestr(const char *haystack, const char *needle) {
     if (!*needle) return (char *)haystack;  // Retorna o haystack se needle for vazio.
@@ -39,6 +42,26 @@ int main(void){
     bool cartaJogadorExibida = false;
     bool vitoriaPlayer = false;
     bool vitoriaBot = false;
+    bool filtroCheck = false;
+
+    bool verificaPesquisa = false;
+
+    int filtroPoder[2];
+    int filtroVelocidade[2];
+    int filtroAlcance[2];
+    int filtroPersistencia[2];
+
+    bool checkPoder = false;
+    bool checkVelocidade = false;
+    bool checkAlcance = false;
+    bool checkPersistencia = false;
+
+    bool edit[9];
+
+    for (int i = 0; i < 9; i++){
+                
+        edit[i] = false;
+    }
 
     int turnos = 0;
     
@@ -158,6 +181,32 @@ int main(void){
                 actualScreen = GAME_MENU;
             }//If - Voltar pro GAME_MENU
 
+            if(filtroCheck){
+
+                DrawRectangle(25,122,249,353, BEIGE);
+
+                GuiCheckBox((Rectangle){42,189,26,26}, "Poder", &checkPoder);
+                GuiCheckBox((Rectangle){42,245,26,26}, "Velocidade", &checkVelocidade);
+                GuiCheckBox((Rectangle){42,301,26,26}, "Alcance", &checkAlcance);
+                GuiCheckBox((Rectangle){42,357,26,26}, "Persistência", &checkPersistencia);
+
+                verificaCheckFiltro(&checkPoder, filtroPoder, 166, 177, 203, 80, 24, &edit[0], &edit[1], edit);
+
+                verificaCheckFiltro(&checkVelocidade, filtroVelocidade, 166, 233, 259, 80, 24, &edit[2], &edit[3], edit);
+
+                verificaCheckFiltro(&checkAlcance, filtroAlcance, 166, 289, 315, 80, 24, &edit[4], &edit[5], edit);
+
+                verificaCheckFiltro(&checkPersistencia, filtroPersistencia, 166, 345, 371, 80, 24, &edit[6], &edit[7], edit);
+
+            }else{
+
+                memset(filtroPoder, -1, sizeof(filtroPoder));
+                memset(filtroVelocidade, -1, sizeof(filtroVelocidade));
+                memset(filtroAlcance, -1, sizeof(filtroAlcance));
+                memset(filtroPersistencia, -1, sizeof(filtroPersistencia));
+
+            }
+
             if (strcmp(pesquisa, "") != 0) {
                 int salva_pesquisa[32];
                 int n = 0;
@@ -166,7 +215,7 @@ int main(void){
                 for (int i = 0; i < 32; i++) {
 
                     // Verificar se a pesquisa é substring do nome do estande
-                    if (strcasestr(estandes[i].nome, pesquisa) != NULL) {
+                    if ((strcasestr(estandes[i].nome, pesquisa) != NULL) && (VerificadorFiltro(filtroPoder, filtroVelocidade, filtroAlcance, filtroPersistencia, estandes[i]) == 0)) {
                         salva_pesquisa[n] = i;
                         n++;
                     }
@@ -194,20 +243,61 @@ int main(void){
             } else {
                 // Mostrar carta normalmente se não houver pesquisa
                 encontrado = false;
-                listarCartaNoGerenciamento(estandes[estandeSelecionado]);
 
-                if (GuiButton((Rectangle){343, 270, 61, 61}, "#114#")) {
-                    estandeSelecionado--;
-                    if (estandeSelecionado < 0) estandeSelecionado = 31;
+                int salva_filtro[32];
+                int n = 0;
+
+                for (int i = 0; i < 32; i++) {
+
+                    // Verificar se a pesquisa é substring do nome do estande
+                    if (VerificadorFiltro(filtroPoder, filtroVelocidade, filtroAlcance, filtroPersistencia, estandes[i]) == 0) {
+                        salva_filtro[n] = i;
+                        n++;
+                    }
                 }
 
-                if (GuiButton((Rectangle){698, 270, 61, 61}, "#115#")) {
-                    estandeSelecionado++;
-                    if (estandeSelecionado > 31) estandeSelecionado = 0;
+                if(n == 0){
+                    DrawText("Nenhum resultado encontrado", 300, 300, 20, RED);
+                }else{
+
+                    listarCartaNoGerenciamento(estandes[salva_filtro[estandeSelecionado]]);
+
+                    if (GuiButton((Rectangle){343, 270, 61, 61}, "#114#")) {
+                        estandeSelecionado--;
+                        if (estandeSelecionado < 0) estandeSelecionado = n - 1;
+                    }
+
+                    if (GuiButton((Rectangle){698, 270, 61, 61}, "#115#")) {
+                        estandeSelecionado++;
+                        if (estandeSelecionado >= n) estandeSelecionado = 0;
+                    }
+
                 }
+
             }
     
-            (GuiTextBox((Rectangle){24, 86, 249, 31}, pesquisa, 40, true));
+            if(GuiTextBox((Rectangle){24, 86, 249, 31}, pesquisa, 40, edit[8])){
+
+                edit[8] = true;
+
+                for (int i = 0; i < 7; i++)
+                {
+                    edit[i] = false;
+                }
+                
+            };
+
+            if(GuiButton((Rectangle){35,132,40,40}, "#047#")){
+                filtroCheck = !filtroCheck;
+                if (filtroCheck == false)
+                {
+                    checkPoder = false;
+                    checkVelocidade = false;
+                    checkAlcance = false;
+                    checkPersistencia = false;
+                }
+                
+            }
                 
             EndDrawing();
         }//If - GAME_DECK
