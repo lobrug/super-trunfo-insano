@@ -212,14 +212,13 @@ Estande recebeCartaParaMao(Estande deck[]) {
         }
     }
     printf("Voce nao tem cartas no monte\n");
-    return (Estande){{'\0'}}; // Retorna uma carta vazia se não houver cartas no deck
 }
 
 void receberCartaAdversario(Estande deck[], Estande mao){
     for(int i = 0; i < 32; i++){
         if(deck[i].nome[0] == '\0'){
             deck[i] = mao;
-            memset(&mao, 0, sizeof(Estande));
+            mao = (Estande){{'\0'}};
             return;
         }
     }

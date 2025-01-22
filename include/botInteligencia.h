@@ -7,18 +7,18 @@
 #include <stdio.h>
 
 int botEscolha(Estande maoBot){
-    int maiorValor = 0; // 0 - poder // 1 - velocidade // 2 - alcance // 3 - persistencia
+    int maiorValor = maoBot.poderDestrutivo; // 0 - poder // 1 - velocidade // 2 - alcance // 3 - persistencia
 
     if(maoBot.velocidade > maiorValor){
-        maiorValor = 1;
+        maiorValor = maoBot.velocidade;
     }
 
     if(maoBot.alcance > maiorValor){
-        maiorValor = 2;
+        maiorValor = maoBot.alcance;
     }
 
     if(maoBot.persistenciaDePoder > maiorValor){
-        maiorValor = 3;
+        maiorValor = maoBot.persistenciaDePoder;
     }
 
     return maiorValor;
@@ -27,26 +27,20 @@ int botEscolha(Estande maoBot){
 void botAcao(Estande maoBot, Estande maoPlayer, Estande deckBot[], Estande deckPlayer[]){
     int escolha = botEscolha(maoBot);
 
-    switch (escolha){
-
-    case 0:
+    if(escolha == maoBot.poderDestrutivo){
         batalhaPoder(maoPlayer, maoBot, deckPlayer, deckBot);
-        break;
+    }
 
-    case 1:
+    if(escolha == maoBot.velocidade){
         batalhaVelocidade(maoPlayer, maoBot, deckPlayer, deckBot);
-        break;
+    }
 
-    case 2: 
+    if(escolha == maoBot.alcance){
         batalhaAlcance(maoPlayer, maoBot, deckPlayer, deckBot);
-        break;
-    
-    case 3:
+    }
+
+    if(escolha == maoBot.persistenciaDePoder){
         batalhaPersistencia(maoPlayer, maoBot, deckPlayer, deckBot);
-        break;
-    
-    default:
-        break;
     }
 }
 
