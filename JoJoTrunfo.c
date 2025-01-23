@@ -61,6 +61,13 @@ int main(void){
     bool checkVelocidade = false;
     bool checkAlcance = false;
     bool checkPersistencia = false;
+    bool checkLetra = false;
+    bool checkNumero = false;
+
+    char letras[5] = {'A', 'B', 'C', 'D', 'Z'};
+
+    float indiceLetra = 4;
+    float filtroNumero = -1;
 
     int selecionaCarta;
 
@@ -105,7 +112,6 @@ int main(void){
     Texture2D jojoimg = LoadTexture(".\\assets\\img\\jojo.png");
     Texture2D table = LoadTexture(".\\assets\\img\\table.jpg");
     Texture2D backCard = LoadTexture(".\\assets\\img\\backCard.png");
-    
     
 
     {
@@ -197,6 +203,8 @@ int main(void){
                 GuiCheckBox((Rectangle){42,245,26,26}, "Velocidade", &checkVelocidade);
                 GuiCheckBox((Rectangle){42,301,26,26}, "Alcance", &checkAlcance);
                 GuiCheckBox((Rectangle){42,357,26,26}, "Persistência", &checkPersistencia);
+                GuiCheckBox((Rectangle){42,393,26,26}, "Letra", &checkLetra);
+                GuiCheckBox((Rectangle){42,424,26,26}, "Número", &checkNumero);
 
                 verificaCheckFiltro(&checkPoder, filtroPoder, 166, 177, 203, 80, 24, &edit[0], &edit[1], edit);
 
@@ -206,12 +214,35 @@ int main(void){
 
                 verificaCheckFiltro(&checkPersistencia, filtroPersistencia, 166, 345, 371, 80, 24, &edit[6], &edit[7], edit);
 
+                // ...existing code...
+
+                if (checkLetra) {
+                    GuiSlider((Rectangle){78, 456, 143, 26}, "A", "D", &indiceLetra, 0, 3);
+                    indiceLetra = (int)(indiceLetra + 0.5); // Arredonda para o inteiro mais próximo
+                    char letra = letras[(int)indiceLetra];
+                    DrawText(&letra, 144.5, 458, 20, BLACK);
+                } else {
+                    indiceLetra = 4; // 'Z'
+                }
+
+                if (checkNumero) {
+                    GuiSlider((Rectangle){46, 496, 207, 26}, "1", "8", &filtroNumero, 1, 8);
+                    filtroNumero = (int)(filtroNumero + 0.5); // Arredonda para o inteiro mais próximo
+                    DrawText(TextFormat("%d", (int)filtroNumero), 144.5, 500, 20, BLACK);
+                } else {
+                    filtroNumero = -1;
+                }
+
+            // ...existing code...      
+
             }else{
 
                 memset(filtroPoder, -1, sizeof(filtroPoder));
                 memset(filtroVelocidade, -1, sizeof(filtroVelocidade));
                 memset(filtroAlcance, -1, sizeof(filtroAlcance));
                 memset(filtroPersistencia, -1, sizeof(filtroPersistencia));
+                filtroNumero = -1;
+                indiceLetra = 4;
 
             }
 
@@ -223,7 +254,7 @@ int main(void){
                 for (int i = 0; i < 32; i++) {
 
                     // Verificar se a pesquisa é substring do nome do estande
-                    int filtroResult = VerificadorFiltro(filtroPoder, filtroVelocidade, filtroAlcance, filtroPersistencia, estandes[i]);
+                    int filtroResult = VerificadorFiltro(letras[(int)indiceLetra],filtroPoder, filtroVelocidade, filtroAlcance, filtroPersistencia, (int)filtroNumero,estandes[i]);
                     if ((strcasestr(estandes[i].nome, pesquisa) != NULL) && (filtroResult == 0)) {
                         salva_pesquisa[n] = i;
                         n++;
@@ -235,7 +266,7 @@ int main(void){
                     DrawText("Nenhum resultado encontrado", 300, 300, 20, RED);
                 } else {
                     listarCartaNoGerenciamento(estandes[salva_pesquisa[j]]);
-                    if ( (GuiButton((Rectangle){463,477,176,46}, "GERENCIAR CARTA")))
+                    if ( (GuiButton((Rectangle){463,477,176,46}, "#142# GERENCIAR CARTA")))
                     {
                         actualScreen = DECK_MANAGEMENT;
                         selecionaCarta = salva_pesquisa[j];
@@ -264,7 +295,7 @@ int main(void){
                 for (int i = 0; i < 32; i++) {
 
                     // Verificar se a pesquisa é substring do nome do estande
-                    if (VerificadorFiltro(filtroPoder, filtroVelocidade, filtroAlcance, filtroPersistencia, estandes[i]) == 0) {
+                    if (VerificadorFiltro(letras[(int)indiceLetra],filtroPoder, filtroVelocidade, filtroAlcance, filtroPersistencia, (int)filtroNumero,estandes[i]) == 0) {
                         salva_filtro[n] = i;
                         n++;
                     }
@@ -275,7 +306,7 @@ int main(void){
                 }else{
 
                     listarCartaNoGerenciamento(estandes[salva_filtro[estandeSelecionado]]);
-                    if ( (GuiButton((Rectangle){463,477,176,46}, "GERENCIAR CARTA")))
+                    if ( (GuiButton((Rectangle){463,477,176,46}, "#142# GERENCIAR CARTA")))
                     {
                         actualScreen = DECK_MANAGEMENT;
                         selecionaCarta = salva_filtro[estandeSelecionado];
@@ -314,6 +345,8 @@ int main(void){
                     checkVelocidade = false;
                     checkAlcance = false;
                     checkPersistencia = false;
+                    checkLetra = false;
+                    checkNumero = false;
                 }
                 
             }
