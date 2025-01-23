@@ -7,40 +7,48 @@
 #include <stdio.h>
 
 int botEscolha(Estande maoBot){
-    int maiorValor = maoBot.poderDestrutivo; // 0 - poder // 1 - velocidade // 2 - alcance // 3 - persistencia
+    int maiorValor = maoBot.poderDestrutivo;
+    int escolha = 0; // 0 - poder // 1 - velocidade // 2 - alcance // 3 - persistencia
 
     if(maoBot.velocidade > maiorValor){
         maiorValor = maoBot.velocidade;
+        escolha = 1;
     }
 
     if(maoBot.alcance > maiorValor){
         maiorValor = maoBot.alcance;
+        escolha = 2;
     }
 
     if(maoBot.persistenciaDePoder > maiorValor){
         maiorValor = maoBot.persistenciaDePoder;
+        escolha = 3;
     }
 
-    return maiorValor;
+    return escolha;
 }
 
 void botAcao(Estande maoBot, Estande maoPlayer, Estande deckBot[], Estande deckPlayer[]){
     int escolha = botEscolha(maoBot);
 
-    if(escolha == maoBot.poderDestrutivo){
-        batalhaPoder(maoPlayer, maoBot, deckPlayer, deckBot);
+    if(escolha == 0){
+        batalhaPoder(maoPlayer, maoBot, deckPlayer, deckBot, 32);
+        return;
     }
 
-    if(escolha == maoBot.velocidade){
-        batalhaVelocidade(maoPlayer, maoBot, deckPlayer, deckBot);
+    if(escolha == 1){
+        batalhaVelocidade(maoPlayer, maoBot, deckPlayer, deckBot, 32);
+        return;
     }
 
-    if(escolha == maoBot.alcance){
-        batalhaAlcance(maoPlayer, maoBot, deckPlayer, deckBot);
+    if(escolha == 2){
+        batalhaAlcance(maoPlayer, maoBot, deckPlayer, deckBot, 32);
+        return;
     }
 
-    if(escolha == maoBot.persistenciaDePoder){
-        batalhaPersistencia(maoPlayer, maoBot, deckPlayer, deckBot);
+    if(escolha == 3){
+        batalhaPersistencia(maoPlayer, maoBot, deckPlayer, deckBot, 32);
+        return;
     }
 }
 

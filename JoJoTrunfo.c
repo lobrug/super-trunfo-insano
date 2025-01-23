@@ -375,16 +375,33 @@ int main(void){
             DrawTexturePro(backCard, (Rectangle){0, 0, backCard.width, backCard.height}, (Rectangle){656, 395, 126, 189}, (Vector2){0, 0}, 0.0f, WHITE);
             DrawTexturePro(backCard, (Rectangle){0, 0, backCard.width, backCard.height}, (Rectangle){18, 16, 126, 189}, (Vector2){0, 0}, 0.0f, WHITE);
 
+            if(GuiButton((Rectangle){0 , 0, 50, 50},"debug button")){
+                for(int i = 0; i < 32; i++){
+                    printf("%d: %s\n",i, deckPlayer[i].nome);
+                }
+                printf("%s\n", maoJogador.nome);
+                printf("----------------------\n");
+
+                for(int i = 0; i < 32; i++){
+                    printf("%d: %s\n",i, deckBot[i].nome);
+                }
+                printf("%s\n", maoBot.nome);
+                printf("----------------------\n");
+            }
+
+
             if ((turnos % 2) == 1) { // Vez do player jogar
                 if (isClickedPlayerDeck && !cartaJogadorExibida) { // Só executa ao clicar no botão
                     printf("Teste click\n");
                     maoJogador = recebeCartaParaMao(deckPlayer);
                     maoBot = recebeCartaParaMao(deckBot);
                     cartaJogadorExibida = true; // Marca que a carta foi exibida
-                    turnos++; 
-                    
+
+
                     vitoriaBot = verificaVitoriaBot(deckPlayer);
                     vitoriaPlayer = verificaVitoriaPlayer(deckBot);// Avança o turno
+                    turnos++; 
+                    
                 }
 
                 // Sempre desenha a carta do jogador se ela foi sacada
@@ -396,22 +413,22 @@ int main(void){
                     DrawText("SELECIONE UM ATRIBUTO PARA BATALHA!", 145, 430, 24, PURPLE);
 
                     if(GuiButton((Rectangle){147, 485, 100, 80}, "STRENGHT")){
-                        batalhaPoder(maoJogador, maoBot, deckPlayer, deckBot);
+                        batalhaPoder(maoJogador, maoBot, deckPlayer, deckBot, 32);
                         cartaJogadorExibida = false;
                     }
 
                     if(GuiButton((Rectangle){281, 485, 100, 80}, "SPEED")){
-                        batalhaVelocidade(maoJogador, maoBot, deckPlayer, deckBot);
+                        batalhaVelocidade(maoJogador, maoBot, deckPlayer, deckBot, 32);
                         cartaJogadorExibida = false;
                     }
 
                     if(GuiButton((Rectangle){413, 485, 100, 80}, "RANGE")){
-                        batalhaAlcance(maoJogador, maoBot, deckPlayer, deckBot);
+                        batalhaAlcance(maoJogador, maoBot, deckPlayer, deckBot, 32);
                         cartaJogadorExibida = false;
                     }
 
                     if(GuiButton((Rectangle){549, 485, 100, 80}, "PRSTC")){
-                        batalhaPersistencia(maoJogador, maoBot, deckPlayer, deckBot);
+                        batalhaPersistencia(maoJogador, maoBot, deckPlayer, deckBot, 32);
                         cartaJogadorExibida = false;
                     }
 
@@ -423,12 +440,12 @@ int main(void){
                 maoJogador = recebeCartaParaMao(deckPlayer);
                 maoBot = recebeCartaParaMao(deckBot);
                 botAcao(maoBot, maoJogador, deckBot, deckPlayer);
+                vitoriaBot = verificaVitoriaBot(deckPlayer);
+                vitoriaPlayer = verificaVitoriaPlayer(deckBot);
                 
                 turnos++;
             }
 
-            vitoriaBot = verificaVitoriaBot(deckPlayer);
-            vitoriaPlayer = verificaVitoriaPlayer(deckBot);
 
             if(vitoriaBot == true){
                 DrawRectangle(0,0,800,600,(Color){0,0,0,180});
@@ -445,8 +462,6 @@ int main(void){
             }
 
             
-            
-
             EndDrawing();
         }
 
@@ -462,7 +477,9 @@ int main(void){
 
             EndDrawing();
         }
+    
     }
+
 
     UnloadTexture(background);
     UnloadTexture(jojoimg); // Unload texture when done

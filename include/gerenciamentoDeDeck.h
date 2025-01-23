@@ -206,24 +206,14 @@ void armazenaDeckFinal(Estande estandes[]){
 Estande recebeCartaParaMao(Estande deck[]) {
     for (int i = 0; i < 32; i++) {
         if (deck[i].nome[0] != '\0') { // Verifica se o slot não está vazio
-            Estande carta = deck[i];
-            deck[i].nome[0] = '\0'; // Limpa o slot no deck
+            Estande carta = deck[i]; // Atribui a carta do deck para a mão
+            deck[i].nome[0] = '\0';
             return carta;
         }
     }
     printf("Voce nao tem cartas no monte\n");
 }
 
-void receberCartaAdversario(Estande deck[], Estande mao){
-    for(int i = 0; i < 32; i++){
-        if(deck[i].nome[0] == '\0'){
-            deck[i] = mao;
-            mao = (Estande){{'\0'}};
-            return;
-        }
-    }
-    printf("Erro ao receber carta");
-}
 
 int VerificadorFiltro(char Letra, int poder[], int velocidade[], int alcance[], int persistencia[], int numero, Estande estandes){
 
