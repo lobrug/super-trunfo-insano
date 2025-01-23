@@ -6,73 +6,126 @@
 #include "structEstandes.h"
 #include "gerenciamentoDeDeck.h"
 
-void batalhaPoder(Estande player, Estande bot, Estande deckJogador[], Estande deckBot[]){
-    if(player.poderDestrutivo > bot.poderDestrutivo){
-        receberCartaAdversario(deckJogador, bot);
-        return;
-    }
-
-    if(player.poderDestrutivo < bot.poderDestrutivo){
-        receberCartaAdversario(deckBot, player);
-        return;
-    }
-
-    if(player.poderDestrutivo == bot.poderDestrutivo){
-        return;
+void adicionaCartaAoDeck(Estande deck[], Estande carta, int tamanho) {
+    for (int i = 0; i < tamanho; i++) {
+        if (deck[i].nome[0] == '\0') { // Encontra um slot vazio no deck
+            deck[i] = carta; // Adiciona a carta ao deck
+            return;
+        }
     }
 }
 
-void batalhaVelocidade(Estande player, Estande bot, Estande deckJogador[], Estande deckBot[]){
-    if(player.velocidade > bot.velocidade){
-        receberCartaAdversario(deckJogador, bot);
-        return;
-    }
-
-    if(player.velocidade < bot.velocidade){
-        receberCartaAdversario(deckBot, player);
-        return;
-    }
-
-    if(player.velocidade == bot.velocidade){
-        return;
-    }
-}
-
-void batalhaAlcance(Estande player, Estande bot, Estande deckJogador[], Estande deckBot[]){
-    if(player.alcance > bot.alcance){
-        receberCartaAdversario(deckJogador, bot);
-        return;
-    }
-
-    if(player.alcance < bot.alcance){
-        receberCartaAdversario(deckBot, player);
-        return;
-    }
-
-    if(player.alcance == bot.alcance){
-        return;
+void batalhaPoder(Estande maoJogador, Estande maoBot, Estande deckPlayer[], Estande deckBot[], int tamanho) {
+    if (maoJogador.poderDestrutivo > maoBot.poderDestrutivo) {
+        // Jogador vence a batalha, a carta do bot é transferida para o deck do jogador
+        for (int i = 0; i < tamanho; i++) {
+            if (deckBot[i].nome[0] != '\0' && strcmp(deckBot[i].nome, maoBot.nome) == 0) {
+                // Adiciona a carta ao deck do jogador
+                adicionaCartaAoDeck(deckPlayer, deckBot[i], tamanho);
+                // Remove a carta do deck do bot
+                memset(&deckBot[i], 0, sizeof(deckBot[i])); 
+                break;
+            }
+        }
+    } else {
+        // Bot vence a batalha, a carta do jogador é transferida para o deck do bot
+        for (int i = 0; i < tamanho; i++) {
+            if (deckPlayer[i].nome[0] != '\0' && strcmp(deckPlayer[i].nome, maoJogador.nome) == 0) {
+                // Adiciona a carta ao deck do bot
+                adicionaCartaAoDeck(deckBot, deckPlayer[i], tamanho);
+                // Remove a carta do deck do jogador
+                memset(&deckPlayer[i], 0, sizeof(deckPlayer[i])); 
+                break;
+            }
+        }
     }
 }
 
-void batalhaPersistencia(Estande player, Estande bot, Estande deckJogador[], Estande deckBot[]){
-    if(player.persistenciaDePoder > bot.persistenciaDePoder){
-        receberCartaAdversario(deckJogador, bot);
-        return;
-    }
 
-    if(player.persistenciaDePoder < bot.persistenciaDePoder){
-        receberCartaAdversario(deckBot, player);
-        return;
-    }
-
-    if(player.persistenciaDePoder == bot.persistenciaDePoder){
-        return;
+void batalhaVelocidade(Estande maoJogador, Estande maoBot, Estande deckPlayer[], Estande deckBot[], int tamanho) {
+    if (maoJogador.velocidade > maoBot.velocidade) {
+        // Jogador vence a batalha, a carta do bot é transferida para o deck do jogador
+        for (int i = 0; i < tamanho; i++) {
+            if (deckBot[i].nome[0] != '\0' && strcmp(deckBot[i].nome, maoBot.nome) == 0) {
+                // Adiciona a carta ao deck do jogador
+                adicionaCartaAoDeck(deckPlayer, deckBot[i], tamanho);
+                // Remove a carta do deck do bot
+                memset(&deckBot[i], 0, sizeof(deckBot[i])); 
+                break;
+            }
+        }
+    } else {
+        // Bot vence a batalha, a carta do jogador é transferida para o deck do bot
+        for (int i = 0; i < tamanho; i++) {
+            if (deckPlayer[i].nome[0] != '\0' && strcmp(deckPlayer[i].nome, maoJogador.nome) == 0) {
+                // Adiciona a carta ao deck do bot
+                adicionaCartaAoDeck(deckBot, deckPlayer[i], tamanho);
+                // Remove a carta do deck do jogador
+                memset(&deckPlayer[i], 0, sizeof(deckPlayer[i])); 
+                break;
+            }
+        }
     }
 }
+
+
+void batalhaAlcance(Estande maoJogador, Estande maoBot, Estande deckPlayer[], Estande deckBot[], int tamanho) {
+    if (maoJogador.alcance > maoBot.alcance) {
+        // Jogador vence a batalha, a carta do bot é transferida para o deck do jogador
+        for (int i = 0; i < tamanho; i++) {
+            if (deckBot[i].nome[0] != '\0' && strcmp(deckBot[i].nome, maoBot.nome) == 0) {
+                // Adiciona a carta ao deck do jogador
+                adicionaCartaAoDeck(deckPlayer, deckBot[i], tamanho);
+                // Remove a carta do deck do bot
+                memset(&deckBot[i], 0, sizeof(deckBot[i])); 
+                break;
+            }
+        }
+    } else {
+        // Bot vence a batalha, a carta do jogador é transferida para o deck do bot
+        for (int i = 0; i < tamanho; i++) {
+            if (deckPlayer[i].nome[0] != '\0' && strcmp(deckPlayer[i].nome, maoJogador.nome) == 0) {
+                // Adiciona a carta ao deck do bot
+                adicionaCartaAoDeck(deckBot, deckPlayer[i], tamanho);
+                // Remove a carta do deck do jogador
+                memset(&deckPlayer[i], 0, sizeof(deckPlayer[i])); 
+                break;
+            }
+        }
+    }
+}
+
+
+void batalhaPersistencia(Estande maoJogador, Estande maoBot, Estande deckPlayer[], Estande deckBot[], int tamanho) {
+    if (maoJogador.persistenciaDePoder > maoBot.persistenciaDePoder) {
+        // Jogador vence a batalha, a carta do bot é transferida para o deck do jogador
+        for (int i = 0; i < tamanho; i++) {
+            if (deckBot[i].nome[0] != '\0' && strcmp(deckBot[i].nome, maoBot.nome) == 0) {
+                // Adiciona a carta ao deck do jogador
+                adicionaCartaAoDeck(deckPlayer, deckBot[i], tamanho);
+                // Remove a carta do deck do bot
+                memset(&deckBot[i], 0, sizeof(deckBot[i])); 
+                break;
+            }
+        }
+    } else {
+        // Bot vence a batalha, a carta do jogador é transferida para o deck do bot
+        for (int i = 0; i < tamanho; i++) {
+            if (deckPlayer[i].nome[0] != '\0' && strcmp(deckPlayer[i].nome, maoJogador.nome) == 0) {
+                // Adiciona a carta ao deck do bot
+                adicionaCartaAoDeck(deckBot, deckPlayer[i], tamanho);
+                // Remove a carta do deck do jogador
+                memset(&deckPlayer[i], 0, sizeof(deckPlayer[i])); 
+                break;
+            }
+        }
+    }
+}
+
 
 bool verificaVitoriaBot(Estande deckPlayer[]){
     for(int i = 0; i < 32; i++){
-        if(deckPlayer[i].nome != '\0'){
+        if(deckPlayer[i].nome[0] != '\0'){
             return false;
         }
     }
@@ -81,7 +134,7 @@ bool verificaVitoriaBot(Estande deckPlayer[]){
 
 bool verificaVitoriaPlayer(Estande deckBot[]){
     for(int i = 0; i < 32; i++){
-        if(deckBot[i].nome != '\0'){
+        if(deckBot[i].nome[0] != '\0'){
             return false;
         }
     }
