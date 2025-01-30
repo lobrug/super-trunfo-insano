@@ -57,6 +57,14 @@ int main(void){
     int filtroAlcance[2];
     int filtroPersistencia[2];
 
+    int AlteraPoder;
+    int AlteraVelocidade;
+    int AlteraAlcance;
+    int AlteraPersistencia;
+
+    bool click_img = false;
+    char endereco[100] = ".\\assets\\mods\\";
+
     bool checkPoder = false;
     bool checkVelocidade = false;
     bool checkAlcance = false;
@@ -76,6 +84,7 @@ int main(void){
     for (int i = 0; i < 9; i++){
                 
         edit[i] = false;
+        
     }
 
     int turnos = 0;
@@ -112,7 +121,7 @@ int main(void){
     Texture2D jojoimg = LoadTexture(".\\assets\\img\\jojo.png");
     Texture2D table = LoadTexture(".\\assets\\img\\table.jpg");
     Texture2D backCard = LoadTexture(".\\assets\\img\\backCard.png");
-    
+    Texture2D jojos = LoadTexture(".\\assets\\img\\jojos.png");
 
     {
     loadImageToCard(&estandes[0], ".\\assets\\stands\\starplatinum.png", 174, 142);
@@ -266,10 +275,10 @@ int main(void){
                     DrawText("Nenhum resultado encontrado", 300, 300, 20, RED);
                 } else {
                     listarCartaNoGerenciamento(estandes[salva_pesquisa[j]]);
-                    if ( (GuiButton((Rectangle){463,477,176,46}, "#142# GERENCIAR CARTA")))
+                    if ( (GuiButton((Rectangle){463,477,176,46}, "#142# ALTERAR CARTA")))
                     {
-                        actualScreen = DECK_MANAGEMENT;
                         selecionaCarta = salva_pesquisa[j];
+                        actualScreen = DECK_MANAGEMENT;
                     }
 
                     // Botão para resultado anterior
@@ -308,8 +317,8 @@ int main(void){
                     listarCartaNoGerenciamento(estandes[salva_filtro[estandeSelecionado]]);
                     if ( (GuiButton((Rectangle){463,477,176,46}, "#142# GERENCIAR CARTA")))
                     {
-                        actualScreen = DECK_MANAGEMENT;
                         selecionaCarta = salva_filtro[estandeSelecionado];
+                        actualScreen = DECK_MANAGEMENT;
                     }
 
                     if (GuiButton((Rectangle){343, 270, 61, 61}, "#114#")) {
@@ -470,6 +479,82 @@ int main(void){
             BeginDrawing();
             ClearBackground(BLACK);
 
+            DrawTexture(jojos, 500, 0, WHITE);
+
+
+            listarCartaNaAlteracao(estandes[selecionaCarta]);
+
+            if (GuiButton((Rectangle){305, 21, 191, 39}, "#23# Alterar Imagem"))
+            {
+                click_img = !click_img;
+            }
+
+            if (click_img == true)
+            {
+
+                for (int i = 0; i < 6; i++)
+                {
+                    edit[i] = false;
+                }
+                
+                edit[5] = true;
+
+                if (GuiTextBox((Rectangle){255, 77, 291, 39}, endereco, 100, edit[5]) == true && IsKeyPressed(KEY_ENTER)) {
+                    loadImageToCard(&estandes[selecionaCarta], endereco, 174, 142);
+                    click_img = false;
+                    strcpy(endereco, ".\\assets\\mods\\");
+                }
+            }
+            
+            
+
+            if(GuiSpinner((Rectangle){99, 172, 156, 43}, "Poder", &estandes[selecionaCarta].poderDestrutivo, 1, 100, edit[0])){
+                for (int i = 0; i < 6; i++)
+                {
+                    edit[i] = false;
+                }
+                
+                edit[0] = true;
+            }
+
+            if(GuiSpinner((Rectangle){99, 243, 156, 43}, "Velocidade", &estandes[selecionaCarta].velocidade, 1, 100, edit[1])){
+                for (int i = 0; i < 6; i++)
+                {
+                    edit[i] = false;
+                }
+                
+                edit[1] = true;
+            }
+
+            if(GuiSpinner((Rectangle){99, 314, 156, 43}, "Alcance", &estandes[selecionaCarta].alcance, 1, 100, edit[2])){
+                for (int i = 0; i < 6; i++)
+                {
+                    edit[i] = false;
+                }
+                
+                edit[2] = true;
+            }
+
+            if(GuiSpinner((Rectangle){99, 385, 156, 43}, "Persistência", &estandes[selecionaCarta].persistenciaDePoder, 1, 100, edit[3])){
+                for (int i = 0; i < 6; i++)
+                {
+                    edit[i] = false;
+                }
+                
+                edit[3] = true;
+            }
+
+            DrawRectangle(255, 478, 291, 40, WHITE);
+
+            if(GuiTextBox((Rectangle){255, 478, 291, 40}, estandes[selecionaCarta].nome, 30, edit[4])){
+                for (int i = 0; i < 6; i++)
+                {
+                    edit[i] = false;
+                }
+                
+                edit[4] = true;
+            }
+
             if(GuiButton((Rectangle){16,16,83,48}, "#121#")){
                 actualScreen = GAME_DECK;
             }//If - Voltar pro GAME_DECK
@@ -486,6 +571,7 @@ int main(void){
     UnloadTexture(table);
     UnloadTexture(backCard);
     UnloadImage(icon);
+    UnloadTexture(jojos);
     CloseWindow();
 
     return 0;

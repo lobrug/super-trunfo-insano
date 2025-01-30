@@ -37,6 +37,46 @@ void listarCarta(Estande estande){
     printf("            Persistencia: %d\n\n", estande.persistenciaDePoder);
 }
 
+void listarCartaNaAlteracao(Estande estande){
+    if(estande.super == 0) DrawRectangle(300, 150, 200, 300, LIGHTGRAY); //card rectangle
+    if(estande.super == 1) DrawRectangle(300, 150, 200, 300, GOLD);
+    DrawRectangle(313, 158, 174, 142, BLACK); //foto
+    DrawRectangle(313, 336, 172, 52, WHITE); //stats box
+    DrawText("Strenght: ", 318, 345, 12, BLACK);
+    DrawText("    Speed: ", 318, 363, 12, BLACK);
+    DrawText("Range: ", 406, 346, 12, BLACK);
+    DrawText("Prstc: ", 406, 362, 12, BLACK);
+    DrawTexture(estande.foto, 313, 158, WHITE);
+    if(estande.super ==1){
+        char goldenAux[40] = "Golden Experience\nRequiem - SUPER";
+        DrawText(goldenAux, 313, 300, 18, BLACK);
+    }else{
+        DrawText(estande.nome, 313, 300, 18, BLACK);
+    }
+    int valores[4] = {estande.poderDestrutivo, estande.velocidade, estande.alcance, estande.persistenciaDePoder};
+    char buffer[32];
+    
+    for(int i = 0; i < 4; i++){
+        snprintf(buffer, sizeof(buffer), "%d", valores[i]);
+        if(i == 0){
+            DrawText(buffer, 378, 346, 14, BLACK);
+        }
+
+        if(i == 1){
+            DrawText(buffer, 378, 362, 14, BLACK);
+        }
+
+        if(i == 2){
+            DrawText(buffer, 447, 346, 14, BLACK);
+        }
+
+        if(i == 3){
+            DrawText(buffer, 447, 362, 14, BLACK);
+        }
+    }
+    
+}
+
 void listarCartaNoGerenciamento(Estande estande){
     if(estande.super == 0) DrawRectangle(451, 151, 200, 300, LIGHTGRAY); //card rectangle
     if(estande.super == 1) DrawRectangle(451, 151, 200, 300, GOLD);
