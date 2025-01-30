@@ -463,8 +463,11 @@ int main(void){
 
             if(vitoriaBot == true && pontuacaoBot > pontuacaoPlayer){
                 DrawRectangle(0,0,800,600,(Color){0,0,0,255});
-                DrawText("VOCÊ PERDEU! TENTE NOVAMENTE", 200, 200, 36, RED);
+                DrawText("VOCÊ PERDEU! TENTE NOVAMENTE", 100, 200, 36, RED);
                 if(GuiButton((Rectangle){295,407,211,47}, "Voltar ao menu")){
+                    pontuacaoBot = 0;
+                    pontuacaoPlayer = 0;
+                    turnos = 0;
                     actualScreen = GAME_MENU;
                 }
 
@@ -475,7 +478,25 @@ int main(void){
                 DrawRectangle(0,0,800,600,(Color){0,0,0,255});
                 DrawText("PARABENS! VOCE VENCEU", 200, 200, 36, RED);
                 if(GuiButton((Rectangle){295,407,211,47}, "Voltar ao menu")){
+                    pontuacaoBot = 0;
+                    pontuacaoPlayer = 0;
+                    turnos = 0;
                     actualScreen = GAME_MENU;
+
+                }
+                        
+
+            }
+
+            if((vitoriaPlayer == true && pontuacaoPlayer == pontuacaoBot) || (vitoriaBot == true && pontuacaoPlayer == pontuacaoBot)){
+                DrawRectangle(0,0,800,600,(Color){0,0,0,255});
+                DrawText("O JOGO TERMINOU EMPATADO", 200, 200, 36, RED);
+                if(GuiButton((Rectangle){295,407,211,47}, "Voltar ao menu")){
+                    pontuacaoBot = 0;
+                    pontuacaoPlayer = 0;
+                    turnos = 0;
+                    actualScreen = GAME_MENU;
+
                 }
                         
 
