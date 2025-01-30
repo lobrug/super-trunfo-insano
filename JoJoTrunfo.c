@@ -57,6 +57,9 @@ int main(void){
     int filtroAlcance[2];
     int filtroPersistencia[2];
 
+    int pontuacaoBot = 0;
+    int pontuacaoPlayer = 0;
+
     int AlteraPoder;
     int AlteraVelocidade;
     int AlteraAlcance;
@@ -396,6 +399,8 @@ int main(void){
                 }
                 printf("%s\n", maoBot.nome);
                 printf("----------------------\n");
+                printf("player: %d\n", pontuacaoPlayer);
+                printf("bot: %d\n", pontuacaoBot);
             }
 
 
@@ -422,22 +427,22 @@ int main(void){
                     DrawText("SELECIONE UM ATRIBUTO PARA BATALHA!", 145, 430, 24, PURPLE);
 
                     if(GuiButton((Rectangle){147, 485, 100, 80}, "STRENGHT")){
-                        batalhaPoder(maoJogador, maoBot, deckPlayer, deckBot, 32);
+                        batalhaPoder(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
                         cartaJogadorExibida = false;
                     }
 
                     if(GuiButton((Rectangle){281, 485, 100, 80}, "SPEED")){
-                        batalhaVelocidade(maoJogador, maoBot, deckPlayer, deckBot, 32);
+                        batalhaVelocidade(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
                         cartaJogadorExibida = false;
                     }
 
                     if(GuiButton((Rectangle){413, 485, 100, 80}, "RANGE")){
-                        batalhaAlcance(maoJogador, maoBot, deckPlayer, deckBot, 32);
+                        batalhaAlcance(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
                         cartaJogadorExibida = false;
                     }
 
                     if(GuiButton((Rectangle){549, 485, 100, 80}, "PRSTC")){
-                        batalhaPersistencia(maoJogador, maoBot, deckPlayer, deckBot, 32);
+                        batalhaPersistencia(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
                         cartaJogadorExibida = false;
                     }
 
@@ -448,7 +453,7 @@ int main(void){
             }else{ //vez do bot jogar
                 maoJogador = recebeCartaParaMao(deckPlayer);
                 maoBot = recebeCartaParaMao(deckBot);
-                botAcao(maoBot, maoJogador, deckBot, deckPlayer);
+                botAcao(maoBot, maoJogador, deckBot, deckPlayer, &pontuacaoPlayer, &pontuacaoBot);
                 vitoriaBot = verificaVitoriaBot(deckPlayer);
                 vitoriaPlayer = verificaVitoriaPlayer(deckBot);
                 
@@ -456,16 +461,22 @@ int main(void){
             }
 
 
-            if(vitoriaBot == true){
-                DrawRectangle(0,0,800,600,(Color){0,0,0,180});
-                DrawText("VOCE PERDEU", 200, 200, 36, RED);
+            if(vitoriaBot == true && pontuacaoBot > pontuacaoPlayer){
+                DrawRectangle(0,0,800,600,(Color){0,0,0,255});
+                DrawText("VOCÊ PERDEU! TENTE NOVAMENTE", 200, 200, 36, RED);
+                if(GuiButton((Rectangle){295,407,211,47}, "Voltar ao menu")){
+                    actualScreen = GAME_MENU;
+                }
 
 
             }
 
-            if(vitoriaPlayer == true){
-                DrawRectangle(0,0,800,600,(Color){0,0,0,180});
+            if(vitoriaPlayer == true && pontuacaoPlayer > pontuacaoBot){
+                DrawRectangle(0,0,800,600,(Color){0,0,0,255});
                 DrawText("PARABENS! VOCE VENCEU", 200, 200, 36, RED);
+                if(GuiButton((Rectangle){295,407,211,47}, "Voltar ao menu")){
+                    actualScreen = GAME_MENU;
+                }
                         
 
             }

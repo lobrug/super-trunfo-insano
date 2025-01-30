@@ -28,26 +28,26 @@ int botEscolha(Estande maoBot){
     return escolha;
 }
 
-void botAcao(Estande maoBot, Estande maoPlayer, Estande deckBot[], Estande deckPlayer[]){
+void botAcao(Estande maoBot, Estande maoPlayer, Estande deckBot[], Estande deckPlayer[], int *pontuacaoPlayer, int *pontuacaoBot){
     int escolha = botEscolha(maoBot);
 
     if(escolha == 0){
-        batalhaPoder(maoPlayer, maoBot, deckPlayer, deckBot, 32);
+        batalhaPoder(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot);
         return;
     }
 
     if(escolha == 1){
-        batalhaVelocidade(maoPlayer, maoBot, deckPlayer, deckBot, 32);
+        batalhaVelocidade(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot);
         return;
     }
 
     if(escolha == 2){
-        batalhaAlcance(maoPlayer, maoBot, deckPlayer, deckBot, 32);
+        batalhaAlcance(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot);
         return;
     }
 
     if(escolha == 3){
-        batalhaPersistencia(maoPlayer, maoBot, deckPlayer, deckBot, 32);
+        batalhaPersistencia(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot);
         return;
     }
 }
