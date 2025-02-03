@@ -18,7 +18,7 @@
             estande->foto = texture;
             UnloadImage(imageTemp);
             return;
-            
+
         }else{
 
             ImageResize(&imageTemp, width, height);
@@ -32,8 +32,5 @@
         
     }
 
-
-
-    
 
 #endif
