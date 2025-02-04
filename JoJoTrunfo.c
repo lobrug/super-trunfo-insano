@@ -116,6 +116,7 @@ int main(void){
     leituraArquivoCsv(estandes);
 
     InitWindow(screenWidth, screenHeight, "Super-Trunfo Insanamente Bizarro");
+    InitAudioDevice();
 
     Image icon = LoadImage(".\\assets\\img\\icon.png"); // Ícone como imagem PNG
     SetWindowIcon(icon);
@@ -129,6 +130,7 @@ int main(void){
     Texture2D table = LoadTexture(".\\assets\\img\\table.jpg");
     Texture2D backCard = LoadTexture(".\\assets\\img\\backCard.png");
     Texture2D jojos = LoadTexture(".\\assets\\img\\jojos.png");
+    Sound buttonSound = LoadSound(".\\assets\\sounds\\buttonsound.mp3");
 
     {
     loadImageToCard(&estandes[0], ".\\assets\\stands\\starplatinum.png", 174, 142);
@@ -181,11 +183,13 @@ int main(void){
 
 
             if(GuiButton((Rectangle){295,357,211,47}, "Play")){
+                PlaySound(buttonSound);
                 embaralharDecks(deckPlayer, deckBot, estandes);
                 actualScreen = GAME_PLAY;
             }
 
             if(GuiButton((Rectangle){295,407,211,47}, "Card Management")){
+                PlaySound(buttonSound);
                 actualScreen = GAME_DECK;
                 estandeSelecionado = 0;
                 j= 0;
@@ -377,8 +381,9 @@ int main(void){
             DrawTexturePro(table, (Rectangle){0, 0, table.width, table.height}, (Rectangle){0, 0, 800, 600}, (Vector2){0, 0}, 0.0f, WHITE);
 
 
-            if(GuiButton((Rectangle){16,540,83,48}, "#121#")){         
-                        actualScreen = GAME_MENU;  
+            if(GuiButton((Rectangle){16,540,83,48}, "#121#")){ 
+                PlaySound(buttonSound);        
+                actualScreen = GAME_MENU;  
             }
 
 
@@ -408,6 +413,7 @@ int main(void){
 
             if((turnos % 2) == 1){
                 if (GuiButton((Rectangle){675,270,100,60},"#115#") && !cartaJogadorExibida) { // Só executa ao clicar no botão
+                    PlaySound(buttonSound);
                     maoJogador = recebeCartaParaMao(deckPlayer);
                     maoBot = recebeCartaParaMao(deckBot);
                     cartaJogadorExibida = true; // Marca que a carta foi exibida
@@ -429,6 +435,7 @@ int main(void){
                     }
 
                     if(GuiButton((Rectangle){310, 528, 80, 50}, "VELOCIDADE")){
+                        PlaySound(buttonSound);
                         batalhaVelocidade(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
                         cartaJogadorExibida = false;
                         vitoriaBot = verificaVitoriaBot(deckPlayer);
@@ -437,6 +444,7 @@ int main(void){
                     }
 
                     if(GuiButton((Rectangle){410, 528, 80, 50}, "ALCANCE")){
+                        PlaySound(buttonSound);
                         batalhaAlcance(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
                         cartaJogadorExibida = false;
                         vitoriaBot = verificaVitoriaBot(deckPlayer);
@@ -445,6 +453,7 @@ int main(void){
                     }
 
                     if(GuiButton((Rectangle){510, 528, 80, 50}, "PERSISTENCIA")){
+                        PlaySound(buttonSound);
                         batalhaPersistencia(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
                         cartaJogadorExibida = false;
                         vitoriaBot = verificaVitoriaBot(deckPlayer);
@@ -454,6 +463,7 @@ int main(void){
                 }
             }else if((turnos % 2) == 0){
                 if(GuiButton((Rectangle){675,270,100,60},"#115#") && !cartaBotExibida){
+                    PlaySound(buttonSound);
                     maoJogador = recebeCartaParaMao(deckPlayer);
                     maoBot = recebeCartaParaMao(deckBot);
                     cartaBotExibida = true; // Marca que a carta foi exibida
@@ -474,6 +484,7 @@ int main(void){
                 DrawRectangle(0,0,800,600,(Color){0,0,0,255});
                 DrawText("VOCÊ PERDEU! TENTE NOVAMENTE", 100, 200, 36, RED);
                 if(GuiButton((Rectangle){295,407,211,47}, "Voltar ao menu")){
+                    PlaySound(buttonSound);
                     pontuacaoBot = 0;
                     pontuacaoPlayer = 0;
                     turnos = 0;
@@ -490,6 +501,7 @@ int main(void){
                 DrawRectangle(0,0,800,600,(Color){0,0,0,255});
                 DrawText("PARABENS! VOCE VENCEU", 200, 200, 36, RED);
                 if(GuiButton((Rectangle){295,407,211,47}, "Voltar ao menu")){
+                    PlaySound(buttonSound);
                     pontuacaoBot = 0;
                     pontuacaoPlayer = 0;
                     turnos = 0;
@@ -507,6 +519,7 @@ int main(void){
                 DrawRectangle(0,0,800,600,(Color){0,0,0,255});
                 DrawText("O JOGO TERMINOU EMPATADO", 200, 200, 36, RED);
                 if(GuiButton((Rectangle){295,407,211,47}, "Voltar ao menu")){
+                    PlaySound(buttonSound);
                     pontuacaoBot = 0;
                     pontuacaoPlayer = 0;
                     turnos = 0;
@@ -623,6 +636,7 @@ int main(void){
     UnloadTexture(backCard);
     UnloadImage(icon);
     UnloadTexture(jojos);
+    UnloadSound(buttonSound);
     CloseWindow();
 
     return 0;
