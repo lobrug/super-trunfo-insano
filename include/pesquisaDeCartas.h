@@ -97,8 +97,8 @@ void listarCartaNoGerenciamento(Estande estande){
 
 void listarCartaNoJogoGrande(Estande estande) {
     
-    if (estande.super == 0) DrawRectangle(271, 51, 258, 359, LIGHTGRAY); // Card rectangle
-    if (estande.super == 1) DrawRectangle(271, 51, 258, 359, GOLD);
+    if (estande.super == 0) DrawRectangle(150, 150, 200, 300, LIGHTGRAY); // Card rectangle
+    if (estande.super == 1) DrawRectangle(150, 150, 200, 300, GOLD);
 
     DrawRectangle(285, 59, 224, 170, BLACK); // Foto
     DrawRectangle(285, 285, 222, 62, WHITE); // Stats box

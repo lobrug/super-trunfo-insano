@@ -46,6 +46,7 @@ int main(void){
     Estande maoBot;
 
     bool cartaJogadorExibida = false;
+    bool cartaBotExibida = false;
     bool vitoriaPlayer = false;
     bool vitoriaBot = false;
     bool filtroCheck = false;
@@ -90,7 +91,10 @@ int main(void){
         
     }
 
-    int turnos = 0;
+    int turnos = 1;
+    bool verificaMaoBot = false;
+    bool verificaMaoPlayer = false;
+
     
 
     gameScreens actualScreen = GAME_MENU;
@@ -377,15 +381,12 @@ int main(void){
                         actualScreen = GAME_MENU;  
             }
 
-            DrawRectangle(240, 206, 126, 189, PURPLE);
-            DrawText("X",392, 279, 36, BLACK);
-            DrawRectangle(435, 206, 126, 189, PURPLE);
 
-            bool isHoverPlayerDeck = CheckCollisionPointRec(mousePos, (Rectangle){656, 395, 126, 189});
-            bool isClickedPlayerDeck = isHoverPlayerDeck && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
-            Color tint = isHoverPlayerDeck ? GRAY : WHITE;
-            DrawTexturePro(backCard, (Rectangle){0, 0, backCard.width, backCard.height}, (Rectangle){656, 395, 126, 189}, (Vector2){0, 0}, 0.0f, WHITE);
-            DrawTexturePro(backCard, (Rectangle){0, 0, backCard.width, backCard.height}, (Rectangle){18, 16, 126, 189}, (Vector2){0, 0}, 0.0f, WHITE);
+
+            DrawRectangle(150, 150, 200, 300, PURPLE);
+            DrawText("X",392, 279, 36, BLACK);
+            DrawRectangle(450, 150, 200, 300, PURPLE);
+            DrawTexturePro(backCard, (Rectangle){0, 0, backCard.width, backCard.height}, (Rectangle){450, 150, 200, 300}, (Vector2){0, 0}, 0.0f, WHITE);
 
             if(GuiButton((Rectangle){0 , 0, 50, 50},"debug button")){
                 for(int i = 0; i < 32; i++){
@@ -401,63 +402,71 @@ int main(void){
                 printf("----------------------\n");
                 printf("player: %d\n", pontuacaoPlayer);
                 printf("bot: %d\n", pontuacaoBot);
+                printf("Turnos: %d\n", turnos);
             }
 
 
-            if ((turnos % 2) == 1) { // Vez do player jogar
-                if (isClickedPlayerDeck && !cartaJogadorExibida) { // Só executa ao clicar no botão
-                    printf("Teste click\n");
+            if((turnos % 2) == 1){
+                if (GuiButton((Rectangle){675,270,100,60},"#115#") && !cartaJogadorExibida) { // Só executa ao clicar no botão
                     maoJogador = recebeCartaParaMao(deckPlayer);
                     maoBot = recebeCartaParaMao(deckBot);
                     cartaJogadorExibida = true; // Marca que a carta foi exibida
-
-
-                    vitoriaBot = verificaVitoriaBot(deckPlayer);
-                    vitoriaPlayer = verificaVitoriaPlayer(deckBot);// Avança o turno
-                    turnos++; 
                     
                 }
 
-                // Sempre desenha a carta do jogador se ela foi sacada
-                if (cartaJogadorExibida) {
-                    DrawRectangle(0,0,800,600,(Color){0,0,0,180});
+                if(cartaJogadorExibida){
+                    DrawRectangle(205 ,523 ,390, 60, PURPLE);
+                    listarCartaJogadorBotVerso(maoJogador);
 
-                    DrawRectangle(126, 470, 548, 111, DARKPURPLE);
-                    listarCartaNoJogoGrande(maoJogador);
-                    DrawText("SELECIONE UM ATRIBUTO PARA BATALHA!", 145, 430, 24, PURPLE);
+                    DrawText("ESCOLHA UM ATRIBUTO PARA BATALHAR!", 150, 481, 24, BLACK);
 
-                    if(GuiButton((Rectangle){147, 485, 100, 80}, "STRENGHT")){
+                    if(GuiButton((Rectangle){210, 528, 80, 50}, "PODER")){
                         batalhaPoder(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
                         cartaJogadorExibida = false;
+                        vitoriaBot = verificaVitoriaBot(deckPlayer);
+                        vitoriaPlayer = verificaVitoriaPlayer(deckBot);
+                        turnos++;
                     }
 
-                    if(GuiButton((Rectangle){281, 485, 100, 80}, "SPEED")){
+                    if(GuiButton((Rectangle){310, 528, 80, 50}, "VELOCIDADE")){
                         batalhaVelocidade(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
                         cartaJogadorExibida = false;
+                        vitoriaBot = verificaVitoriaBot(deckPlayer);
+                        vitoriaPlayer = verificaVitoriaPlayer(deckBot);
+                        turnos++;
                     }
 
-                    if(GuiButton((Rectangle){413, 485, 100, 80}, "RANGE")){
+                    if(GuiButton((Rectangle){410, 528, 80, 50}, "ALCANCE")){
                         batalhaAlcance(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
                         cartaJogadorExibida = false;
+                        vitoriaBot = verificaVitoriaBot(deckPlayer);
+                        vitoriaPlayer = verificaVitoriaPlayer(deckBot);
+                        turnos++;
                     }
 
-                    if(GuiButton((Rectangle){549, 485, 100, 80}, "PRSTC")){
+                    if(GuiButton((Rectangle){510, 528, 80, 50}, "PERSISTENCIA")){
                         batalhaPersistencia(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
                         cartaJogadorExibida = false;
+                        vitoriaBot = verificaVitoriaBot(deckPlayer);
+                        vitoriaPlayer = verificaVitoriaPlayer(deckBot);
+                        turnos++;
                     }
-
-                    
-
+                }
+            }else{
+                if(GuiButton((Rectangle){675,270,100,60},"#115#") && !cartaBotExibida){
+                    maoJogador = recebeCartaParaMao(deckPlayer);
+                    maoBot = recebeCartaParaMao(deckBot);
+                    cartaBotExibida = true; // Marca que a carta foi exibida
                 }
 
-            }else{ //vez do bot jogar
-                maoJogador = recebeCartaParaMao(deckPlayer);
-                maoBot = recebeCartaParaMao(deckBot);
-                botAcao(maoBot, maoJogador, deckBot, deckPlayer, &pontuacaoPlayer, &pontuacaoBot);
-                vitoriaBot = verificaVitoriaBot(deckPlayer);
-                vitoriaPlayer = verificaVitoriaPlayer(deckBot);
-                
-                turnos++;
+                if(cartaBotExibida){
+                    listarCartaJogadorBotVerso(maoJogador);
+                    botAcao(maoBot, maoJogador, deckBot, deckPlayer, &pontuacaoPlayer, &pontuacaoBot);
+                    vitoriaBot = verificaVitoriaBot(deckPlayer);
+                    vitoriaPlayer = verificaVitoriaPlayer(deckBot);
+                    cartaBotExibida = false;
+                    turnos++;
+                }
             }
 
 
@@ -469,6 +478,9 @@ int main(void){
                     pontuacaoPlayer = 0;
                     turnos = 0;
                     actualScreen = GAME_MENU;
+                    vitoriaBot = false;
+                    cartaJogadorExibida = false;
+                    cartaBotExibida = false;
                 }
 
 
@@ -482,6 +494,9 @@ int main(void){
                     pontuacaoPlayer = 0;
                     turnos = 0;
                     actualScreen = GAME_MENU;
+                    vitoriaPlayer = false;
+                    cartaJogadorExibida = false;
+                    cartaBotExibida = false;
 
                 }
                         
@@ -496,6 +511,10 @@ int main(void){
                     pontuacaoPlayer = 0;
                     turnos = 0;
                     actualScreen = GAME_MENU;
+                    vitoriaPlayer = false;
+                    vitoriaBot = false;
+                    cartaJogadorExibida = false;
+                    cartaBotExibida = false;
 
                 }
                         

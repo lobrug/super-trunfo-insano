@@ -182,6 +182,24 @@ void batalhaPersistencia(Estande maoJogador, Estande maoBot, Estande deckPlayer[
     }
 }
 
+void listarCartaJogadorBotVerso(Estande player){
+    if (player.super == 0) DrawRectangle(150, 150, 200, 300, LIGHTGRAY); // Card rectangle
+    if (player.super == 1) DrawRectangle(150, 150, 200, 300, GOLD);
+
+    DrawRectangle(163, 158, 174, 142, BLACK);
+    DrawTexture(player.foto, 163, 158, WHITE);
+
+    
+}
+
+void revelarCarta(Estande bot){
+    if (bot.super == 0) DrawRectangle(450, 150, 200, 300, LIGHTGRAY); // Card rectangle
+    if (bot.super == 1) DrawRectangle(450, 150, 200, 300, GOLD);
+
+    DrawRectangle(463, 158, 174, 142, BLACK);
+    DrawTexture(bot.foto, 463, 158, WHITE);
+}
+
 
 bool verificaVitoriaBot(Estande deckPlayer[]){
     for(int i = 0; i < 32; i++){
