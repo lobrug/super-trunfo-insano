@@ -452,7 +452,7 @@ int main(void){
                         turnos++;
                     }
                 }
-            }else{
+            }else if((turnos % 2) == 0){
                 if(GuiButton((Rectangle){675,270,100,60},"#115#") && !cartaBotExibida){
                     maoJogador = recebeCartaParaMao(deckPlayer);
                     maoBot = recebeCartaParaMao(deckBot);
