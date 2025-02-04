@@ -45,6 +45,7 @@ int main(void){
     Estande maoJogador;
     Estande maoBot;
 
+    bool cartaRevelada = false;
     bool cartaJogadorExibida = false;
     bool cartaBotExibida = false;
     bool vitoriaPlayer = false;
@@ -169,7 +170,7 @@ int main(void){
     }
 
     PlaySound(theme);
-    SetSoundVolume(theme, 0.3);
+    SetSoundVolume(theme, 0.1);
 
     while(!WindowShouldClose()){
         DrawFPS(720,580);
@@ -433,39 +434,39 @@ int main(void){
 
                     if(GuiButton((Rectangle){210, 528, 80, 50}, "PODER")){
                         batalhaPoder(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
+                        revelarCarta(maoBot);
+                        cartaRevelada = true;
                         cartaJogadorExibida = false;
-                        vitoriaBot = verificaVitoriaBot(deckPlayer);
-                        vitoriaPlayer = verificaVitoriaPlayer(deckBot);
-                        turnos++;
+                        
                     }
 
                     if(GuiButton((Rectangle){310, 528, 80, 50}, "VELOCIDADE")){
                         PlaySound(buttonSound);
                         batalhaVelocidade(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
+                        cartaRevelada = true;
                         cartaJogadorExibida = false;
-                        vitoriaBot = verificaVitoriaBot(deckPlayer);
-                        vitoriaPlayer = verificaVitoriaPlayer(deckBot);
-                        turnos++;
+                        
                     }
 
                     if(GuiButton((Rectangle){410, 528, 80, 50}, "ALCANCE")){
                         PlaySound(buttonSound);
                         batalhaAlcance(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
+                        cartaRevelada = true;
                         cartaJogadorExibida = false;
-                        vitoriaBot = verificaVitoriaBot(deckPlayer);
-                        vitoriaPlayer = verificaVitoriaPlayer(deckBot);
-                        turnos++;
+                        
                     }
 
                     if(GuiButton((Rectangle){510, 528, 80, 50}, "PERSISTENCIA")){
                         PlaySound(buttonSound);
                         batalhaPersistencia(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
+                        cartaRevelada = true;
                         cartaJogadorExibida = false;
-                        vitoriaBot = verificaVitoriaBot(deckPlayer);
-                        vitoriaPlayer = verificaVitoriaPlayer(deckBot);
-                        turnos++;
+                        
                     }
+
+
                 }
+
             }else if((turnos % 2) == 0){
                 if(GuiButton((Rectangle){675,270,100,60},"#115#") && !cartaBotExibida){
                     PlaySound(buttonSound);
@@ -476,14 +477,27 @@ int main(void){
 
                 if(cartaBotExibida){
                     listarCartaJogadorBotVerso(maoJogador);
-                    botAcao(maoBot, maoJogador, deckBot, deckPlayer, &pontuacaoPlayer, &pontuacaoBot);
-                    vitoriaBot = verificaVitoriaBot(deckPlayer);
-                    vitoriaPlayer = verificaVitoriaPlayer(deckBot);
-                    cartaBotExibida = false;
-                    turnos++;
+
+                    if(GuiButton((Rectangle){675,270,100,60},"#115#")){
+                        botAcao(maoBot, maoJogador, deckBot, deckPlayer, &pontuacaoPlayer, &pontuacaoBot);
+                        revelarCarta(maoBot);
+                        cartaRevelada = true;
+                        cartaBotExibida = false;
+                    }
+
                 }
             }
 
+                    if(cartaRevelada){
+                        listarCartaJogadorBotVerso(maoJogador);
+                        revelarCarta(maoBot);
+                        vitoriaBot = verificaVitoriaBot(deckPlayer);
+                        vitoriaPlayer = verificaVitoriaPlayer(deckBot);
+                        if(GuiButton((Rectangle){675,270,100,60},"#115#")){
+                            cartaRevelada = false;
+                            turnos++;
+                        }
+                    }
 
             if(vitoriaBot == true && pontuacaoBot > pontuacaoPlayer){
                 DrawRectangle(0,0,800,600,(Color){0,0,0,255});
