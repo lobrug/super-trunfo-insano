@@ -131,6 +131,7 @@ int main(void){
     Texture2D backCard = LoadTexture(".\\assets\\img\\backCard.png");
     Texture2D jojos = LoadTexture(".\\assets\\img\\jojos.png");
     Sound buttonSound = LoadSound(".\\assets\\sounds\\buttonsound.mp3");
+    Sound theme = LoadSound(".\\assets\\sounds\\theme.mp3");
 
     {
     loadImageToCard(&estandes[0], ".\\assets\\stands\\starplatinum.png", 174, 142);
@@ -167,11 +168,15 @@ int main(void){
     loadImageToCard(&estandes[31], ".\\assets\\stands\\justice.png", 174, 142);
     }
 
+    PlaySound(theme);
+    SetSoundVolume(theme, 0.3);
+
     while(!WindowShouldClose()){
         DrawFPS(720,580);
         GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt(DARKPURPLE));
         GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(BLACK));
         Vector2 mousePos = GetMousePosition();
+
 
         if(actualScreen == GAME_MENU){
 
@@ -637,6 +642,7 @@ int main(void){
     UnloadImage(icon);
     UnloadTexture(jojos);
     UnloadSound(buttonSound);
+    UnloadSound(theme);
     CloseWindow();
 
     return 0;
