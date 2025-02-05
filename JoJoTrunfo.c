@@ -101,6 +101,9 @@ int main(void){
     bool verificaMaoBot = false;
     bool verificaMaoPlayer = false;
 
+    Texture2D Carta;
+    bool blockCarta = false;
+
     
 
     gameScreens actualScreen = GAME_MENU;
@@ -139,14 +142,19 @@ int main(void){
     Sound buttonSound = LoadSound(".\\assets\\sounds\\buttonsound.mp3");
     Sound theme = LoadSound(".\\assets\\sounds\\theme.mp3");
 
+    Font fonteCarta = LoadFont(".\\assets\\font\\OpenSans-Bold.ttf");
+
+    GenTextureMipmaps(&fonteCarta.texture);
+    SetTextureFilter(fonteCarta.texture, TEXTURE_FILTER_BILINEAR);
+
     {
-    loadImageToCard(&estandes[0], ".\\assets\\stands\\starplatinum.png", 174, 142);
-    loadImageToCard(&estandes[1], ".\\assets\\stands\\theworld.png", 174, 142);
-    loadImageToCard(&estandes[2], ".\\assets\\stands\\goldexperience.png", 174, 142);
-    loadImageToCard(&estandes[3], ".\\assets\\stands\\kingcrimson.png", 174, 142);
-    loadImageToCard(&estandes[4], ".\\assets\\stands\\madeinheaven.png", 174, 142);
-    loadImageToCard(&estandes[5], ".\\assets\\stands\\tuskact4.png", 174, 142);
-    loadImageToCard(&estandes[6], ".\\assets\\stands\\killerqueen.png", 174, 142);
+    loadImageToCard(&estandes[0], ".\\assets\\stands\\starplatinum.png", 202, 251);
+    loadImageToCard(&estandes[1], ".\\assets\\stands\\theworld.png", 200, 292);
+    loadImageToCard(&estandes[2], ".\\assets\\stands\\purplehaze.png", 202, 303);
+    loadImageToCard(&estandes[3], ".\\assets\\stands\\kingcrimson.png", 175, 262);
+    loadImageToCard(&estandes[4], ".\\assets\\stands\\madeinheaven.png", 211, 153);
+    loadImageToCard(&estandes[5], ".\\assets\\stands\\thehand.png", 200, 238);
+    loadImageToCard(&estandes[6], ".\\assets\\stands\\killerqueen.png", 200, 206);
     loadImageToCard(&estandes[7], ".\\assets\\stands\\d4c.png", 174, 142);
     loadImageToCard(&estandes[8], ".\\assets\\stands\\crazydiamond.png", 174, 142);
     loadImageToCard(&estandes[9], ".\\assets\\stands\\goldrequiem.png", 174, 142);
@@ -162,13 +170,13 @@ int main(void){
     loadImageToCard(&estandes[19], ".\\assets\\stands\\hierophantgreen.png", 174, 142);
     loadImageToCard(&estandes[20], ".\\assets\\stands\\cmoon.png", 174, 142);
     loadImageToCard(&estandes[21], ".\\assets\\stands\\moodyblues.png", 174, 142);
-    loadImageToCard(&estandes[22], ".\\assets\\stands\\purplehaze.png", 174, 142);
+    loadImageToCard(&estandes[22], ".\\assets\\stands\\goldexperience.png", 174, 142);
     loadImageToCard(&estandes[23], ".\\assets\\stands\\diverdown.png", 174, 142);
     loadImageToCard(&estandes[24], ".\\assets\\stands\\hermitpurple.png", 174, 142);
     loadImageToCard(&estandes[25], ".\\assets\\stands\\heavensdoor.png", 174, 142);
     loadImageToCard(&estandes[26], ".\\assets\\stands\\beachboy.png", 174, 142);
     loadImageToCard(&estandes[27], ".\\assets\\stands\\aerosmith.png", 174, 142);
-    loadImageToCard(&estandes[28], ".\\assets\\stands\\thehand.png", 174, 142);
+    loadImageToCard(&estandes[28], ".\\assets\\stands\\tuskact4.png", 174, 142);
     loadImageToCard(&estandes[29], ".\\assets\\stands\\big.png", 174, 142);
     loadImageToCard(&estandes[30], ".\\assets\\stands\\softwet.png", 174, 142);
     loadImageToCard(&estandes[31], ".\\assets\\stands\\justice.png", 174, 142);
@@ -296,8 +304,11 @@ int main(void){
                 if (n == 0) {
                     DrawText("Nenhum resultado encontrado", 300, 300, 20, RED);
                 } else {
-                    listarCartaNoGerenciamento(estandes[salva_pesquisa[j]]);
-                    if ( (GuiButton((Rectangle){463,477,176,46}, "#142# ALTERAR CARTA")))
+                    
+                    listarCartaNoGerenciamento(estandes[salva_pesquisa[j]], &Carta, &blockCarta, fonteCarta, 426, 113);
+                    
+                    
+                    if ( (GuiButton((Rectangle){463,504,176,46}, "#142# ALTERAR CARTA")))
                     {
                         selecionaCarta = salva_pesquisa[j];
                         actualScreen = DECK_MANAGEMENT;
@@ -307,12 +318,14 @@ int main(void){
                     if (GuiButton((Rectangle){343, 270, 61, 61}, "#114#")) {
                         j--;
                         if (j < 0) j = n - 1; // Ajustar índice para último resultado
+                        blockCarta = false;
                     }
 
                     // Botão para próximo resultado
                     if (GuiButton((Rectangle){698, 270, 61, 61}, "#115#")) {
                         j++;
                         if (j >= n) j = 0; // Ajustar índice para primeiro resultado
+                        blockCarta = false;
                     }
                 }
 
@@ -336,8 +349,9 @@ int main(void){
                     DrawText("Nenhum resultado encontrado", 300, 300, 20, RED);
                 }else{
 
-                    listarCartaNoGerenciamento(estandes[salva_filtro[estandeSelecionado]]);
-                    if ( (GuiButton((Rectangle){463,477,176,46}, "#142# GERENCIAR CARTA")))
+                    listarCartaNoGerenciamento(estandes[salva_filtro[estandeSelecionado]], &Carta, &blockCarta, fonteCarta, 426, 113);
+                    
+                    if ( (GuiButton((Rectangle){463,504,176,46}, "#142# GERENCIAR CARTA")))
                     {
                         selecionaCarta = salva_filtro[estandeSelecionado];
                         actualScreen = DECK_MANAGEMENT;
@@ -346,11 +360,13 @@ int main(void){
                     if (GuiButton((Rectangle){343, 270, 61, 61}, "#114#")) {
                         estandeSelecionado--;
                         if (estandeSelecionado < 0) estandeSelecionado = n - 1;
+                        blockCarta = false;
                     }
 
                     if (GuiButton((Rectangle){698, 270, 61, 61}, "#115#")) {
                         estandeSelecionado++;
                         if (estandeSelecionado >= n) estandeSelecionado = 0;
+                        blockCarta = false;
                     }
 
                 }
@@ -391,13 +407,10 @@ int main(void){
             ClearBackground(BLACK);
             DrawTexturePro(table, (Rectangle){0, 0, table.width, table.height}, (Rectangle){0, 0, 800, 600}, (Vector2){0, 0}, 0.0f, WHITE);
 
-
             if(GuiButton((Rectangle){16,540,83,48}, "#121#")){ 
                 PlaySound(buttonSound);        
                 actualScreen = GAME_MENU;  
             }
-
-
 
             DrawRectangle(150, 150, 200, 300, PURPLE);
             DrawText("X",392, 279, 36, BLACK);
@@ -570,8 +583,7 @@ int main(void){
 
             DrawTexture(jojos, 500, 0, WHITE);
 
-
-            listarCartaNaAlteracao(estandes[selecionaCarta]);
+            listarCartaNoGerenciamento(estandes[selecionaCarta], &Carta, &blockCarta, fonteCarta, 275, 137);
 
             if (GuiButton((Rectangle){305, 21, 191, 39}, "#23# Alterar Imagem"))
             {
@@ -595,9 +607,8 @@ int main(void){
                 }
             }
             
-            
 
-            if(GuiSpinner((Rectangle){99, 172, 156, 43}, "Poder", &estandes[selecionaCarta].poderDestrutivo, 1, 100, edit[0])){
+            if(GuiSpinner((Rectangle){82, 197, 156, 43}, "Poder", &estandes[selecionaCarta].poderDestrutivo, 1, 100, edit[0])){
                 for (int i = 0; i < 6; i++)
                 {
                     edit[i] = false;
@@ -606,7 +617,7 @@ int main(void){
                 edit[0] = true;
             }
 
-            if(GuiSpinner((Rectangle){99, 243, 156, 43}, "Velocidade", &estandes[selecionaCarta].velocidade, 1, 100, edit[1])){
+            if(GuiSpinner((Rectangle){82, 268, 156, 43}, "Velocidade", &estandes[selecionaCarta].velocidade, 1, 100, edit[1])){
                 for (int i = 0; i < 6; i++)
                 {
                     edit[i] = false;
@@ -615,7 +626,7 @@ int main(void){
                 edit[1] = true;
             }
 
-            if(GuiSpinner((Rectangle){99, 314, 156, 43}, "Alcance", &estandes[selecionaCarta].alcance, 1, 100, edit[2])){
+            if(GuiSpinner((Rectangle){82, 339, 156, 43}, "Alcance", &estandes[selecionaCarta].alcance, 1, 100, edit[2])){
                 for (int i = 0; i < 6; i++)
                 {
                     edit[i] = false;
@@ -624,7 +635,7 @@ int main(void){
                 edit[2] = true;
             }
 
-            if(GuiSpinner((Rectangle){99, 385, 156, 43}, "Persistência", &estandes[selecionaCarta].persistenciaDePoder, 1, 100, edit[3])){
+            if(GuiSpinner((Rectangle){82, 410, 156, 43}, "Persistência", &estandes[selecionaCarta].persistenciaDePoder, 1, 100, edit[3])){
                 for (int i = 0; i < 6; i++)
                 {
                     edit[i] = false;
@@ -633,9 +644,9 @@ int main(void){
                 edit[3] = true;
             }
 
-            DrawRectangle(255, 478, 291, 40, WHITE);
+            DrawRectangle(255, 533, 291, 40, WHITE);
 
-            if(GuiTextBox((Rectangle){255, 478, 291, 40}, estandes[selecionaCarta].nome, 30, edit[4])){
+            if(GuiTextBox((Rectangle){255, 533, 291, 39}, estandes[selecionaCarta].nome, 30, edit[4])){
                 for (int i = 0; i < 6; i++)
                 {
                     edit[i] = false;

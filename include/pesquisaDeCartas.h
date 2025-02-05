@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include "structEstandes.h"
 #include "raylib.h"
+#include "manipulacaoCartas.h"
 
 void lerString(char* texto, int tamanho){
     setbuf(stdin, NULL);
@@ -15,83 +16,37 @@ void lerString(char* texto, int tamanho){
     texto[strcspn(texto, "\n")] = '\0';
 }
 
-void listarCartaNaAlteracao(Estande estande){
-    if(estande.super == 0) DrawRectangle(300, 150, 200, 300, LIGHTGRAY); //card rectangle
-    if(estande.super == 1) DrawRectangle(300, 150, 200, 300, GOLD);
-    DrawRectangle(313, 158, 174, 142, BLACK); //foto
-    DrawRectangle(313, 336, 172, 52, WHITE); //stats box
-    DrawText("Strenght: ", 318, 345, 12, BLACK);
-    DrawText("    Speed: ", 318, 363, 12, BLACK);
-    DrawText("Range: ", 406, 346, 12, BLACK);
-    DrawText("Prstc: ", 406, 362, 12, BLACK);
-    DrawTexture(estande.foto, 313, 158, WHITE);
-    if(estande.super ==1){
-        char goldenAux[40] = "Golden Experience\nRequiem - SUPER";
-        DrawText(goldenAux, 313, 300, 18, BLACK);
+void listarCartaNoGerenciamento(Estande estande, Texture2D *Carta, bool *blockCarta, Font fonte, int posX, int posY){
+    if (*blockCarta == false)
+    {
+        if(estande.super ==1){
+
+            *Carta = carregaCarta('G');
+        }else{
+            *Carta = carregaCarta(estande.letra);
+        }
+
+        *blockCarta = true;
+    }
+    DrawTexture(estande.foto, posX+25, posY+64, WHITE);
+    DrawTexture(*Carta, posX, posY, WHITE);
+
+    Color cor;
+
+    if (estande.super == 1)
+    {
+        cor = GOLD;
+        DrawTextEx(fonte, estande.nome, (Vector2){posX + 52, posY + 5}, 17, 0, WHITE);
     }else{
-        DrawText(estande.nome, 313, 300, 18, BLACK);
+        cor = WHITE;
+        DrawTextEx(fonte, estande.nome, (Vector2){posX + 52, posY + 3}, 23, 0, WHITE);
     }
-    int valores[4] = {estande.poderDestrutivo, estande.velocidade, estande.alcance, estande.persistenciaDePoder};
-    char buffer[32];
-    
-    for(int i = 0; i < 4; i++){
-        snprintf(buffer, sizeof(buffer), "%d", valores[i]);
-        if(i == 0){
-            DrawText(buffer, 378, 346, 14, BLACK);
-        }
 
-        if(i == 1){
-            DrawText(buffer, 378, 362, 14, BLACK);
-        }
-
-        if(i == 2){
-            DrawText(buffer, 447, 346, 14, BLACK);
-        }
-
-        if(i == 3){
-            DrawText(buffer, 447, 362, 14, BLACK);
-        }
-    }
-    
-}
-
-void listarCartaNoGerenciamento(Estande estande){
-    if(estande.super == 0) DrawRectangle(451, 151, 200, 300, LIGHTGRAY); //card rectangle
-    if(estande.super == 1) DrawRectangle(451, 151, 200, 300, GOLD);
-    DrawRectangle(464, 159, 174, 142, BLACK); //foto
-    DrawRectangle(464, 337, 172, 52, WHITE); //stats box
-    DrawText("Strenght: ", 469, 346, 12, BLACK);
-    DrawText("    Speed: ", 469, 364, 12, BLACK);
-    DrawText("Range: ", 557, 347, 12, BLACK);
-    DrawText("Prstc: ", 557, 363, 12, BLACK);
-    DrawTexture(estande.foto, 464, 159, WHITE);
-    if(estande.super ==1){
-        char goldenAux[40] = "Golden Experience\nRequiem - SUPER";
-        DrawText(goldenAux, 464, 301, 18, BLACK);
-    }else{
-        DrawText(estande.nome, 464, 301, 18, BLACK);
-    }
-    int valores[4] = {estande.poderDestrutivo, estande.velocidade, estande.alcance, estande.persistenciaDePoder};
-    char buffer[32];
-    
-    for(int i = 0; i < 4; i++){
-        snprintf(buffer, sizeof(buffer), "%d", valores[i]);
-        if(i == 0){
-            DrawText(buffer, 529, 347, 14, BLACK);
-        }
-
-        if(i == 1){
-            DrawText(buffer, 529, 363, 14, BLACK);
-        }
-
-        if(i == 2){
-            DrawText(buffer, 598, 347, 14, BLACK);
-        }
-
-        if(i == 3){
-            DrawText(buffer, 598, 363, 14, BLACK);
-        }
-    }
+    DrawTextEx(fonte, TextFormat("%d", estande.poderDestrutivo), (Vector2){posX + 123, posY + 274}, 20, 0, cor);
+    DrawTextEx(fonte, TextFormat("%d", estande.velocidade), (Vector2){posX + 123, posY + 292}, 20, 0, cor);
+    DrawTextEx(fonte, TextFormat("%d", estande.alcance), (Vector2){posX + 123, posY + 309}, 20, 0, cor);
+    DrawTextEx(fonte, TextFormat("%d", estande.persistenciaDePoder), (Vector2){posX + 123, posY + 327}, 20, 0, cor);
+    DrawTextEx(fonte, TextFormat("%c%d", estande.letra, estande.numero), (Vector2){posX +5, posY - 2}, 33, 0, cor);
     
 }
 
