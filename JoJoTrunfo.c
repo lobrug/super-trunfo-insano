@@ -432,6 +432,7 @@ int main(void){
                 printf("player: %d\n", pontuacaoPlayer);
                 printf("bot: %d\n", pontuacaoBot);
                 printf("Turnos: %d\n", turnos);
+                printf("%d", estadoAtual);
             }
 
 
@@ -483,6 +484,7 @@ int main(void){
                     listarCartaJogadorBotVerso(maoJogador);
                     revelarCarta(maoBot);
                     if(GuiButton((Rectangle){675,270,100,60},"#115#")){
+                        PlaySound(buttonSound);
                         estadoAtual = ESPERANDO_BOT;
                         turnos++;
                     }
@@ -502,11 +504,12 @@ int main(void){
                 if(estadoAtual == MOSTRANDO_CARTA){
                     listarCartaJogadorBotVerso(maoJogador);
                     revelarCarta(maoBot);
+                    printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
                     if(GuiButton((Rectangle){675,270,100,60},"#115#")){
                         PlaySound(buttonSound);
-                        turnos++;
                         estadoAtual = ESPERANDO_JOGADOR;
+                        turnos++;
                     }
                 }
 
