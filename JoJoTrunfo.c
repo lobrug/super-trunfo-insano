@@ -523,6 +523,7 @@ int main(void){
                 DrawText("VOCÊ PERDEU! TENTE NOVAMENTE", 100, 200, 36, RED);
                 if(GuiButton((Rectangle){295,407,211,47}, "Voltar ao menu")){
                     PlaySound(buttonSound);
+                    estadoAtual = ESPERANDO_JOGADOR;
                     pontuacaoBot = 0;
                     pontuacaoPlayer = 0;
                     turnos = 0;
@@ -540,6 +541,7 @@ int main(void){
                 DrawText("PARABENS! VOCE VENCEU", 200, 200, 36, RED);
                 if(GuiButton((Rectangle){295,407,211,47}, "Voltar ao menu")){
                     PlaySound(buttonSound);
+                    estadoAtual = ESPERANDO_JOGADOR;
                     pontuacaoBot = 0;
                     pontuacaoPlayer = 0;
                     turnos = 0;
@@ -558,6 +560,7 @@ int main(void){
                 DrawText("O JOGO TERMINOU EMPATADO", 200, 200, 36, RED);
                 if(GuiButton((Rectangle){295,407,211,47}, "Voltar ao menu")){
                     PlaySound(buttonSound);
+                    estadoAtual = ESPERANDO_JOGADOR;
                     pontuacaoBot = 0;
                     pontuacaoPlayer = 0;
                     turnos = 0;
