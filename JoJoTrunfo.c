@@ -141,6 +141,7 @@ int main(void){
     Texture2D table = LoadTexture(".\\assets\\img\\table.jpg");
     Texture2D backCard = LoadTexture(".\\assets\\img\\backCard.png");
     Texture2D jojos = LoadTexture(".\\assets\\img\\jojos.png");
+    Texture2D fundoCarta = LoadTexture(".\\assets\\img\\fundoCarta.jpg");
     Sound buttonSound = LoadSound(".\\assets\\sounds\\buttonsound.mp3");
     Sound theme = LoadSound(".\\assets\\sounds\\theme.mp3");
 
@@ -307,7 +308,7 @@ int main(void){
                     DrawText("Nenhum resultado encontrado", 300, 300, 20, RED);
                 } else {
                     
-                    listarCartaNoGerenciamento(estandes[salva_pesquisa[j]], &Carta, &blockCarta1, fonteCarta, 426, 113);
+                    listarCartaNoGerenciamento(estandes[salva_pesquisa[j]], &Carta, fundoCarta, &blockCarta1, fonteCarta, 426, 113);
                     
                     
                     if ( (GuiButton((Rectangle){463,504,176,46}, "#142# ALTERAR CARTA")))
@@ -351,7 +352,7 @@ int main(void){
                     DrawText("Nenhum resultado encontrado", 300, 300, 20, RED);
                 }else{
 
-                    listarCartaNoGerenciamento(estandes[salva_filtro[estandeSelecionado]], &Carta, &blockCarta1, fonteCarta, 426, 113);
+                    listarCartaNoGerenciamento(estandes[salva_filtro[estandeSelecionado]], &Carta, fundoCarta, &blockCarta1, fonteCarta, 426, 113);
                     
                     if ( (GuiButton((Rectangle){463,504,176,46}, "#142# GERENCIAR CARTA")))
                     {
@@ -453,7 +454,7 @@ int main(void){
 
                 if(estadoAtual == ESCOLHENDO_ATRIBUTO){
                     DrawRectangle(205 ,523 ,390, 60, PURPLE);
-                    listarCartaNoGerenciamento(maoJogador, &Carta, &blockCarta1, fonteCarta, 150, 77);
+                    listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 150, 77);
 
                     DrawText("ESCOLHA UM ATRIBUTO PARA BATALHAR!", 150, 481, 24, BLACK);
 
@@ -486,8 +487,8 @@ int main(void){
                 }
 
                 if(estadoAtual == REVELANDO_CARTAS){
-                    listarCartaNoGerenciamento(maoJogador, &Carta, &blockCarta1, fonteCarta, 150, 77);
-                    listarCartaNoGerenciamento(maoBot, &Carta2, &blockCarta2, fonteCarta, 450, 77);
+                    listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 150, 77);
+                    listarCartaNoGerenciamento(maoBot, &Carta2, fundoCarta, &blockCarta2, fonteCarta, 450, 77);
                     if(GuiButton((Rectangle){310, 483, 180, 40}, "AVANCAR PARA O PROXIMO TURNO")){
                         PlaySound(buttonSound);
                         estadoAtual = ESPERANDO_BOT;
@@ -513,8 +514,8 @@ int main(void){
                 }
 
                 if(estadoAtual == MOSTRANDO_CARTA){
-                    listarCartaNoGerenciamento(maoJogador, &Carta, &blockCarta1, fonteCarta, 150, 77);
-                    listarCartaNoGerenciamento(maoBot, &Carta2, &blockCarta2, fonteCarta, 450, 77);
+                    listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 150, 77);
+                    listarCartaNoGerenciamento(maoBot, &Carta2, fundoCarta, &blockCarta2, fonteCarta, 450, 77);
 
                     if(GuiButton((Rectangle){310, 483, 180, 40}, "AVANCAR PARA O PROXIMO TURNO")){
                         PlaySound(buttonSound);
@@ -597,7 +598,7 @@ int main(void){
 
             DrawTexture(jojos, 500, 0, WHITE);
 
-            listarCartaNoGerenciamento(estandes[selecionaCarta], &Carta, &blockCarta1, fonteCarta, 275, 137);
+            listarCartaNoGerenciamento(estandes[selecionaCarta], &Carta, fundoCarta, &blockCarta1, fonteCarta, 275, 137);
 
             if (GuiButton((Rectangle){305, 21, 191, 39}, "#23# Alterar Imagem"))
             {

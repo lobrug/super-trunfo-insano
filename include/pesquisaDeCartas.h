@@ -16,7 +16,8 @@ void lerString(char* texto, int tamanho){
     texto[strcspn(texto, "\n")] = '\0';
 }
 
-void listarCartaNoGerenciamento(Estande estande, Texture2D *Carta, bool *blockCarta, Font fonte, int posX, int posY){
+void listarCartaNoGerenciamento(Estande estande, Texture2D *Carta, Texture2D fundoCarta, bool *blockCarta, Font fonte, int posX, int posY){
+
     if (*blockCarta == false)
     {
         if(estande.super ==1){
@@ -28,6 +29,7 @@ void listarCartaNoGerenciamento(Estande estande, Texture2D *Carta, bool *blockCa
 
         *blockCarta = true;
     }
+    DrawTexturePro(fundoCarta, (Rectangle){0, 0, fundoCarta.width, fundoCarta.height}, (Rectangle){posX, posY + 57, 250, 166}, (Vector2){0, 0}, 0, WHITE);
     DrawTexture(estande.foto, posX+25, posY+64, WHITE);
     DrawTexture(*Carta, posX, posY, WHITE);
 
