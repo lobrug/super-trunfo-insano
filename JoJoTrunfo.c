@@ -102,7 +102,9 @@ int main(void){
     bool verificaMaoPlayer = false;
 
     Texture2D Carta;
-    bool blockCarta = false;
+    Texture2D Carta2;
+    bool blockCarta1 = false;
+    bool blockCarta2 = false;
 
     
 
@@ -305,7 +307,7 @@ int main(void){
                     DrawText("Nenhum resultado encontrado", 300, 300, 20, RED);
                 } else {
                     
-                    listarCartaNoGerenciamento(estandes[salva_pesquisa[j]], &Carta, &blockCarta, fonteCarta, 426, 113);
+                    listarCartaNoGerenciamento(estandes[salva_pesquisa[j]], &Carta, &blockCarta1, fonteCarta, 426, 113);
                     
                     
                     if ( (GuiButton((Rectangle){463,504,176,46}, "#142# ALTERAR CARTA")))
@@ -318,14 +320,14 @@ int main(void){
                     if (GuiButton((Rectangle){343, 270, 61, 61}, "#114#")) {
                         j--;
                         if (j < 0) j = n - 1; // Ajustar índice para último resultado
-                        blockCarta = false;
+                        blockCarta1 = false;
                     }
 
                     // Botão para próximo resultado
                     if (GuiButton((Rectangle){698, 270, 61, 61}, "#115#")) {
                         j++;
                         if (j >= n) j = 0; // Ajustar índice para primeiro resultado
-                        blockCarta = false;
+                        blockCarta1 = false;
                     }
                 }
 
@@ -349,7 +351,7 @@ int main(void){
                     DrawText("Nenhum resultado encontrado", 300, 300, 20, RED);
                 }else{
 
-                    listarCartaNoGerenciamento(estandes[salva_filtro[estandeSelecionado]], &Carta, &blockCarta, fonteCarta, 426, 113);
+                    listarCartaNoGerenciamento(estandes[salva_filtro[estandeSelecionado]], &Carta, &blockCarta1, fonteCarta, 426, 113);
                     
                     if ( (GuiButton((Rectangle){463,504,176,46}, "#142# GERENCIAR CARTA")))
                     {
@@ -360,13 +362,13 @@ int main(void){
                     if (GuiButton((Rectangle){343, 270, 61, 61}, "#114#")) {
                         estandeSelecionado--;
                         if (estandeSelecionado < 0) estandeSelecionado = n - 1;
-                        blockCarta = false;
+                        blockCarta1 = false;
                     }
 
                     if (GuiButton((Rectangle){698, 270, 61, 61}, "#115#")) {
                         estandeSelecionado++;
                         if (estandeSelecionado >= n) estandeSelecionado = 0;
-                        blockCarta = false;
+                        blockCarta1 = false;
                     }
 
                 }
@@ -412,10 +414,11 @@ int main(void){
                 actualScreen = GAME_MENU;  
             }
 
-            DrawRectangle(150, 150, 200, 300, PURPLE);
-            DrawText("X",392, 279, 36, BLACK);
-            DrawRectangle(450, 150, 200, 300, PURPLE);
-            DrawTexturePro(backCard, (Rectangle){0, 0, backCard.width, backCard.height}, (Rectangle){450, 150, 200, 300}, (Vector2){0, 0}, 0.0f, WHITE);
+            DrawRectangle(150, 77, 250, 375, PURPLE);
+            DrawText("X",414, 241, 36, BLACK);
+            DrawRectangle(450, 77, 250, 375, PURPLE);
+            DrawTexturePro(backCard, (Rectangle){0, 0, backCard.width, backCard.height}, (Rectangle){450, 77, 250, 375}, (Vector2){0, 0}, 0.0f, WHITE);
+
 
             if(GuiButton((Rectangle){0 , 0, 50, 50},"debug button")){
                 for(int i = 0; i < 32; i++){
@@ -438,17 +441,19 @@ int main(void){
 
             if((turnos % 2) == 1){
                 if(estadoAtual == ESPERANDO_JOGADOR){
-                    if(GuiButton((Rectangle){675,270,100,60},"#115#")){
+                    if(GuiButton((Rectangle){675,473,100,60},"#115#")){
                         PlaySound(buttonSound);
                         maoJogador = recebeCartaParaMao(deckPlayer);
                         maoBot = recebeCartaParaMao(deckBot);
                         estadoAtual = ESCOLHENDO_ATRIBUTO;
+                        blockCarta1 = false;
+                        blockCarta2 = false;
                     }
                 }
 
                 if(estadoAtual == ESCOLHENDO_ATRIBUTO){
                     DrawRectangle(205 ,523 ,390, 60, PURPLE);
-                    listarCartaJogadorBotVerso(maoJogador);
+                    listarCartaNoGerenciamento(maoJogador, &Carta, &blockCarta1, fonteCarta, 150, 77);
 
                     DrawText("ESCOLHA UM ATRIBUTO PARA BATALHAR!", 150, 481, 24, BLACK);
 
@@ -481,31 +486,35 @@ int main(void){
                 }
 
                 if(estadoAtual == REVELANDO_CARTAS){
-                    listarCartaJogadorBotVerso(maoJogador);
-                    revelarCarta(maoBot);
+                    listarCartaNoGerenciamento(maoJogador, &Carta, &blockCarta1, fonteCarta, 150, 77);
+                    listarCartaNoGerenciamento(maoBot, &Carta2, &blockCarta2, fonteCarta, 450, 77);
                     if(GuiButton((Rectangle){310, 483, 180, 40}, "AVANCAR PARA O PROXIMO TURNO")){
                         PlaySound(buttonSound);
                         estadoAtual = ESPERANDO_BOT;
                         vitoriaBot = verificaVitoriaBot(deckPlayer);
                         vitoriaPlayer = verificaVitoriaPlayer(deckBot);
                         turnos++;
+                        blockCarta1 = false;
+                        blockCarta2 = false;    
                     }
                 }
             }else if((turnos % 2) == 0){
                 if(estadoAtual == ESPERANDO_BOT){
-                    if(GuiButton((Rectangle){675,270,100,60},"#115#")){
+                    if(GuiButton((Rectangle){675,473,100,60},"#115#")){
                         PlaySound(buttonSound);
                         maoJogador = recebeCartaParaMao(deckPlayer);
                         maoBot = recebeCartaParaMao(deckBot);
                         botAcao(maoBot, maoJogador, deckBot, deckPlayer, &pontuacaoPlayer, &pontuacaoBot);
                         estadoAtual = MOSTRANDO_CARTA;
+                        blockCarta1 = false;
+                        blockCarta2 = false;
                     }
 
                 }
 
                 if(estadoAtual == MOSTRANDO_CARTA){
-                    listarCartaJogadorBotVerso(maoJogador);
-                    revelarCarta(maoBot);
+                    listarCartaNoGerenciamento(maoJogador, &Carta, &blockCarta1, fonteCarta, 150, 77);
+                    listarCartaNoGerenciamento(maoBot, &Carta2, &blockCarta2, fonteCarta, 450, 77);
 
                     if(GuiButton((Rectangle){310, 483, 180, 40}, "AVANCAR PARA O PROXIMO TURNO")){
                         PlaySound(buttonSound);
@@ -513,6 +522,8 @@ int main(void){
                         vitoriaBot = verificaVitoriaBot(deckPlayer);
                         vitoriaPlayer = verificaVitoriaPlayer(deckBot);
                         turnos++;
+                        blockCarta1 = false;
+                        blockCarta2 = false;
                     }
                 }
 
@@ -583,7 +594,7 @@ int main(void){
 
             DrawTexture(jojos, 500, 0, WHITE);
 
-            listarCartaNoGerenciamento(estandes[selecionaCarta], &Carta, &blockCarta, fonteCarta, 275, 137);
+            listarCartaNoGerenciamento(estandes[selecionaCarta], &Carta, &blockCarta1, fonteCarta, 275, 137);
 
             if (GuiButton((Rectangle){305, 21, 191, 39}, "#23# Alterar Imagem"))
             {
