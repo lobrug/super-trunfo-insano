@@ -415,10 +415,10 @@ int main(void){
                 actualScreen = GAME_MENU;  
             }
 
-            DrawRectangle(150, 77, 250, 375, PURPLE);
-            DrawText("X",414, 241, 36, BLACK);
-            DrawRectangle(450, 77, 250, 375, PURPLE);
-            DrawTexturePro(backCard, (Rectangle){0, 0, backCard.width, backCard.height}, (Rectangle){450, 77, 250, 375}, (Vector2){0, 0}, 0.0f, WHITE);
+            DrawRectangle(125, 77, 250, 375, PURPLE);
+            DrawText("X",389, 241, 36, BLACK);
+            DrawRectangle(425, 77, 250, 375, PURPLE);
+            DrawTexturePro(backCard, (Rectangle){0, 0, backCard.width, backCard.height}, (Rectangle){425, 77, 250, 375}, (Vector2){0, 0}, 0.0f, WHITE);
 
 
             if(GuiButton((Rectangle){0 , 0, 50, 50},"debug button")){
@@ -454,7 +454,7 @@ int main(void){
 
                 if(estadoAtual == ESCOLHENDO_ATRIBUTO){
                     DrawRectangle(205 ,523 ,390, 60, PURPLE);
-                    listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 150, 77);
+                    listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 125, 77);
 
                     DrawText("ESCOLHA UM ATRIBUTO PARA BATALHAR!", 150, 481, 24, BLACK);
 
@@ -487,8 +487,8 @@ int main(void){
                 }
 
                 if(estadoAtual == REVELANDO_CARTAS){
-                    listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 150, 77);
-                    listarCartaNoGerenciamento(maoBot, &Carta2, fundoCarta, &blockCarta2, fonteCarta, 450, 77);
+                    listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 125, 77);
+                    listarCartaNoGerenciamento(maoBot, &Carta2, fundoCarta, &blockCarta2, fonteCarta, 425, 77);
                     if(GuiButton((Rectangle){310, 483, 180, 40}, "AVANCAR PARA O PROXIMO TURNO")){
                         PlaySound(buttonSound);
                         estadoAtual = ESPERANDO_BOT;
@@ -514,8 +514,8 @@ int main(void){
                 }
 
                 if(estadoAtual == MOSTRANDO_CARTA){
-                    listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 150, 77);
-                    listarCartaNoGerenciamento(maoBot, &Carta2, fundoCarta, &blockCarta2, fonteCarta, 450, 77);
+                    listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 125, 77);
+                    listarCartaNoGerenciamento(maoBot, &Carta2, fundoCarta, &blockCarta2, fonteCarta, 425, 77);
 
                     if(GuiButton((Rectangle){310, 483, 180, 40}, "AVANCAR PARA O PROXIMO TURNO")){
                         PlaySound(buttonSound);
