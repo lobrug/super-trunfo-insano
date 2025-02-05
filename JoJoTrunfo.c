@@ -470,9 +470,11 @@ int main(void){
                 if(estadoAtual == REVELANDO_CARTAS){
                     listarCartaJogadorBotVerso(maoJogador);
                     revelarCarta(maoBot);
-                    if(GuiButton((Rectangle){675,270,100,60},"#115#")){
+                    if(GuiButton((Rectangle){310, 483, 180, 40}, "AVANCAR PARA O PROXIMO TURNO")){
                         PlaySound(buttonSound);
                         estadoAtual = ESPERANDO_BOT;
+                        vitoriaBot = verificaVitoriaBot(deckPlayer);
+                        vitoriaPlayer = verificaVitoriaPlayer(deckBot);
                         turnos++;
                     }
                 }
@@ -491,11 +493,12 @@ int main(void){
                 if(estadoAtual == MOSTRANDO_CARTA){
                     listarCartaJogadorBotVerso(maoJogador);
                     revelarCarta(maoBot);
-                    printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
-                    if(GuiButton((Rectangle){675,270,100,60},"#115#")){
+                    if(GuiButton((Rectangle){310, 483, 180, 40}, "AVANCAR PARA O PROXIMO TURNO")){
                         PlaySound(buttonSound);
                         estadoAtual = ESPERANDO_JOGADOR;
+                        vitoriaBot = verificaVitoriaBot(deckPlayer);
+                        vitoriaPlayer = verificaVitoriaPlayer(deckBot);
                         turnos++;
                     }
                 }
