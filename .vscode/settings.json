@@ -2,6 +2,7 @@
     "files.associations": {
         "loadtextures.h": "c",
         "pesquisadecartas.h": "c",
-        "manipulacaocartas.h": "c"
+        "manipulacaocartas.h": "c",
+        "raylib.h": "c"
     }
 }
