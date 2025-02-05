@@ -36,15 +36,16 @@ void listarCartaNoGerenciamento(Estande estande, Texture2D *Carta, bool *blockCa
     if (estande.super == 1)
     {
         cor = GOLD;
+        DrawTextEx(fonte, estande.nome, (Vector2){posX + 52, posY + 5}, 17, 0, WHITE);
     }else{
         cor = WHITE;
+        DrawTextEx(fonte, estande.nome, (Vector2){posX + 52, posY + 3}, 23, 0, WHITE);
     }
 
     DrawTextEx(fonte, TextFormat("%d", estande.poderDestrutivo), (Vector2){posX + 123, posY + 274}, 20, 0, cor);
     DrawTextEx(fonte, TextFormat("%d", estande.velocidade), (Vector2){posX + 123, posY + 292}, 20, 0, cor);
     DrawTextEx(fonte, TextFormat("%d", estande.alcance), (Vector2){posX + 123, posY + 309}, 20, 0, cor);
     DrawTextEx(fonte, TextFormat("%d", estande.persistenciaDePoder), (Vector2){posX + 123, posY + 327}, 20, 0, cor);
-    DrawTextEx(fonte, estande.nome, (Vector2){posX + 47, posY + 12}, 20, 0, cor);
     DrawTextEx(fonte, TextFormat("%c%d", estande.letra, estande.numero), (Vector2){posX +5, posY - 2}, 33, 0, cor);
     
 }
