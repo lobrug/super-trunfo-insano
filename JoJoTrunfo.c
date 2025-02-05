@@ -15,6 +15,8 @@
 #include <stdbool.h>
 //#include "raygui_icons.h"
 
+
+
 char *strcasestr(const char *haystack, const char *needle) {
     if (!*needle) return (char *)haystack;  // Retorna o haystack se needle for vazio.
 
@@ -31,10 +33,13 @@ char *strcasestr(const char *haystack, const char *needle) {
 
 typedef enum {GAME_MENU, GAME_DECK, GAME_PLAY, DECK_MANAGEMENT} gameScreens;
 
+typedef enum {ESPERANDO_JOGADOR,ESCOLHENDO_ATRIBUTO, MOSTRANDO_CARTA, REVELANDO_CARTAS, FIM_TURNO, ESPERANDO_BOT} estadoJogo;
+
 int main(void){
     Estande estandes[32];
     Estande deckPlayer[32];
     Estande deckBot[32];
+    estadoJogo estadoAtual = ESPERANDO_JOGADOR;
 
     for (int i = 0; i < 32; i++) {
         estandes[i].nome[0] = '\0';
@@ -45,6 +50,7 @@ int main(void){
     Estande maoJogador;
     Estande maoBot;
 
+    bool cartaRevelada = false;
     bool cartaJogadorExibida = false;
     bool cartaBotExibida = false;
     bool vitoriaPlayer = false;
@@ -177,7 +183,7 @@ int main(void){
     }
 
     PlaySound(theme);
-    SetSoundVolume(theme, 0.3);
+    SetSoundVolume(theme, 0.1);
 
     while(!WindowShouldClose()){
         DrawFPS(720,580);
@@ -430,15 +436,16 @@ int main(void){
 
 
             if((turnos % 2) == 1){
-                if (GuiButton((Rectangle){675,270,100,60},"#115#") && !cartaJogadorExibida) { // Só executa ao clicar no botão
-                    PlaySound(buttonSound);
-                    maoJogador = recebeCartaParaMao(deckPlayer);
-                    maoBot = recebeCartaParaMao(deckBot);
-                    cartaJogadorExibida = true; // Marca que a carta foi exibida
-                    
+                if(estadoAtual == ESPERANDO_JOGADOR){
+                    if(GuiButton((Rectangle){675,270,100,60},"#115#")){
+                        PlaySound(buttonSound);
+                        maoJogador = recebeCartaParaMao(deckPlayer);
+                        maoBot = recebeCartaParaMao(deckBot);
+                        estadoAtual = ESCOLHENDO_ATRIBUTO;
+                    }
                 }
 
-                if(cartaJogadorExibida){
+                if(estadoAtual == ESCOLHENDO_ATRIBUTO){
                     DrawRectangle(205 ,523 ,390, 60, PURPLE);
                     listarCartaJogadorBotVerso(maoJogador);
 
@@ -446,57 +453,64 @@ int main(void){
 
                     if(GuiButton((Rectangle){210, 528, 80, 50}, "PODER")){
                         batalhaPoder(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
-                        cartaJogadorExibida = false;
-                        vitoriaBot = verificaVitoriaBot(deckPlayer);
-                        vitoriaPlayer = verificaVitoriaPlayer(deckBot);
-                        turnos++;
+                        estadoAtual = REVELANDO_CARTAS;
+                        
                     }
 
                     if(GuiButton((Rectangle){310, 528, 80, 50}, "VELOCIDADE")){
                         PlaySound(buttonSound);
                         batalhaVelocidade(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
-                        cartaJogadorExibida = false;
-                        vitoriaBot = verificaVitoriaBot(deckPlayer);
-                        vitoriaPlayer = verificaVitoriaPlayer(deckBot);
-                        turnos++;
+                        estadoAtual = REVELANDO_CARTAS;
+                        
                     }
 
                     if(GuiButton((Rectangle){410, 528, 80, 50}, "ALCANCE")){
                         PlaySound(buttonSound);
                         batalhaAlcance(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
-                        cartaJogadorExibida = false;
-                        vitoriaBot = verificaVitoriaBot(deckPlayer);
-                        vitoriaPlayer = verificaVitoriaPlayer(deckBot);
-                        turnos++;
+                        estadoAtual = REVELANDO_CARTAS;
+                        
                     }
 
                     if(GuiButton((Rectangle){510, 528, 80, 50}, "PERSISTENCIA")){
                         PlaySound(buttonSound);
                         batalhaPersistencia(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
-                        cartaJogadorExibida = false;
-                        vitoriaBot = verificaVitoriaBot(deckPlayer);
-                        vitoriaPlayer = verificaVitoriaPlayer(deckBot);
+                        estadoAtual = REVELANDO_CARTAS;
+                        
+                    }
+                }
+
+                if(estadoAtual == REVELANDO_CARTAS){
+                    listarCartaJogadorBotVerso(maoJogador);
+                    revelarCarta(maoBot);
+                    if(GuiButton((Rectangle){675,270,100,60},"#115#")){
+                        estadoAtual = ESPERANDO_BOT;
                         turnos++;
                     }
                 }
             }else if((turnos % 2) == 0){
-                if(GuiButton((Rectangle){675,270,100,60},"#115#") && !cartaBotExibida){
-                    PlaySound(buttonSound);
-                    maoJogador = recebeCartaParaMao(deckPlayer);
-                    maoBot = recebeCartaParaMao(deckBot);
-                    cartaBotExibida = true; // Marca que a carta foi exibida
+                if(estadoAtual == ESPERANDO_BOT){
+                    if(GuiButton((Rectangle){675,270,100,60},"#115#")){
+                        PlaySound(buttonSound);
+                        maoJogador = recebeCartaParaMao(deckPlayer);
+                        maoBot = recebeCartaParaMao(deckBot);
+                        botAcao(maoBot, maoJogador, deckBot, deckPlayer, &pontuacaoPlayer, &pontuacaoBot);
+                        estadoAtual = MOSTRANDO_CARTA;
+                    }
+
                 }
 
-                if(cartaBotExibida){
+                if(estadoAtual == MOSTRANDO_CARTA){
                     listarCartaJogadorBotVerso(maoJogador);
-                    botAcao(maoBot, maoJogador, deckBot, deckPlayer, &pontuacaoPlayer, &pontuacaoBot);
-                    vitoriaBot = verificaVitoriaBot(deckPlayer);
-                    vitoriaPlayer = verificaVitoriaPlayer(deckBot);
-                    cartaBotExibida = false;
-                    turnos++;
-                }
-            }
+                    revelarCarta(maoBot);
 
+                    if(GuiButton((Rectangle){675,270,100,60},"#115#")){
+                        PlaySound(buttonSound);
+                        turnos++;
+                        estadoAtual = ESPERANDO_JOGADOR;
+                    }
+                }
+
+            }
 
             if(vitoriaBot == true && pontuacaoBot > pontuacaoPlayer){
                 DrawRectangle(0,0,800,600,(Color){0,0,0,255});
@@ -645,7 +659,7 @@ int main(void){
     
     }
 
-
+ 
     UnloadTexture(background);
     UnloadTexture(jojoimg); // Unload texture when done
     UnloadTexture(table);
