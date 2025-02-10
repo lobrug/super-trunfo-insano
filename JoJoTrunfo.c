@@ -500,16 +500,20 @@ int main(void){
     
     
                 if(GuiButton((Rectangle){0 , 0, 50, 50},"debug button")){
-                    for(int i = 0; i < 32; i++){
-                        printf("%d: %s\n",i, deckPlayer[i].nome);
-                    }
-                    printf("%s\n", maoJogador.nome);
+                    printf("%s\n", maoJogador.nome);                   
+                    printf("%d\n", maoJogador.poderDestrutivo);
+                    printf("%d\n", maoJogador.velocidade);
+                    printf("%d\n", maoJogador.alcance);
+                    printf("%d\n", maoJogador.persistenciaDePoder);
                     printf("----------------------\n");
-    
-                    for(int i = 0; i < 32; i++){
-                        printf("%d: %s\n",i, deckBot[i].nome);
-                    }
+
+                    printf("----------------------\n");
                     printf("%s\n", maoBot.nome);
+                    printf("%d\n", maoBot.poderDestrutivo);
+                    printf("%d\n", maoBot.velocidade);
+                    printf("%d\n", maoBot.alcance);
+                    printf("%d\n", maoBot.persistenciaDePoder);
+                    printf("----------------------\n");
                     printf("----------------------\n");
                     printf("player: %d\n", pontuacaoPlayer);
                     printf("bot: %d\n", pontuacaoBot);
@@ -537,6 +541,7 @@ int main(void){
                         DrawText("ESCOLHA UM ATRIBUTO PARA BATALHAR!", 150, 481, 24, BLACK);
     
                         if(GuiButton((Rectangle){210, 528, 80, 50}, "PODER")){
+                            PlaySound(buttonSound);
                             batalha(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot, maoJogador.poderDestrutivo, maoBot.poderDestrutivo);
                             estadoAtual = REVELANDO_CARTAS;
                             

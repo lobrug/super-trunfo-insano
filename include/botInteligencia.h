@@ -32,21 +32,25 @@ void botAcao(Estande maoBot, Estande maoPlayer, Estande deckBot[], Estande deckP
     int escolha = botEscolha(maoBot);
 
     if(escolha == 0){
+        printf("Bot escolheu poder\n");
         batalha(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot, maoPlayer.poderDestrutivo, maoBot.poderDestrutivo);
         return;
     }
 
     if(escolha == 1){
+        printf("Bot escolheu velocidade\n");
         batalha(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot, maoPlayer.velocidade, maoBot.velocidade);
         return;
     }
 
     if(escolha == 2){
+        printf("Bot escolheu alcance\n");
         batalha(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot, maoPlayer.alcance, maoBot.alcance);
         return;
     }
 
     if(escolha == 3){
+        printf("Bot escolheu persistencia\n");
         batalha(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot, maoPlayer.persistenciaDePoder, maoBot.persistenciaDePoder);
         return;
     }
