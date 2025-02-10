@@ -32,22 +32,22 @@ void botAcao(Estande maoBot, Estande maoPlayer, Estande deckBot[], Estande deckP
     int escolha = botEscolha(maoBot);
 
     if(escolha == 0){
-        batalhaPoder(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot);
+        batalha(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot, maoPlayer.poderDestrutivo, maoBot.poderDestrutivo);
         return;
     }
 
     if(escolha == 1){
-        batalhaVelocidade(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot);
+        batalha(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot, maoPlayer.velocidade, maoBot.velocidade);
         return;
     }
 
     if(escolha == 2){
-        batalhaAlcance(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot);
+        batalha(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot, maoPlayer.alcance, maoBot.alcance);
         return;
     }
 
     if(escolha == 3){
-        batalhaPersistencia(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot);
+        batalha(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot, maoPlayer.persistenciaDePoder, maoBot.persistenciaDePoder);
         return;
     }
 }

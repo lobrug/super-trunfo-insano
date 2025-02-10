@@ -36,6 +36,9 @@ typedef enum {GAME_MENU, GAME_DECK, GAME_PLAY, DECK_MANAGEMENT} gameScreens;
 typedef enum {ESPERANDO_JOGADOR,ESCOLHENDO_ATRIBUTO, MOSTRANDO_CARTA, REVELANDO_CARTAS, FIM_TURNO, ESPERANDO_BOT} estadoJogo;
 
 int main(void){
+
+    bool saida_jogar = false;
+
     Estande estandes[32];
     Estande deckPlayer[32];
     Estande deckBot[32];
@@ -59,21 +62,37 @@ int main(void){
 
     bool verificaPesquisa = false;
 
-    int filtroPoder[2];
+    //---- Armazenadores dos valores dos filtros --------------------------------------------------------------------
+    //0 - min
+    //1 - max
+
+    int filtroPoder[2]; 
     int filtroVelocidade[2];
     int filtroAlcance[2];
     int filtroPersistencia[2];
 
+    //----------------------------------------------------------------------------------------------------------------
+
+
+    //Pontuacao-----------------------------------------------------------------------------------------------
+
     int pontuacaoBot = 0;
     int pontuacaoPlayer = 0;
 
-    int AlteraPoder;
-    int AlteraVelocidade;
-    int AlteraAlcance;
-    int AlteraPersistencia;
+    //---------------------------------------------------------------------------------------------------------
+
+
+
+    //---- Verificador de clique em alterar imagem ----------------------------------------------------------------------
 
     bool click_img = false;
-    char endereco[100] = ".\\assets\\mods\\";
+    char endereco[100] = ".\\assets\\mods\\"; //manter o texto pre definido
+    
+    //-------------------------------------------------------------------------------------------------------------------
+
+
+
+    //-- Verificadores de filtro clicado -------------------------------------------------------------------------
 
     bool checkPoder = false;
     bool checkVelocidade = false;
@@ -82,12 +101,22 @@ int main(void){
     bool checkLetra = false;
     bool checkNumero = false;
 
+    //----------------------------------------------------------------------------------------------------------------
+
+
+
+    // Letras para filtro de cartas ----------------------------------------------------------------------------------
+
     char letras[5] = {'A', 'B', 'C', 'D', 'Z'};
 
-    float indiceLetra = 4;
-    float filtroNumero = -1;
+    float indiceLetra = 4; // indice inciado como 'Z'
+    float filtroNumero = -1; // Número de filtro iniciado como -1
+
+    //----------------------------------------------------------------------------------------------------------------
 
     int selecionaCarta;
+
+    // Desbloqueio da ediçao de filtros	---------------------
 
     bool edit[9];
 
@@ -96,46 +125,52 @@ int main(void){
         edit[i] = false;
         
     }
+    //--------------------------------------------------------
+
 
     int turnos = 1;
-    bool verificaMaoBot = false;
-    bool verificaMaoPlayer = false;
+
+
+    // Texturas em game----------------------------------------------------------------------------------------------------
 
     Texture2D Carta;
     Texture2D Carta2;
     bool blockCarta1 = false;
     bool blockCarta2 = false;
+    //---------------------------------------------------------------------------------------------------------------
+
+    // Definir a tela inicial do jogo como o menu --------------------------------------------------------------------
+    gameScreens actualScreen = GAME_MENU;
+    //----------------------------------------------------------------------------------------------------------------
 
     
+    char pesquisa[100] = ""; // Variavel para armazenar a pesquisa
 
-    gameScreens actualScreen = GAME_MENU;
-
-    char pesquisa[100] = "";
-
-    Estande estandesPesquisa;
-    Estande filtracaoEstandes;
     int estandeSelecionado = 0;
     bool encontrado = false;
-    int verificaVoltarMenu = 0;
 
-    int j;
-    
+    int passar_pesquisa; //Funcionamento das setas quando algo escrito na pesquisa
 
+    // Tamanho da tela --------------------------------------------------
     const int screenWidth = 800;
     const int screenHeight = 600;
+    //--------------------------------------------------------------------
+
 
     leituraArquivoCsv(estandes);
 
+    // Inicialização da janela e áudio -------------------------------
     InitWindow(screenWidth, screenHeight, "Super-Trunfo Insanamente Bizarro");
     InitAudioDevice();
+    //----------------------------------------------------------------
+
 
     Image icon = LoadImage(".\\assets\\img\\icon.png"); // Ícone como imagem PNG
     SetWindowIcon(icon);
     
     SetTargetFPS(144);
 
-    // Adicione uma mensagem de depuração para verificar o caminho do arquivo
-//    printf("Tentando carregar a textura de: content\\jojo.png\n");
+    // Carregamento de texturas e sons -------------------------------
     Texture2D background = LoadTexture(".\\assets\\img\\background.jpg");
     Texture2D jojoimg = LoadTexture(".\\assets\\img\\jojo.png");
     Texture2D table = LoadTexture(".\\assets\\img\\table.jpg");
@@ -144,12 +179,16 @@ int main(void){
     Texture2D fundoCarta = LoadTexture(".\\assets\\img\\fundoCarta.jpg");
     Sound buttonSound = LoadSound(".\\assets\\sounds\\buttonsound.mp3");
     Sound theme = LoadSound(".\\assets\\sounds\\theme.mp3");
-
     Font fonteCarta = LoadFont(".\\assets\\font\\OpenSans-Bold.ttf");
+    //----------------------------------------------------------------
 
+    // Configuração da fonte da carta -------------------------------
     GenTextureMipmaps(&fonteCarta.texture);
     SetTextureFilter(fonteCarta.texture, TEXTURE_FILTER_BILINEAR);
+    //----------------------------------------------------------------
 
+
+    // Carregamento das cartas --------------------------------------------
     {
     loadImageToCard(&estandes[0], ".\\assets\\stands\\starplatinum.png", 202, 251);
     loadImageToCard(&estandes[1], ".\\assets\\stands\\theworld.png", 200, 292);
@@ -184,16 +223,23 @@ int main(void){
     loadImageToCard(&estandes[30], ".\\assets\\stands\\softwet.png", 174, 142);
     loadImageToCard(&estandes[31], ".\\assets\\stands\\justice.png", 174, 142);
     }
+    //------------------------------------------------------------------
 
+    // Reprodução do tema do jogo --------------------------------------
     PlaySound(theme);
+    //Setar volume do tema---------------------------------------------
     SetSoundVolume(theme, 0.1);
+
 
     while(!WindowShouldClose()){
         DrawFPS(720,580);
-        GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt(DARKPURPLE));
-        GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(BLACK));
-        Vector2 mousePos = GetMousePosition();
 
+        // Configuração de estilo dos botões ---------------------------
+        GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt(DARKPURPLE));//fundo
+        GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(BLACK));//texto
+        //----------------------------------------------------------------
+
+        Vector2 mousePos = GetMousePosition();//Pegar posição do mouse
 
         if(actualScreen == GAME_MENU){
 
@@ -214,7 +260,7 @@ int main(void){
                 PlaySound(buttonSound);
                 actualScreen = GAME_DECK;
                 estandeSelecionado = 0;
-                j= 0;
+                passar_pesquisa= 0;
                 
             }
         
@@ -256,8 +302,7 @@ int main(void){
 
                 verificaCheckFiltro(&checkPersistencia, filtroPersistencia, 166, 345, 371, 80, 24, &edit[6], &edit[7], edit);
 
-                // ...existing code...
-
+                //Verificar se o check do filtro da letra está ativado
                 if (checkLetra) {
                     GuiSlider((Rectangle){78, 456, 143, 26}, "A", "D", &indiceLetra, 0, 3);
                     indiceLetra = (int)(indiceLetra + 0.5); // Arredonda para o inteiro mais próximo
@@ -265,18 +310,18 @@ int main(void){
                     DrawText(&letra, 144.5, 458, 20, BLACK);
                 } else {
                     indiceLetra = 4; // 'Z'
-                }
-
+                }//If - checkLetra
+                
+                //Verificar se o check do filtro do número está ativado
                 if (checkNumero) {
                     GuiSlider((Rectangle){46, 496, 207, 26}, "1", "8", &filtroNumero, 1, 8);
                     filtroNumero = (int)(filtroNumero + 0.5); // Arredonda para o inteiro mais próximo
                     DrawText(TextFormat("%d", (int)filtroNumero), 144.5, 500, 20, BLACK);
                 } else {
                     filtroNumero = -1;
-                }
+                }//If - checkNumero
 
-            // ...existing code...      
-
+            
             }else{
 
                 memset(filtroPoder, -1, sizeof(filtroPoder));
@@ -286,8 +331,9 @@ int main(void){
                 filtroNumero = -1;
                 indiceLetra = 4;
 
-            }
+            }//if - filtroCheck
 
+            //if pesquisa
             if (strcmp(pesquisa, "") != 0) {
                 int salva_pesquisa[32];
                 int n = 0;
@@ -308,26 +354,26 @@ int main(void){
                     DrawText("Nenhum resultado encontrado", 300, 300, 20, RED);
                 } else {
                     
-                    listarCartaNoGerenciamento(estandes[salva_pesquisa[j]], &Carta, fundoCarta, &blockCarta1, fonteCarta, 426, 113);
+                    listarCartaNoGerenciamento(estandes[salva_pesquisa[passar_pesquisa]], &Carta, fundoCarta, &blockCarta1, fonteCarta, 426, 113);
                     
                     
                     if ( (GuiButton((Rectangle){463,504,176,46}, "#142# ALTERAR CARTA")))
                     {
-                        selecionaCarta = salva_pesquisa[j];
+                        selecionaCarta = salva_pesquisa[passar_pesquisa];
                         actualScreen = DECK_MANAGEMENT;
                     }
 
                     // Botão para resultado anterior
                     if (GuiButton((Rectangle){343, 270, 61, 61}, "#114#")) {
-                        j--;
-                        if (j < 0) j = n - 1; // Ajustar índice para último resultado
+                        passar_pesquisa--;
+                        if (passar_pesquisa < 0) passar_pesquisa = n - 1; // Ajustar índice para último resultado
                         blockCarta1 = false;
                     }
 
                     // Botão para próximo resultado
                     if (GuiButton((Rectangle){698, 270, 61, 61}, "#115#")) {
-                        j++;
-                        if (j >= n) j = 0; // Ajustar índice para primeiro resultado
+                        passar_pesquisa++;
+                        if (passar_pesquisa >= n) passar_pesquisa = 0; // Ajustar índice para primeiro resultado
                         blockCarta1 = false;
                     }
                 }
@@ -376,6 +422,7 @@ int main(void){
 
             }
     
+            //Desenha a caixa de pesquisa
             if(GuiTextBox((Rectangle){24, 86, 249, 31}, pesquisa, 40, edit[8])){
 
                 edit[8] = true;
@@ -385,10 +432,13 @@ int main(void){
                     edit[i] = false;
                 }
                 
-            };
+            }//if - GuiTextBox - Pesquisa
 
+
+            //If - Botão de filtro
             if(GuiButton((Rectangle){35,132,40,40}, "#047#")){
                 filtroCheck = !filtroCheck;
+
                 if (filtroCheck == false)
                 {
                     checkPoder = false;
@@ -397,9 +447,9 @@ int main(void){
                     checkPersistencia = false;
                     checkLetra = false;
                     checkNumero = false;
-                }
+                }//Se o filtro não estiver clicado, desmarcar todos os checks de filtro
                 
-            }
+            }//If - Botão de filtro
                 
             EndDrawing();
         }//If - GAME_DECK
@@ -410,184 +460,221 @@ int main(void){
             ClearBackground(BLACK);
             DrawTexturePro(table, (Rectangle){0, 0, table.width, table.height}, (Rectangle){0, 0, 800, 600}, (Vector2){0, 0}, 0.0f, WHITE);
 
-            if(GuiButton((Rectangle){16,540,83,48}, "#121#")){ 
-                PlaySound(buttonSound);        
-                actualScreen = GAME_MENU;  
-            }
+            if (GuiButton((Rectangle){16,540,83,48}, "#121#")) {
+                saida_jogar = true;
+            };
 
-            DrawRectangle(125, 77, 250, 375, PURPLE);
-            DrawText("X",389, 241, 36, BLACK);
-            DrawRectangle(425, 77, 250, 375, PURPLE);
-            DrawTexturePro(backCard, (Rectangle){0, 0, backCard.width, backCard.height}, (Rectangle){425, 77, 250, 375}, (Vector2){0, 0}, 0.0f, WHITE);
+            if(saida_jogar == true){
 
-
-            if(GuiButton((Rectangle){0 , 0, 50, 50},"debug button")){
-                for(int i = 0; i < 32; i++){
-                    printf("%d: %s\n",i, deckPlayer[i].nome);
+                ClearBackground(BLACK);
+                DrawText("TEM CERTEZA?", 216, 234, 50, RED);
+                if ((GuiButton((Rectangle){159, 345, 181, 76}, "SIM")))
+                {
+                    estadoAtual = ESPERANDO_JOGADOR;
+                    pontuacaoBot = 0;
+                    pontuacaoPlayer = 0;
+                    turnos = 1;
+                    actualScreen = GAME_MENU;
+                    vitoriaPlayer = false;
+                    vitoriaBot = false;
+                    cartaJogadorExibida = false;
+                    cartaBotExibida = false;  
+                    saida_jogar = false;
                 }
-                printf("%s\n", maoJogador.nome);
-                printf("----------------------\n");
 
-                for(int i = 0; i < 32; i++){
-                    printf("%d: %s\n",i, deckBot[i].nome);
+                if ((GuiButton((Rectangle){459, 345, 181, 76}, "NAO")))
+                {
+                    saida_jogar = false;
                 }
-                printf("%s\n", maoBot.nome);
-                printf("----------------------\n");
-                printf("player: %d\n", pontuacaoPlayer);
-                printf("bot: %d\n", pontuacaoBot);
-                printf("Turnos: %d\n", turnos);
-                printf("%d", estadoAtual);
-            }
+                
+            }else{
 
-
-            if((turnos % 2) == 1){
-                if(estadoAtual == ESPERANDO_JOGADOR){
-                    if(GuiButton((Rectangle){675,473,100,60},"#115#")){
-                        PlaySound(buttonSound);
-                        maoJogador = recebeCartaParaMao(deckPlayer);
-                        maoBot = recebeCartaParaMao(deckBot);
-                        estadoAtual = ESCOLHENDO_ATRIBUTO;
-                        blockCarta1 = false;
-                        blockCarta2 = false;
+                DrawRectangle(125, 77, 250, 375, PURPLE);
+                DrawText("X",389, 241, 36, BLACK);
+                DrawRectangle(425, 77, 250, 375, PURPLE);
+                DrawTexturePro(backCard, (Rectangle){0, 0, backCard.width, backCard.height}, (Rectangle){425, 77, 250, 375}, (Vector2){0, 0}, 0.0f, WHITE);
+                DrawText("JOGADOR", 187, 11, 26, WHITE);
+                DrawText("BOT", 523, 11, 26, WHITE);
+                DrawText(TextFormat("%d", pontuacaoPlayer), 241, 43, 26, WHITE);
+                DrawText(TextFormat("%d", pontuacaoBot), 541, 43, 26, WHITE);
+    
+    
+                if(GuiButton((Rectangle){0 , 0, 50, 50},"debug button")){
+                    for(int i = 0; i < 32; i++){
+                        printf("%d: %s\n",i, deckPlayer[i].nome);
                     }
+                    printf("%s\n", maoJogador.nome);
+                    printf("----------------------\n");
+    
+                    for(int i = 0; i < 32; i++){
+                        printf("%d: %s\n",i, deckBot[i].nome);
+                    }
+                    printf("%s\n", maoBot.nome);
+                    printf("----------------------\n");
+                    printf("player: %d\n", pontuacaoPlayer);
+                    printf("bot: %d\n", pontuacaoBot);
+                    printf("Turnos: %d\n", turnos);
+                    printf("%d", estadoAtual);
                 }
-
-                if(estadoAtual == ESCOLHENDO_ATRIBUTO){
-                    DrawRectangle(205 ,523 ,390, 60, PURPLE);
-                    listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 125, 77);
-
-                    DrawText("ESCOLHA UM ATRIBUTO PARA BATALHAR!", 150, 481, 24, BLACK);
-
-                    if(GuiButton((Rectangle){210, 528, 80, 50}, "PODER")){
-                        batalhaPoder(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
-                        estadoAtual = REVELANDO_CARTAS;
+    
+    
+                if((turnos % 2) == 1){
+                    if(estadoAtual == ESPERANDO_JOGADOR){
+                        if(GuiButton((Rectangle){675,473,100,60},"#115#")){
+                            PlaySound(buttonSound);
+                            maoJogador = recebeCartaParaMao(deckPlayer);
+                            maoBot = recebeCartaParaMao(deckBot);
+                            estadoAtual = ESCOLHENDO_ATRIBUTO;
+                            blockCarta1 = false;
+                            blockCarta2 = false;
+                        }
+                    }
+    
+                    if(estadoAtual == ESCOLHENDO_ATRIBUTO){
+                        DrawRectangle(205 ,523 ,390, 60, PURPLE);
+                        listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 125, 77);
+    
+                        DrawText("ESCOLHA UM ATRIBUTO PARA BATALHAR!", 150, 481, 24, BLACK);
+    
+                        if(GuiButton((Rectangle){210, 528, 80, 50}, "PODER")){
+                            batalha(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot, maoJogador.poderDestrutivo, maoBot.poderDestrutivo);
+                            estadoAtual = REVELANDO_CARTAS;
+                            
+                        }
+    
+                        if(GuiButton((Rectangle){310, 528, 80, 50}, "VELOCIDADE")){
+                            PlaySound(buttonSound);
+                            batalha(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot, maoJogador.velocidade, maoBot.velocidade);
+                            estadoAtual = REVELANDO_CARTAS;
+                            
+                        }
+    
+                        if(GuiButton((Rectangle){410, 528, 80, 50}, "ALCANCE")){
+                            PlaySound(buttonSound);
+                            batalha(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot, maoJogador.alcance, maoBot.alcance);;
+                            estadoAtual = REVELANDO_CARTAS;
+                            
+                        }
+    
+                        if(GuiButton((Rectangle){510, 528, 80, 50}, "PERSISTENCIA")){
+                            PlaySound(buttonSound);
+                            batalha(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot, maoJogador.persistenciaDePoder, maoBot.persistenciaDePoder);
+                            estadoAtual = REVELANDO_CARTAS;
+                            
+                        }
+                    }
+    
+                    if(estadoAtual == REVELANDO_CARTAS){
+    
+                        listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 125, 77);
+                        listarCartaNoGerenciamento(maoBot, &Carta2, fundoCarta, &blockCarta2, fonteCarta, 425, 77);
                         
+                        if(GuiButton((Rectangle){310, 483, 180, 40}, "AVANCAR PARA O PROXIMO TURNO")){
+                            vitoriaBot = verificaVitoriaBot(deckPlayer);
+                            vitoriaPlayer = verificaVitoriaPlayer(deckBot);
+                            PlaySound(buttonSound);
+                            estadoAtual = ESPERANDO_BOT;
+                            turnos++;
+                            blockCarta1 = false;
+                            blockCarta2 = false;    
+                        }
                     }
-
-                    if(GuiButton((Rectangle){310, 528, 80, 50}, "VELOCIDADE")){
-                        PlaySound(buttonSound);
-                        batalhaVelocidade(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
-                        estadoAtual = REVELANDO_CARTAS;
-                        
+    
+                }else if((turnos % 2) == 0){
+    
+                    if(estadoAtual == ESPERANDO_BOT){
+    
+                        if(GuiButton((Rectangle){675,473,100,60},"#115#")){
+    
+                            PlaySound(buttonSound);
+                            maoJogador = recebeCartaParaMao(deckPlayer);
+                            maoBot = recebeCartaParaMao(deckBot);
+                            botAcao(maoBot, maoJogador, deckBot, deckPlayer, &pontuacaoPlayer, &pontuacaoBot);
+                            estadoAtual = MOSTRANDO_CARTA;
+                            blockCarta1 = false;
+                            blockCarta2 = false;
+                        }
+    
                     }
-
-                    if(GuiButton((Rectangle){410, 528, 80, 50}, "ALCANCE")){
-                        PlaySound(buttonSound);
-                        batalhaAlcance(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
-                        estadoAtual = REVELANDO_CARTAS;
-                        
+    
+                    if(estadoAtual == MOSTRANDO_CARTA){
+                        listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 125, 77);
+                        listarCartaNoGerenciamento(maoBot, &Carta2, fundoCarta, &blockCarta2, fonteCarta, 425, 77);
+    
+                        if(GuiButton((Rectangle){310, 483, 180, 40}, "AVANCAR PARA O PROXIMO TURNO")){
+                            PlaySound(buttonSound);
+                            estadoAtual = ESPERANDO_JOGADOR;
+                            vitoriaBot = verificaVitoriaBot(deckPlayer);
+                            vitoriaPlayer = verificaVitoriaPlayer(deckBot);
+                            turnos++;
+                            blockCarta1 = false;
+                            blockCarta2 = false;
+                        }
                     }
-
-                    if(GuiButton((Rectangle){510, 528, 80, 50}, "PERSISTENCIA")){
-                        PlaySound(buttonSound);
-                        batalhaPersistencia(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot);
-                        estadoAtual = REVELANDO_CARTAS;
-                        
-                    }
+    
                 }
-
-                if(estadoAtual == REVELANDO_CARTAS){
-                    listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 125, 77);
-                    listarCartaNoGerenciamento(maoBot, &Carta2, fundoCarta, &blockCarta2, fonteCarta, 425, 77);
-                    if(GuiButton((Rectangle){310, 483, 180, 40}, "AVANCAR PARA O PROXIMO TURNO")){
-                        PlaySound(buttonSound);
-                        estadoAtual = ESPERANDO_BOT;
-                        vitoriaBot = verificaVitoriaBot(deckPlayer);
-                        vitoriaPlayer = verificaVitoriaPlayer(deckBot);
-                        turnos++;
-                        blockCarta1 = false;
-                        blockCarta2 = false;    
-                    }
-                }
-            }else if((turnos % 2) == 0){
-                if(estadoAtual == ESPERANDO_BOT){
-                    if(GuiButton((Rectangle){675,473,100,60},"#115#")){
-                        PlaySound(buttonSound);
-                        maoJogador = recebeCartaParaMao(deckPlayer);
-                        maoBot = recebeCartaParaMao(deckBot);
-                        botAcao(maoBot, maoJogador, deckBot, deckPlayer, &pontuacaoPlayer, &pontuacaoBot);
-                        estadoAtual = MOSTRANDO_CARTA;
-                        blockCarta1 = false;
-                        blockCarta2 = false;
-                    }
-
-                }
-
-                if(estadoAtual == MOSTRANDO_CARTA){
-                    listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 125, 77);
-                    listarCartaNoGerenciamento(maoBot, &Carta2, fundoCarta, &blockCarta2, fonteCarta, 425, 77);
-
-                    if(GuiButton((Rectangle){310, 483, 180, 40}, "AVANCAR PARA O PROXIMO TURNO")){
+    
+                if(vitoriaBot == true && pontuacaoBot > pontuacaoPlayer){
+                    DrawRectangle(0,0,800,600,(Color){0,0,0,255});
+                    DrawText("VOCÊ PERDEU! TENTE NOVAMENTE", 100, 200, 36, RED);
+                    if(GuiButton((Rectangle){295,407,211,47}, "Voltar ao menu")){
                         PlaySound(buttonSound);
                         estadoAtual = ESPERANDO_JOGADOR;
-                        vitoriaBot = verificaVitoriaBot(deckPlayer);
-                        vitoriaPlayer = verificaVitoriaPlayer(deckBot);
-                        turnos++;
-                        blockCarta1 = false;
-                        blockCarta2 = false;
+                        pontuacaoBot = 0;
+                        pontuacaoPlayer = 0;
+                        turnos = 1;
+                        actualScreen = GAME_MENU;
+                        vitoriaBot = false;
+                        cartaJogadorExibida = false;
+                        cartaBotExibida = false;
                     }
+    
+    
+                }
+    
+                if(vitoriaPlayer == true && pontuacaoPlayer > pontuacaoBot){
+                    DrawRectangle(0,0,800,600,(Color){0,0,0,255});
+                    DrawText("PARABENS! VOCE VENCEU", 200, 200, 36, RED);
+                    if(GuiButton((Rectangle){295,407,211,47}, "Voltar ao menu")){
+                        PlaySound(buttonSound);
+                        estadoAtual = ESPERANDO_JOGADOR;
+                        pontuacaoBot = 0;
+                        pontuacaoPlayer = 0;
+                        turnos = 1;
+                        actualScreen = GAME_MENU;
+                        vitoriaPlayer = false;
+                        cartaJogadorExibida = false;
+                        cartaBotExibida = false;
+    
+                    }
+                            
+    
+                }
+    
+                if((vitoriaPlayer == true && pontuacaoPlayer == pontuacaoBot) || (vitoriaBot == true && pontuacaoPlayer == pontuacaoBot)){
+                    DrawRectangle(0,0,800,600,(Color){0,0,0,255});
+                    DrawText("O JOGO TERMINOU EMPATADO", 200, 200, 36, RED);
+                    if(GuiButton((Rectangle){295,407,211,47}, "Voltar ao menu")){
+                        PlaySound(buttonSound);
+                        estadoAtual = ESPERANDO_JOGADOR;
+                        pontuacaoBot = 0;
+                        pontuacaoPlayer = 0;
+                        turnos = 1;
+                        actualScreen = GAME_MENU;
+                        vitoriaPlayer = false;
+                        vitoriaBot = false;
+                        cartaJogadorExibida = false;
+                        cartaBotExibida = false;
+    
+                    }
+                            
+    
                 }
 
             }
-
-            if(vitoriaBot == true && pontuacaoBot > pontuacaoPlayer){
-                DrawRectangle(0,0,800,600,(Color){0,0,0,255});
-                DrawText("VOCÊ PERDEU! TENTE NOVAMENTE", 100, 200, 36, RED);
-                if(GuiButton((Rectangle){295,407,211,47}, "Voltar ao menu")){
-                    PlaySound(buttonSound);
-                    estadoAtual = ESPERANDO_JOGADOR;
-                    pontuacaoBot = 0;
-                    pontuacaoPlayer = 0;
-                    turnos = 0;
-                    actualScreen = GAME_MENU;
-                    vitoriaBot = false;
-                    cartaJogadorExibida = false;
-                    cartaBotExibida = false;
-                }
+                
 
 
-            }
-
-            if(vitoriaPlayer == true && pontuacaoPlayer > pontuacaoBot){
-                DrawRectangle(0,0,800,600,(Color){0,0,0,255});
-                DrawText("PARABENS! VOCE VENCEU", 200, 200, 36, RED);
-                if(GuiButton((Rectangle){295,407,211,47}, "Voltar ao menu")){
-                    PlaySound(buttonSound);
-                    estadoAtual = ESPERANDO_JOGADOR;
-                    pontuacaoBot = 0;
-                    pontuacaoPlayer = 0;
-                    turnos = 0;
-                    actualScreen = GAME_MENU;
-                    vitoriaPlayer = false;
-                    cartaJogadorExibida = false;
-                    cartaBotExibida = false;
-
-                }
-                        
-
-            }
-
-            if((vitoriaPlayer == true && pontuacaoPlayer == pontuacaoBot) || (vitoriaBot == true && pontuacaoPlayer == pontuacaoBot)){
-                DrawRectangle(0,0,800,600,(Color){0,0,0,255});
-                DrawText("O JOGO TERMINOU EMPATADO", 200, 200, 36, RED);
-                if(GuiButton((Rectangle){295,407,211,47}, "Voltar ao menu")){
-                    PlaySound(buttonSound);
-                    estadoAtual = ESPERANDO_JOGADOR;
-                    pontuacaoBot = 0;
-                    pontuacaoPlayer = 0;
-                    turnos = 0;
-                    actualScreen = GAME_MENU;
-                    vitoriaPlayer = false;
-                    vitoriaBot = false;
-                    cartaJogadorExibida = false;
-                    cartaBotExibida = false;
-
-                }
-                        
-
-            }
-
-            
             EndDrawing();
         }
 
