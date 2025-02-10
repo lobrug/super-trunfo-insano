@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "structEstandes.h"
 #include "gerenciamentoDeDeck.h"
+#include <string.h>
 
 void adicionaCartaAoDeck(Estande deck[], Estande carta, int tamanho) {
     for (int i = 0; i < tamanho; i++) {
@@ -28,7 +29,9 @@ void batalha(Estande maoJogador, Estande maoBot, Estande deckPlayer[], Estande d
                 break;
             }
         }
-    } else if(atributoPlayer < atributoBot){
+    }
+    
+    if(atributoBot > atributoPlayer){
         // Bot vence a batalha, a carta do jogador é transferida para o deck do bot
         (*pontuacaoBot)++;
         for (int i = 0; i < tamanho; i++) {
@@ -40,7 +43,10 @@ void batalha(Estande maoJogador, Estande maoBot, Estande deckPlayer[], Estande d
                 break;
             }
         }
-    } else {
+    }
+
+    if (atributoPlayer == atributoBot)
+    {
         for (int i = 0; i < tamanho; i++) {
             if (deckPlayer[i].nome[0] != '\0' && strcmp(deckPlayer[i].nome, maoJogador.nome) == 0) {
                 memset(&deckPlayer[i], 0, sizeof(deckPlayer[i]));
@@ -53,8 +59,11 @@ void batalha(Estande maoJogador, Estande maoBot, Estande deckPlayer[], Estande d
                 break;
             }
         }
+        
     }
+    
 }
+
 
 bool verificaVitoriaBot(Estande deckPlayer[]){
     for(int i = 0; i < 32; i++){

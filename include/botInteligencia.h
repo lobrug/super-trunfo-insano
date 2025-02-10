@@ -5,6 +5,7 @@
 #include "gerenciamentoDeDeck.h"
 #include "batalha.h"
 #include <stdio.h>
+#include <string.h>
 
 int botEscolha(Estande maoBot){
     int maiorValor = maoBot.poderDestrutivo;
@@ -28,26 +29,30 @@ int botEscolha(Estande maoBot){
     return escolha;
 }
 
-void botAcao(Estande maoBot, Estande maoPlayer, Estande deckBot[], Estande deckPlayer[], int *pontuacaoPlayer, int *pontuacaoBot){
+void botAcao(Estande maoBot, Estande maoPlayer, Estande deckBot[], Estande deckPlayer[], int *pontuacaoPlayer, int *pontuacaoBot, char escolha_string[]){
     int escolha = botEscolha(maoBot);
 
-    if(escolha == 0){
+    if (escolha == 0) {
         batalha(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot, maoPlayer.poderDestrutivo, maoBot.poderDestrutivo);
+        strcpy(escolha_string, "PODER");
         return;
     }
 
-    if(escolha == 1){
+    if (escolha == 1) {
         batalha(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot, maoPlayer.velocidade, maoBot.velocidade);
+        strcpy(escolha_string, "VELOCIDADE");
         return;
     }
 
-    if(escolha == 2){
+    if (escolha == 2) {
         batalha(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot, maoPlayer.alcance, maoBot.alcance);
+        strcpy(escolha_string, "ALCANCE");
         return;
     }
 
-    if(escolha == 3){
+    if (escolha == 3) {
         batalha(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot, maoPlayer.persistenciaDePoder, maoBot.persistenciaDePoder);
+        strcpy(escolha_string, "PERSISTENCIA");
         return;
     }
 }
