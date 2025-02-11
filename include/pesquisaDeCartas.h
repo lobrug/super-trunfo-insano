@@ -52,44 +52,6 @@ void listarCartaNoGerenciamento(Estande estande, Texture2D *Carta, Texture2D fun
     
 }
 
-void listarCartaNoJogoGrande(Estande estande) {
-    
-    if (estande.super == 0) DrawRectangle(150, 150, 200, 300, LIGHTGRAY); // Card rectangle
-    if (estande.super == 1) DrawRectangle(150, 150, 200, 300, GOLD);
-
-    DrawRectangle(285, 59, 224, 170, BLACK); // Foto
-    DrawRectangle(285, 285, 222, 62, WHITE); // Stats box
-
-    DrawText("Strenght: ", 302, 297, 14, BLACK);
-    DrawText("    Speed: ", 302, 312, 14, BLACK);
-    DrawText("Range: ", 405, 297, 14, BLACK);
-    DrawText("Prstc: ", 405, 312, 14, BLACK);
-
-    DrawTexture(estande.foto, 309, 87, WHITE);
-
-    if (estande.super == 1) {
-        char goldenAux[40] = "Golden Experience\nRequiem - SUPER";
-        DrawText(goldenAux, 283, 233, 24, BLACK);
-    } else {
-        DrawText(estande.nome, 283, 233, 24, BLACK);
-    }
-
-    int valores[4] = {estande.poderDestrutivo, estande.velocidade, estande.alcance, estande.persistenciaDePoder};
-    char buffer[32];
-
-    snprintf(buffer, sizeof(buffer), "%d", valores[0]);
-    DrawText(buffer, 369, 297, 14, BLACK);
-
-    snprintf(buffer, sizeof(buffer), "%d", valores[1]);
-    DrawText(buffer, 369, 314, 14, BLACK);
-
-    snprintf(buffer, sizeof(buffer), "%d", valores[2]);
-    DrawText(buffer, 450, 297, 14, BLACK);
-
-    snprintf(buffer, sizeof(buffer), "%d", valores[3]);
-    DrawText(buffer, 450, 314, 14, BLACK);
-}
-
 void verificaCheckFiltro(bool* check, int filtro[], int posX, int posY1, int posY2, int largura, int altura, bool* editMin, bool* editMax, bool edit[]){
 
     if (*check == true){

@@ -177,7 +177,6 @@ int main(void){
     Texture2D jojoimg = LoadTexture(".\\assets\\img\\jojo.png");
     Texture2D table = LoadTexture(".\\assets\\img\\table.jpg");
     Texture2D backCard = LoadTexture(".\\assets\\img\\backCard.png");
-    Texture2D jojos = LoadTexture(".\\assets\\img\\jojos.png");
     Texture2D fundoCarta = LoadTexture(".\\assets\\img\\fundoCarta.jpg");
     Sound buttonSound = LoadSound(".\\assets\\sounds\\buttonsound.mp3");
     Sound theme = LoadSound(".\\assets\\sounds\\theme.mp3");
@@ -697,8 +696,6 @@ int main(void){
             BeginDrawing();
             ClearBackground(BLACK);
 
-            DrawTexture(jojos, 500, 0, WHITE);
-
             listarCartaNoGerenciamento(estandes[selecionaCarta], &Carta, fundoCarta, &blockCarta1, fonteCarta, 275, 137);
 
             if (GuiButton((Rectangle){305, 21, 191, 39}, "#23# Alterar Imagem"))
@@ -787,7 +784,6 @@ int main(void){
     UnloadTexture(table);
     UnloadTexture(backCard);
     UnloadImage(icon);
-    UnloadTexture(jojos);
     UnloadSound(buttonSound);
     UnloadSound(theme);
     CloseWindow();
