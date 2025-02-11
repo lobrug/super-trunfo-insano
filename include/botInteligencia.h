@@ -32,25 +32,29 @@ int botEscolha(Estande maoBot){
 void botAcao(Estande maoBot, Estande maoPlayer, Estande deckBot[], Estande deckPlayer[], int *pontuacaoPlayer, int *pontuacaoBot, char escolha_string[]){
     int escolha = botEscolha(maoBot);
 
-    if (escolha == 0) {
+    if(escolha == 0){
+        printf("Bot escolheu poder\n");
         batalha(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot, maoPlayer.poderDestrutivo, maoBot.poderDestrutivo);
         strcpy(escolha_string, "PODER");
         return;
     }
 
-    if (escolha == 1) {
+    if(escolha == 1){
+        printf("Bot escolheu velocidade\n");
         batalha(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot, maoPlayer.velocidade, maoBot.velocidade);
         strcpy(escolha_string, "VELOCIDADE");
         return;
     }
 
-    if (escolha == 2) {
+    if(escolha == 2){
+        printf("Bot escolheu alcance\n");
         batalha(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot, maoPlayer.alcance, maoBot.alcance);
         strcpy(escolha_string, "ALCANCE");
         return;
     }
 
-    if (escolha == 3) {
+    if(escolha == 3){
+        printf("Bot escolheu persistencia\n");
         batalha(maoPlayer, maoBot, deckPlayer, deckBot, 32, pontuacaoPlayer, pontuacaoBot, maoPlayer.persistenciaDePoder, maoBot.persistenciaDePoder);
         strcpy(escolha_string, "PERSISTENCIA");
         return;
