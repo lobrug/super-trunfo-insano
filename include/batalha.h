@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "structEstandes.h"
 #include "gerenciamentoDeDeck.h"
+#include <string.h>
 
 void adicionaCartaAoDeck(Estande deck[], Estande carta, int tamanho) {
     for (int i = 0; i < tamanho; i++) {
@@ -58,7 +59,9 @@ void batalha(Estande maoJogador, Estande maoBot, Estande deckPlayer[], Estande d
                 break;
             }
         }
+        
     }
+    
 }
 
 

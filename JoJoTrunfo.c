@@ -62,6 +62,8 @@ int main(void){
 
     bool verificaPesquisa = false;
 
+    char escolha[20];
+
     //---- Armazenadores dos valores dos filtros --------------------------------------------------------------------
     //0 - min
     //1 - max
@@ -544,27 +546,32 @@ int main(void){
                             PlaySound(buttonSound);
                             batalha(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot, maoJogador.poderDestrutivo, maoBot.poderDestrutivo);
                             estadoAtual = REVELANDO_CARTAS;
+                            strcpy(escolha, "PODER");
                             
                         }
     
-                        if(GuiButton((Rectangle){310, 528, 80, 50}, "VELOCIDADE")){
-                            PlaySound(buttonSound);
-                            batalha(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot, maoJogador.velocidade, maoBot.velocidade);
-                            estadoAtual = REVELANDO_CARTAS;
-                            
-                        }
-    
-                        if(GuiButton((Rectangle){410, 528, 80, 50}, "ALCANCE")){
+                        if(GuiButton((Rectangle){310, 528, 80, 50}, "ALCANCE")){
                             PlaySound(buttonSound);
                             batalha(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot, maoJogador.alcance, maoBot.alcance);;
                             estadoAtual = REVELANDO_CARTAS;
+                            strcpy(escolha, "ALCANCE");
                             
                         }
+
+                        if(GuiButton((Rectangle){410, 528, 80, 50}, "VELOCIDADE")){
+                            PlaySound(buttonSound);
+                            batalha(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot, maoJogador.velocidade, maoBot.velocidade);
+                            estadoAtual = REVELANDO_CARTAS;
+                            strcpy(escolha, "VELOCIDADE");
+                            
+                        }
+    
     
                         if(GuiButton((Rectangle){510, 528, 80, 50}, "PERSISTENCIA")){
                             PlaySound(buttonSound);
                             batalha(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot, maoJogador.persistenciaDePoder, maoBot.persistenciaDePoder);
                             estadoAtual = REVELANDO_CARTAS;
+                            strcpy(escolha, "PERSISTENCIA");
                             
                         }
                     }
@@ -573,6 +580,10 @@ int main(void){
     
                         listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 125, 77);
                         listarCartaNoGerenciamento(maoBot, &Carta2, fundoCarta, &blockCarta2, fonteCarta, 425, 77);
+                        DrawRectangle(329, 11, 141, 57, PURPLE);
+                        DrawText("VOCÊ ESCOLHEU", 332, 15, 16, BLACK);
+                        DrawText(TextFormat("%s", escolha), 343, 40, 16, RED);
+
                         
                         if(GuiButton((Rectangle){310, 483, 180, 40}, "AVANCAR PARA O PROXIMO TURNO")){
                             vitoriaBot = verificaVitoriaBot(deckPlayer);
@@ -594,7 +605,7 @@ int main(void){
                             PlaySound(buttonSound);
                             maoJogador = recebeCartaParaMao(deckPlayer);
                             maoBot = recebeCartaParaMao(deckBot);
-                            botAcao(maoBot, maoJogador, deckBot, deckPlayer, &pontuacaoPlayer, &pontuacaoBot);
+                            botAcao(maoBot, maoJogador, deckBot, deckPlayer, &pontuacaoPlayer, &pontuacaoBot, escolha);
                             estadoAtual = MOSTRANDO_CARTA;
                             blockCarta1 = false;
                             blockCarta2 = false;
@@ -605,6 +616,9 @@ int main(void){
                     if(estadoAtual == MOSTRANDO_CARTA){
                         listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 125, 77);
                         listarCartaNoGerenciamento(maoBot, &Carta2, fundoCarta, &blockCarta2, fonteCarta, 425, 77);
+                        DrawRectangle(329, 11, 141, 57, PURPLE);
+                        DrawText("BOT ESCOLHEU", 332, 15, 16, BLACK);
+                        DrawText(TextFormat("%s", escolha), 343, 40, 16, RED);
     
                         if(GuiButton((Rectangle){310, 483, 180, 40}, "AVANCAR PARA O PROXIMO TURNO")){
                             PlaySound(buttonSound);
