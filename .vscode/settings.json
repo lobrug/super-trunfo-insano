@@ -3,6 +3,8 @@
         "loadtextures.h": "c",
         "pesquisadecartas.h": "c",
         "manipulacaocartas.h": "c",
-        "raylib.h": "c"
+        "raylib.h": "c",
+        "string.h": "c",
+        "structestandes.h": "c"
     }
 }

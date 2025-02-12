@@ -1,20 +1,13 @@
-#ifndef pesquisaDeCartas_H
-#define pesquisaDeCartas_H
-
-#include "pesquisaDeCartas.h"
+#include "gerenciamentoDeDeck.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 #include <stdbool.h>
-#include "structEstandes.h"
+#include <ctype.h>
 #include "raylib.h"
-#include "manipulacaoCartas.h"
+#include "raygui.h" // Adicione esta linha
+#include "structEstandes.h"
 
-void lerString(char* texto, int tamanho){
-    setbuf(stdin, NULL);
-    fgets(texto, tamanho, stdin);
-    texto[strcspn(texto, "\n")] = '\0';
-}
 
 void listarCartaNoGerenciamento(Estande estande, Texture2D *Carta, Texture2D fundoCarta, bool *blockCarta, Font fonte, int posX, int posY){
 
@@ -87,4 +80,67 @@ void verificaCheckFiltro(bool* check, int filtro[], int posX, int posY1, int pos
     return;
 }
 
-#endif
+void armazenaDeckFinal(Estande estandes[]){
+
+    FILE *arq = fopen("deck_ultima_partida.dat", "wb");
+
+    fwrite(estandes, sizeof(Estande), 32, arq);
+
+    fclose(arq);
+
+    return;
+}
+
+Estande recebeCartaParaMao(Estande deck[]) {
+    for (int i = 0; i < 32; i++) {
+        if (deck[i].nome[0] != '\0') { // Verifica se o slot não está vazio
+            Estande carta = deck[i]; // Atribui a carta do deck para a mão
+            deck[i].nome[0] = '\0';
+            return carta;
+        }
+    }
+    printf("Voce nao tem cartas no monte\n");
+}
+
+
+int VerificadorFiltro(char Letra, int poder[], int velocidade[], int alcance[], int persistencia[], int numero, Estande estandes){
+
+    if ((Letra != 'Z') && (Letra != estandes.letra))
+    {
+        return -1;
+    }
+
+    if ((poder[0] != -1) && ((estandes.poderDestrutivo < poder[0]) || (estandes.poderDestrutivo > poder[1])))
+    {
+        return -1;
+    }
+
+    if ((velocidade[0] != -1) && ((estandes.velocidade < velocidade[0]) || (estandes.velocidade > velocidade[1])))
+    {
+        return -1;
+    }
+    
+    if ((alcance[0] != -1) && ((estandes.alcance < alcance[0]) || (estandes.alcance > alcance[1])))
+    {
+        return -1;
+    }
+
+    if ((persistencia[0] != -1) && ((estandes.persistenciaDePoder < persistencia[0]) || (estandes.persistenciaDePoder > persistencia[1])))
+    {
+        return -1;
+    }
+    
+    if ((numero != -1) && (numero != estandes.numero))
+    {
+        return -1;
+    }
+    
+    return 0;
+    
+}
+
+void DrawCenteredTextEx(Font font, const char *text, Vector2 centerPos, float fontSize, float spacing, Color color) {
+    Vector2 textSize = MeasureTextEx(font, text, fontSize, spacing); // Mede o tamanho do texto
+    Vector2 position = { centerPos.x - textSize.x / 2, centerPos.y - textSize.y / 2 }; // Ajusta posição
+    DrawTextEx(font, text, position, fontSize, spacing, color); // Desenha o texto
+}

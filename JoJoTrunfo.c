@@ -5,7 +5,6 @@
 #include "raygui.h"
 #include "structEstandes.h"
 #include "leituraCsv.h"
-#include "pesquisaDeCartas.h"
 #include "manipulacaoCartas.h"
 #include "embaralhar.h"
 #include "gerenciamentoDeDeck.h"
@@ -61,6 +60,7 @@ int main(void){
     bool filtroCheck = false;
 
     bool verificaPesquisa = false;
+    bool verificaExportar = false;
 
     char escolha[20];
 
@@ -159,7 +159,17 @@ int main(void){
     //--------------------------------------------------------------------
 
 
-    leituraArquivoCsv(estandes);
+    // Verifica se existe um arquivo binário com o estado salvo da última partida.
+    FILE *leitorBinario = fopen("deck_ultima_partida.dat", "rb");
+    if (leitorBinario == NULL) {
+        // Caso o arquivo binário não exista, os dados são lidos do arquivo CSV.
+        leituraArquivoCsv(estandes);
+        fclose(leitorBinario);
+    } else {
+        // Caso o arquivo binário exista, os dados são carregados diretamente dele.
+        fread(estandes, sizeof(Estande), 32, leitorBinario);
+        fclose(leitorBinario);
+    }
 
     // Inicialização da janela e áudio -------------------------------
     InitWindow(screenWidth, screenHeight, "Super-Trunfo Insanamente Bizarro");
@@ -181,11 +191,18 @@ int main(void){
     Sound buttonSound = LoadSound(".\\assets\\sounds\\buttonsound.mp3");
     Sound theme = LoadSound(".\\assets\\sounds\\theme.mp3");
     Font fonteCarta = LoadFont(".\\assets\\font\\OpenSans-Bold.ttf");
+    Font fonteJogo = LoadFont(".\\assets\\font\\jjba.ttf");
+    Texture2D fundoDeck = LoadTexture(".\\assets\\img\\fundoDeck.png");
     //----------------------------------------------------------------
 
     // Configuração da fonte da carta -------------------------------
     GenTextureMipmaps(&fonteCarta.texture);
+    GenTextureMipmaps(&fonteJogo.texture);
+    SetTextureFilter(fonteJogo.texture, TEXTURE_FILTER_BILINEAR);
+    GenTextureMipmaps(&fundoDeck);
+    SetTextureFilter(fundoDeck, TEXTURE_FILTER_BILINEAR);
     SetTextureFilter(fonteCarta.texture, TEXTURE_FILTER_BILINEAR);
+    
     //----------------------------------------------------------------
 
 
@@ -198,31 +215,31 @@ int main(void){
     loadImageToCard(&estandes[4], ".\\assets\\stands\\madeinheaven.png", 211, 153);
     loadImageToCard(&estandes[5], ".\\assets\\stands\\thehand.png", 200, 238);
     loadImageToCard(&estandes[6], ".\\assets\\stands\\killerqueen.png", 200, 206);
-    loadImageToCard(&estandes[7], ".\\assets\\stands\\d4c.png", 174, 142);
-    loadImageToCard(&estandes[8], ".\\assets\\stands\\crazydiamond.png", 174, 142);
-    loadImageToCard(&estandes[9], ".\\assets\\stands\\goldrequiem.png", 174, 142);
-    loadImageToCard(&estandes[10], ".\\assets\\stands\\weatherreport.png", 174, 142);
-    loadImageToCard(&estandes[11], ".\\assets\\stands\\magiciansred.png", 174, 142);
-    loadImageToCard(&estandes[12], ".\\assets\\stands\\stickyfingers.png", 174, 142);
-    loadImageToCard(&estandes[13], ".\\assets\\stands\\echoesact3.png", 174, 142);
-    loadImageToCard(&estandes[14], ".\\assets\\stands\\greenday.png", 174, 142);
-    loadImageToCard(&estandes[15], ".\\assets\\stands\\stonefree.png", 174, 142);
-    loadImageToCard(&estandes[16], ".\\assets\\stands\\silverchariot.png", 174, 142);
-    loadImageToCard(&estandes[17], ".\\assets\\stands\\rhcp.png", 174, 142);
-    loadImageToCard(&estandes[18], ".\\assets\\stands\\sexpistols.png", 174, 142);
-    loadImageToCard(&estandes[19], ".\\assets\\stands\\hierophantgreen.png", 174, 142);
-    loadImageToCard(&estandes[20], ".\\assets\\stands\\cmoon.png", 174, 142);
-    loadImageToCard(&estandes[21], ".\\assets\\stands\\moodyblues.png", 174, 142);
-    loadImageToCard(&estandes[22], ".\\assets\\stands\\goldexperience.png", 174, 142);
-    loadImageToCard(&estandes[23], ".\\assets\\stands\\diverdown.png", 174, 142);
-    loadImageToCard(&estandes[24], ".\\assets\\stands\\hermitpurple.png", 174, 142);
-    loadImageToCard(&estandes[25], ".\\assets\\stands\\heavensdoor.png", 174, 142);
-    loadImageToCard(&estandes[26], ".\\assets\\stands\\beachboy.png", 174, 142);
-    loadImageToCard(&estandes[27], ".\\assets\\stands\\aerosmith.png", 174, 142);
-    loadImageToCard(&estandes[28], ".\\assets\\stands\\tuskact4.png", 174, 142);
-    loadImageToCard(&estandes[29], ".\\assets\\stands\\big.png", 174, 142);
-    loadImageToCard(&estandes[30], ".\\assets\\stands\\softwet.png", 174, 142);
-    loadImageToCard(&estandes[31], ".\\assets\\stands\\justice.png", 174, 142);
+    loadImageToCard(&estandes[7], ".\\assets\\stands\\d4c.png", 218, 145);
+    loadImageToCard(&estandes[8], ".\\assets\\stands\\crazydiamond.png", 218, 145);
+    loadImageToCard(&estandes[9], ".\\assets\\stands\\goldrequiem.png", 218, 145);
+    loadImageToCard(&estandes[10], ".\\assets\\stands\\weatherreport.png", 218, 145);
+    loadImageToCard(&estandes[11], ".\\assets\\stands\\magiciansred.png", 218, 145);
+    loadImageToCard(&estandes[12], ".\\assets\\stands\\stickyfingers.png", 218, 145);
+    loadImageToCard(&estandes[13], ".\\assets\\stands\\echoesact3.png", 218, 145);
+    loadImageToCard(&estandes[14], ".\\assets\\stands\\greenday.png", 218, 145);
+    loadImageToCard(&estandes[15], ".\\assets\\stands\\stonefree.png", 218, 145);
+    loadImageToCard(&estandes[16], ".\\assets\\stands\\silverchariot.png", 218, 145);
+    loadImageToCard(&estandes[17], ".\\assets\\stands\\rhcp.png", 218, 145);
+    loadImageToCard(&estandes[18], ".\\assets\\stands\\sexpistols.png", 218, 145);
+    loadImageToCard(&estandes[19], ".\\assets\\stands\\hierophantgreen.png", 218, 145);
+    loadImageToCard(&estandes[20], ".\\assets\\stands\\cmoon.png", 218, 145);
+    loadImageToCard(&estandes[21], ".\\assets\\stands\\moodyblues.png", 218, 145);
+    loadImageToCard(&estandes[22], ".\\assets\\stands\\goldexperience.png", 218, 145);
+    loadImageToCard(&estandes[23], ".\\assets\\stands\\diverdown.png", 218, 145);
+    loadImageToCard(&estandes[24], ".\\assets\\stands\\hermitpurple.png", 218, 145);
+    loadImageToCard(&estandes[25], ".\\assets\\stands\\heavensdoor.png", 218, 145);
+    loadImageToCard(&estandes[26], ".\\assets\\stands\\beachboy.png", 218, 145);
+    loadImageToCard(&estandes[27], ".\\assets\\stands\\aerosmith.png", 218, 145);
+    loadImageToCard(&estandes[28], ".\\assets\\stands\\tuskact4.png", 218, 145);
+    loadImageToCard(&estandes[29], ".\\assets\\stands\\big.png", 218, 145);
+    loadImageToCard(&estandes[30], ".\\assets\\stands\\softwet.png", 218, 145);
+    loadImageToCard(&estandes[31], ".\\assets\\stands\\justice.png", 218, 145);
     }
     //------------------------------------------------------------------
 
@@ -238,6 +255,7 @@ int main(void){
         // Configuração de estilo dos botões ---------------------------
         GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt(DARKPURPLE));//fundo
         GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(BLACK));//texto
+        GuiSetFont(fonteJogo);
         //----------------------------------------------------------------
 
         Vector2 mousePos = GetMousePosition();//Pegar posição do mouse
@@ -245,6 +263,7 @@ int main(void){
         if(actualScreen == GAME_MENU){
 
             BeginDrawing();
+            GuiSetStyle(DEFAULT, TEXT_SIZE, 12); 
 
             ClearBackground(DARKPURPLE);
             DrawTexture(background, 0, 0, WHITE);
@@ -274,14 +293,17 @@ int main(void){
 
         if(actualScreen == GAME_DECK){
 
+            GuiSetStyle(DEFAULT, TEXT_SIZE, 10); 
             BeginDrawing();
             ClearBackground(BLACK);
+            DrawTexturePro(fundoDeck, (Rectangle){0, 0, fundoDeck.width, fundoDeck.height}, (Rectangle){0, 0, 800, 600}, (Vector2){0, 0}, 0.0f, WHITE);
 
             //filter box rectangle
             DrawRectangle(16, 78, 265, 471, LIGHTGRAY); 
 
             if(GuiButton((Rectangle){16,16,83,48}, "#121#")){
                 actualScreen = GAME_MENU;
+                verificaExportar = false;
             }//If - Voltar pro GAME_MENU
 
             if(filtroCheck){
@@ -291,9 +313,9 @@ int main(void){
                 GuiCheckBox((Rectangle){42,189,26,26}, "Poder", &checkPoder);
                 GuiCheckBox((Rectangle){42,245,26,26}, "Velocidade", &checkVelocidade);
                 GuiCheckBox((Rectangle){42,301,26,26}, "Alcance", &checkAlcance);
-                GuiCheckBox((Rectangle){42,357,26,26}, "Persistência", &checkPersistencia);
+                GuiCheckBox((Rectangle){42,357,26,26}, "Persistencia", &checkPersistencia);
                 GuiCheckBox((Rectangle){42,393,26,26}, "Letra", &checkLetra);
-                GuiCheckBox((Rectangle){42,424,26,26}, "Número", &checkNumero);
+                GuiCheckBox((Rectangle){42,424,26,26}, "Numero", &checkNumero);
 
                 verificaCheckFiltro(&checkPoder, filtroPoder, 166, 177, 203, 80, 24, &edit[0], &edit[1], edit);
 
@@ -439,6 +461,7 @@ int main(void){
             //If - Botão de filtro
             if(GuiButton((Rectangle){35,132,40,40}, "#047#")){
                 filtroCheck = !filtroCheck;
+                verificaExportar = false;
 
                 if (filtroCheck == false)
                 {
@@ -448,14 +471,58 @@ int main(void){
                     checkPersistencia = false;
                     checkLetra = false;
                     checkNumero = false;
-                }//Se o filtro não estiver clicado, desmarcar todos os checks de filtro
+                }    //Se o filtro não estiver clicado, desmarcar todos os checks de filtro
                 
+            }else if (filtroCheck == false){
+             
+                if (GuiButton((Rectangle){41,185,215,32}, "EXPORTAR CSV")){
+                    verificaExportar = !verificaExportar;
+                }
+                
+                if (verificaExportar == true)
+                {
+                    static char nome_csv[100];
+                    
+                    DrawRectangle(41, 231, 180, 31, WHITE);
+                    edit[8] = false;
+                    GuiTextBox((Rectangle){41, 231, 180, 31}, nome_csv, 100, true);
+                    if (GuiButton((Rectangle){232, 236, 21, 21}, "#003#"))
+                    {
+                        strcat(nome_csv, ".csv");
+                        FILE *exportaCSV = fopen(nome_csv, "w");
+                        if (exportaCSV == NULL) {
+                            // Adicione um log ou mensagem de erro para depuração
+                            printf("Erro ao abrir o arquivo %s\n", nome_csv);
+                        } else {
+                            fprintf(exportaCSV, "Categoria,Número,Nome do Stand,Super,Poder Destrutivo,Velocidade,Alcance,Persistência\n");
+                            for (int i = 0, j = 0; i < 32; i++) {
+                    
+                                fprintf(exportaCSV, "%c,%d,%s,%d,%d,%d,%d,%d\n",
+                                        estandes[i].letra,
+                                        estandes[i].numero,
+                                        estandes[i].nome,
+                                        estandes[i].super,
+                                        estandes[i].poderDestrutivo,
+                                        estandes[i].velocidade,
+                                        estandes[i].alcance,
+                                        estandes[i].persistenciaDePoder);
+                            }
+                            fclose(exportaCSV); // Fechar o arquivo após a escrita
+                        }
+                        verificaExportar = false;
+                    }
+
+                }
+
             }//If - Botão de filtro
                 
             EndDrawing();
         }//If - GAME_DECK
 
         if(actualScreen == GAME_PLAY){
+
+            GuiSetFont(GetFontDefault());
+            GuiSetStyle(DEFAULT, TEXT_SIZE, 10);
 
             BeginDrawing();
             ClearBackground(BLACK);
@@ -580,8 +647,8 @@ int main(void){
                         listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 125, 77);
                         listarCartaNoGerenciamento(maoBot, &Carta2, fundoCarta, &blockCarta2, fonteCarta, 425, 77);
                         DrawRectangle(329, 11, 141, 57, PURPLE);
-                        DrawText("VOCÊ ESCOLHEU", 332, 15, 16, BLACK);
-                        DrawText(TextFormat("%s", escolha), 343, 40, 16, RED);
+                        DrawCenteredTextEx(fonteJogo, "VOCE ESCOLHEU", (Vector2){400, 27}, 13, 0, BLACK);
+                        DrawCenteredTextEx(fonteJogo, TextFormat("%s", escolha), (Vector2){400, 53}, 14, 0, RED);
 
                         
                         if(GuiButton((Rectangle){310, 483, 180, 40}, "AVANCAR PARA O PROXIMO TURNO")){
@@ -616,8 +683,8 @@ int main(void){
                         listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 125, 77);
                         listarCartaNoGerenciamento(maoBot, &Carta2, fundoCarta, &blockCarta2, fonteCarta, 425, 77);
                         DrawRectangle(329, 11, 141, 57, PURPLE);
-                        DrawText("BOT ESCOLHEU", 332, 15, 16, BLACK);
-                        DrawText(TextFormat("%s", escolha), 343, 40, 16, RED);
+                        DrawCenteredTextEx(fonteJogo, "BOT ESCOLHEU", (Vector2){400, 27}, 13, 0, BLACK);
+                        DrawCenteredTextEx(fonteJogo, TextFormat("%s", escolha), (Vector2){400, 53}, 14, 0, RED);
     
                         if(GuiButton((Rectangle){310, 483, 180, 40}, "AVANCAR PARA O PROXIMO TURNO")){
                             PlaySound(buttonSound);
@@ -762,7 +829,7 @@ int main(void){
                 edit[3] = true;
             }
 
-            DrawRectangle(255, 533, 291, 40, WHITE);
+            DrawRectangle(255, 533, 291, 39, WHITE);
 
             if(GuiTextBox((Rectangle){255, 533, 291, 39}, estandes[selecionaCarta].nome, 30, edit[4])){
                 for (int i = 0; i < 6; i++)
@@ -783,6 +850,7 @@ int main(void){
     
     }
 
+    armazenaDeckFinal(estandes);
  
     UnloadTexture(background);
     UnloadTexture(jojoimg); // Unload texture when done
@@ -791,6 +859,9 @@ int main(void){
     UnloadImage(icon);
     UnloadSound(buttonSound);
     UnloadSound(theme);
+    UnloadTexture(fundoDeck);
+    UnloadFont(fonteCarta);
+    UnloadFont(fonteJogo);
     CloseWindow();
 
     return 0;
