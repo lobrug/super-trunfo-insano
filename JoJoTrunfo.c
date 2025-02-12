@@ -98,7 +98,8 @@ int main(void) {
 
     // Controle para alteração de imagem
     bool click_img = false;
-    char endereco[100] = "./assets/mods/"; // Manter o texto predefinido
+    char endereco[100];
+    strcpy(endereco, ".\\assets\\mods\\"); // Manter o texto predefinido
 
     // Verificadores de filtro ativados
     bool checkPoder = false;
