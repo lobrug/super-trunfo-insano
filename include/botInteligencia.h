@@ -9,6 +9,6 @@
 
 int botEscolha(Estande maoBot);
 
-void botAcao(Estande maoBot, Estande maoPlayer, Estande deckBot[], Estande deckPlayer[], int *pontuacaoPlayer, int *pontuacaoBot, char escolha_string[]);
+void botAcao(Estande maoBot, Estande maoPlayer, Estande deckBot[], Estande deckPlayer[], int *pontuacaoPlayer, int *pontuacaoBot, char escolha_string[], int *ganhador);
 
 #endif 

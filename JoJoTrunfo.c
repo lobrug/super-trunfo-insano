@@ -193,12 +193,21 @@ int main(void){
     Font fonteCarta = LoadFont(".\\assets\\font\\OpenSans-Bold.ttf");
     Font fonteJogo = LoadFont(".\\assets\\font\\jjba.ttf");
     Texture2D fundoDeck = LoadTexture(".\\assets\\img\\fundoDeck.png");
+    Texture2D vitoria = LoadTexture("assets/img/vitoria.png");
+    Texture2D derrota = LoadTexture("assets/img/perdeu.png");
+    Texture2D empate = LoadTexture("assets/img/empate.png");
     //----------------------------------------------------------------
 
     // Configuração da fonte da carta -------------------------------
     GenTextureMipmaps(&fonteCarta.texture);
     GenTextureMipmaps(&fonteJogo.texture);
     SetTextureFilter(fonteJogo.texture, TEXTURE_FILTER_BILINEAR);
+    GenTextureMipmaps(&vitoria);
+    SetTextureFilter(vitoria, TEXTURE_FILTER_BILINEAR);
+    GenTextureMipmaps(&derrota);
+    SetTextureFilter(derrota, TEXTURE_FILTER_BILINEAR);
+    GenTextureMipmaps(&empate);
+    SetTextureFilter(empate, TEXTURE_FILTER_BILINEAR);
     GenTextureMipmaps(&fundoDeck);
     SetTextureFilter(fundoDeck, TEXTURE_FILTER_BILINEAR);
     SetTextureFilter(fonteCarta.texture, TEXTURE_FILTER_BILINEAR);
@@ -566,29 +575,7 @@ int main(void){
                 DrawText(TextFormat("%d", pontuacaoPlayer), 241, 43, 26, WHITE);
                 DrawText(TextFormat("%d", pontuacaoBot), 541, 43, 26, WHITE);
     
-    
-                if(GuiButton((Rectangle){0 , 0, 50, 50},"debug button")){
-                    printf("%s\n", maoJogador.nome);                   
-                    printf("%d\n", maoJogador.poderDestrutivo);
-                    printf("%d\n", maoJogador.velocidade);
-                    printf("%d\n", maoJogador.alcance);
-                    printf("%d\n", maoJogador.persistenciaDePoder);
-                    printf("----------------------\n");
-
-                    printf("----------------------\n");
-                    printf("%s\n", maoBot.nome);
-                    printf("%d\n", maoBot.poderDestrutivo);
-                    printf("%d\n", maoBot.velocidade);
-                    printf("%d\n", maoBot.alcance);
-                    printf("%d\n", maoBot.persistenciaDePoder);
-                    printf("----------------------\n");
-                    printf("----------------------\n");
-                    printf("player: %d\n", pontuacaoPlayer);
-                    printf("bot: %d\n", pontuacaoBot);
-                    printf("Turnos: %d\n", turnos);
-                    printf("%d", estadoAtual);
-                }
-    
+                const int ganhador;
     
                 if((turnos % 2) == 1){
                     if(estadoAtual == ESPERANDO_JOGADOR){
@@ -610,7 +597,7 @@ int main(void){
     
                         if(GuiButton((Rectangle){210, 528, 80, 50}, "PODER")){
                             PlaySound(buttonSound);
-                            batalha(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot, maoJogador.poderDestrutivo, maoBot.poderDestrutivo);
+                            batalha(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot, maoJogador.poderDestrutivo, maoBot.poderDestrutivo, &ganhador);
                             estadoAtual = REVELANDO_CARTAS;
                             strcpy(escolha, "PODER");
                             
@@ -618,7 +605,7 @@ int main(void){
     
                         if(GuiButton((Rectangle){310, 528, 80, 50}, "ALCANCE")){
                             PlaySound(buttonSound);
-                            batalha(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot, maoJogador.alcance, maoBot.alcance);;
+                            batalha(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot, maoJogador.alcance, maoBot.alcance, &ganhador);
                             estadoAtual = REVELANDO_CARTAS;
                             strcpy(escolha, "ALCANCE");
                             
@@ -626,7 +613,7 @@ int main(void){
 
                         if(GuiButton((Rectangle){410, 528, 80, 50}, "VELOCIDADE")){
                             PlaySound(buttonSound);
-                            batalha(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot, maoJogador.velocidade, maoBot.velocidade);
+                            batalha(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot, maoJogador.velocidade, maoBot.velocidade, &ganhador);
                             estadoAtual = REVELANDO_CARTAS;
                             strcpy(escolha, "VELOCIDADE");
                             
@@ -635,7 +622,7 @@ int main(void){
     
                         if(GuiButton((Rectangle){510, 528, 80, 50}, "PERSISTENCIA")){
                             PlaySound(buttonSound);
-                            batalha(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot, maoJogador.persistenciaDePoder, maoBot.persistenciaDePoder);
+                            batalha(maoJogador, maoBot, deckPlayer, deckBot, 32, &pontuacaoPlayer, &pontuacaoBot, maoJogador.persistenciaDePoder, maoBot.persistenciaDePoder, &ganhador);
                             estadoAtual = REVELANDO_CARTAS;
                             strcpy(escolha, "PERSISTENCIA");
                             
@@ -643,13 +630,13 @@ int main(void){
                     }
     
                     if(estadoAtual == REVELANDO_CARTAS){
-    
+
                         listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 125, 77);
                         listarCartaNoGerenciamento(maoBot, &Carta2, fundoCarta, &blockCarta2, fonteCarta, 425, 77);
                         DrawRectangle(329, 11, 141, 57, PURPLE);
+                        exibeGanhador(ganhador, vitoria, derrota, empate);
                         DrawCenteredTextEx(fonteJogo, "VOCE ESCOLHEU", (Vector2){400, 27}, 13, 0, BLACK);
                         DrawCenteredTextEx(fonteJogo, TextFormat("%s", escolha), (Vector2){400, 53}, 14, 0, RED);
-
                         
                         if(GuiButton((Rectangle){310, 483, 180, 40}, "AVANCAR PARA O PROXIMO TURNO")){
                             vitoriaBot = verificaVitoriaBot(deckPlayer);
@@ -667,11 +654,11 @@ int main(void){
                     if(estadoAtual == ESPERANDO_BOT){
     
                         if(GuiButton((Rectangle){675,473,100,60},"#115#")){
-    
+                            
                             PlaySound(buttonSound);
                             maoJogador = recebeCartaParaMao(deckPlayer);
                             maoBot = recebeCartaParaMao(deckBot);
-                            botAcao(maoBot, maoJogador, deckBot, deckPlayer, &pontuacaoPlayer, &pontuacaoBot, escolha);
+                            botAcao(maoBot, maoJogador, deckBot, deckPlayer, &pontuacaoPlayer, &pontuacaoBot, escolha, &ganhador);
                             estadoAtual = MOSTRANDO_CARTA;
                             blockCarta1 = false;
                             blockCarta2 = false;
@@ -683,6 +670,7 @@ int main(void){
                         listarCartaNoGerenciamento(maoJogador, &Carta, fundoCarta, &blockCarta1, fonteCarta, 125, 77);
                         listarCartaNoGerenciamento(maoBot, &Carta2, fundoCarta, &blockCarta2, fonteCarta, 425, 77);
                         DrawRectangle(329, 11, 141, 57, PURPLE);
+                        exibeGanhador(ganhador, vitoria, derrota, empate);
                         DrawCenteredTextEx(fonteJogo, "BOT ESCOLHEU", (Vector2){400, 27}, 13, 0, BLACK);
                         DrawCenteredTextEx(fonteJogo, TextFormat("%s", escolha), (Vector2){400, 53}, 14, 0, RED);
     
@@ -862,6 +850,9 @@ int main(void){
     UnloadTexture(fundoDeck);
     UnloadFont(fonteCarta);
     UnloadFont(fonteJogo);
+    UnloadTexture(vitoria);
+    UnloadTexture(derrota);
+    UnloadTexture(empate);
     CloseWindow();
 
     return 0;

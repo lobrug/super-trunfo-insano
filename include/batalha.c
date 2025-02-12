@@ -15,10 +15,11 @@ void adicionaCartaAoDeck(Estande deck[], Estande carta, int tamanho) {
     }
 }
 
-void batalha(Estande maoJogador, Estande maoBot, Estande deckPlayer[], Estande deckBot[], int tamanho, int *pontuacaoPlayer, int *pontuacaoBot, int atributoPlayer, int atributoBot) {
+void batalha(Estande maoJogador, Estande maoBot, Estande deckPlayer[], Estande deckBot[], int tamanho, int *pontuacaoPlayer, int *pontuacaoBot, int atributoPlayer, int atributoBot, int *ganhador) {
     printf("Atributo jogador: %d\n", atributoPlayer);
     printf("Atributo bot: %d\n", atributoBot);
     if (atributoPlayer > atributoBot) {
+        *ganhador = 1;
         printf("Jogador venceu a batalha\n");
         // Jogador vence a batalha, a carta do bot é transferida para o deck do jogador
         (*pontuacaoPlayer)++;
@@ -32,6 +33,7 @@ void batalha(Estande maoJogador, Estande maoBot, Estande deckPlayer[], Estande d
             }
         }
     } if(atributoPlayer < atributoBot){
+        *ganhador = 2;
         printf("Bot venceu a batalha\n");
         // Bot vence a batalha, a carta do jogador é transferida para o deck do bot
         (*pontuacaoBot)++;
@@ -45,6 +47,7 @@ void batalha(Estande maoJogador, Estande maoBot, Estande deckPlayer[], Estande d
             }
         }
     } if(atributoPlayer == atributoBot){
+        *ganhador = 3;
         printf("Empate\n");
         for (int i = 0; i < tamanho; i++) {
             if (deckPlayer[i].nome[0] != '\0' && strcmp(deckPlayer[i].nome, maoJogador.nome) == 0) {
@@ -80,4 +83,24 @@ bool verificaVitoriaPlayer(Estande deckBot[]){
         }
     }
     return true;
+}
+
+void exibeGanhador(int ganhador, Texture2D vitoria, Texture2D derrota, Texture2D empate) {
+
+    if (ganhador == 1){
+        
+        DrawTexturePro(vitoria, (Rectangle){0, 0, vitoria.width, vitoria.height}, (Rectangle){250, 115, 300, 300}, (Vector2){0, 0}, 0.0f, WHITE);
+        
+    }
+    if (ganhador == 2){
+        
+        DrawTexturePro(derrota, (Rectangle){0, 0, derrota.width, derrota.height}, (Rectangle){250, 115, 300, 300}, (Vector2){0, 0}, 0.0f, WHITE);
+        
+    }
+    if (ganhador == 3){
+        
+        DrawTexturePro(empate, (Rectangle){0, 0, empate.width, empate.height}, (Rectangle){250, 115, 300, 300}, (Vector2){0, 0}, 0.0f, WHITE);
+        
+    }
+    
 }
